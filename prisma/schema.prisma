@@ -8,35 +8,179 @@ generator client {
 }
 
 model Province {
-  id                  Int         @id   @default(autoincrement())
-  name                String      @db.VarChar(64) @unique
-  short_name          String      @db.VarChar(2)  @unique
-  global_code         String      @unique @db.VarChar(255)
-  formatted_address   String?     @db.VarChar(255)
-  type                String?     @db.VarChar(255)
-  img_cover           String?     @db.VarChar(255)
+  id                Int      @id @default(autoincrement())
+  name              String   @unique @db.VarChar(64)
+  short_name        String   @unique @db.VarChar(2)
+  global_code       String   @unique @db.VarChar(255)
+  formatted_address String?  @db.VarChar(255)
+  type              String?  @db.VarChar(255)
+  img_cover         String?  @db.VarChar(255)
+  created_at        DateTime @default(now()) @db.Timestamp()
+  updated_at        DateTime @updatedAt @db.Timestamp()
 
-  cities              City[]
+  City City[]
 
-  created_at          DateTime    @db.Timestamp() @default(now())
-  updated_at          DateTime    @db.Timestamp() @updatedAt
   @@map("provinces")
 }
 
 model City {
-  id                  Int         @id   @default(autoincrement())
-  name                String      @db.VarChar(64)
-  global_code         String      @unique @db.VarChar(255)
-  formatted_address   String?     @db.VarChar(255)
-  type                String?     @db.VarChar(255)
-  img_cover           String?     @db.VarChar(255)
+  id                Int         @id @default(autoincrement())
+  name              String      @db.VarChar(64)
+  global_code       String      @unique @db.VarChar(255)
+  formatted_address String?     @db.VarChar(255)
+  type              String?     @db.VarChar(255)
+  img_cover         String?     @db.VarChar(255)
+  created_at        DateTime    @default(now()) @db.Timestamp()
+  updated_at        DateTime    @updatedAt @db.Timestamp()
+  province          Province    @relation(fields: [province_id], references: [id], onUpdate: Cascade)
+  province_id       Int
+  Community         Community[]
 
-  province            Province    @relation(fields: [province_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  province_id         Int
-
-  created_at          DateTime    @db.Timestamp() @default(now())
-  updated_at          DateTime    @db.Timestamp() @updatedAt
-
-  @@map("cities")
   @@unique([name, province_id, global_code])
+  @@map("cities")
+}
+
+model Community {
+  id                Int        @id @default(autoincrement())
+  name              String     @db.VarChar(64)
+  global_code       String     @unique @db.VarChar(255)
+  formatted_address String?    @db.VarChar(255)
+  type              String?    @db.VarChar(255)
+  img_cover         String?    @db.VarChar(255)
+  created_at        DateTime   @default(now()) @db.Timestamp()
+  updated_at        DateTime   @updatedAt @db.Timestamp()
+  city              City       @relation(fields: [city_id], references: [id], onUpdate: Cascade)
+  city_id           Int
+  Property          Property[]
+
+  @@unique([name, city_id, global_code])
+  @@map("communities")
+}
+
+model Property {
+  id           Int           @id @default(autoincrement())
+  created_at   DateTime      @default(now()) @db.Timestamp()
+  updated_at   DateTime      @updatedAt @db.Timestamp()
+  community    Community     @relation(fields: [community_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  community_id Int
+  Address      Address?
+  PropertyInfo PropertyInfo?
+  Manager      Manager       @relation(fields: [manager_id], references: [id])
+  manager_id   Int
+
+  @@unique([id, community_id])
+  @@map("properties")
+}
+
+model Address {
+  id                Int       @id @default(autoincrement())
+  street            String    @db.VarChar(255)
+  postal_code       String?   @db.VarChar(255)
+  formatted_address String?   @db.VarChar(255)
+  global_code       String?   @db.VarChar(255)
+  place_id          String?   @db.VarChar(255)
+  community_name    String    @db.VarChar(255)
+  city_name         String    @db.VarChar(255)
+  province_name     String    @db.VarChar(255)
+  Property          Property  @relation(fields: [property_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  property_id       Int       @unique
+  created_at        DateTime  @default(now()) @db.Timestamp()
+  updated_at        DateTime  @updatedAt @db.Timestamp()
+  Location          Location?
+
+  @@unique([id, property_id])
+  @@map("addresses")
+}
+
+model Location {
+  id         Int     @id @default(autoincrement())
+  lat        Float   @db.DoublePrecision
+  lng        Float   @db.DoublePrecision
+  Address    Address @relation(fields: [address_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address_id Int     @unique
+}
+
+model PropertyInfo {
+  id                      Int                        @id @default(autoincrement())
+  price                   Float                      @db.Real
+  badrooms                Int
+  furnished               Boolean
+  rented                  Boolean
+  property_area           Float                      @db.Real
+  PropertyType            PropertyType               @relation(fields: [type_id], references: [id])
+  type_id                 Int
+  Property                Property                   @relation(fields: [property_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  property_id             Int                        @unique
+  created_at              DateTime                   @default(now()) @db.Timestamp()
+  updated_at              DateTime                   @updatedAt @db.Timestamp()
+  UtilitiesOnProperties   UtilitiesOnPropertyInfos[]
+  FeaturesOnPropertyInfos FeaturesOnPropertyInfos[]
+
+  @@unique([id, property_id])
+  @@map("property_infos")
+}
+
+model Utility {
+  id                    Int                        @id @default(autoincrement())
+  name                  String                     @unique @db.VarChar(255)
+  UtilitiesOnProperties UtilitiesOnPropertyInfos[]
+
+  @@map("utilities")
+}
+
+model UtilitiesOnPropertyInfos {
+  PropertyInfo     PropertyInfo @relation(fields: [property_info_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  property_info_id Int
+  Utility          Utility      @relation(fields: [utility_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  utility_id       Int
+
+  @@id([property_info_id, utility_id])
+  @@map("utilities_on_properties")
+}
+
+model PropertyType {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique @db.VarChar(255)
+  PropertyInfo PropertyInfo[]
+
+  @@map("property_types")
+}
+
+enum FeatureType {
+  Property
+  Building
+  Community
+}
+
+model Feature {
+  id                      Int                       @id @default(autoincrement())
+  name                    String                    @db.VarChar(255)
+  type                    FeatureType
+  FeaturesOnPropertyInfos FeaturesOnPropertyInfos[]
+}
+
+model FeaturesOnPropertyInfos {
+  PropertyInfo     PropertyInfo @relation(fields: [property_info_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  property_info_id Int
+  Feature          Feature      @relation(fields: [feature_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  feature_id       Int
+
+  @@id([property_info_id, feature_id])
+}
+
+enum ManagerType {
+  Organization
+  Private
+}
+
+model Manager {
+  id          Int         @id @default(autoincrement())
+  type        ManagerType
+  name        String      @db.VarChar(255)
+  website     String      @db.VarChar(255)
+  phone       String      @db.VarChar(255)
+  email       String      @db.VarChar(255)
+  img_logo    String?     @db.VarChar(255)
+  img_profile String?     @db.VarChar(255)
+  Property    Property[]
 }
