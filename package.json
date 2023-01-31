@@ -1,7 +1,8 @@
 {
   "scripts": {
     "server": "nodemon dist/src/app.js",
-    "dev": "concurrently \"tsc -w\" \"yarn server\""
+    "dev": "concurrently \"tsc -w\" \"yarn server\"",
+    "seed": "node dist/src/database/seed.js"
   },
   "dependencies": {
     "@prisma/client": "^4.9.0",

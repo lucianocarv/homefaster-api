@@ -1,5 +1,4 @@
 import { prisma } from '../prisma-connect.js';
-
 import { Province } from '@prisma/client';
 import { PaginationParameters } from '../types/pagination-parameters.js';
 
