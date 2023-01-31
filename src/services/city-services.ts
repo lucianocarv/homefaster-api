@@ -1,38 +1,21 @@
-import { getPagination } from '../helpers/get-pagination.js';
 import { prisma } from '../prisma-connect.js';
-import { City } from '../types/city.js';
+import { City } from '@prisma/client';
+import { PaginationParameters } from '../types/pagination-parameters.js';
 
 const citiesServices = {
-  index: async (page: string, perPage: string) => {
-    const [pageNumber, perPageNumber, skip] = getPagination(page, perPage);
-    // const cities = await prisma.city.findMany({
-    //   orderBy: {
-    //     id: 'asc',
-    //   },
-    //   skip,
-    //   take: perPageNumber,
-    //   include: {
-    //     province: {
-    //       select: {
-    //         name: true,
-    //       },
-    //     },
-    //   },
-    // });
-    const cities = await prisma.$queryRaw`
-      SELECT
-      cities.name as name,
-      cities.global_code,
-      cities.type,
-      cities.formatted_address,
-      provinces.name as province
-      FROM cities 
-      JOIN provinces ON cities.province_id = provinces.id
-      ORDER BY name ASC
-      LIMIT ${perPageNumber} OFFSET ${skip}
-      
-    `;
-    return { page: pageNumber, per_page: perPageNumber, cities };
+  index: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
+    const cities = await prisma.city.findMany({
+      skip,
+      take: per_page_number,
+      include: {
+        province: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    return { page: page_number, per_page: per_page_number, cities };
   },
 
   create: async (attributes: City): Promise<City> => {
@@ -45,6 +28,21 @@ const citiesServices = {
           },
         },
       },
+    });
+    return city;
+  },
+
+  update: async ({ id, attributes }: { id: number; attributes: City }): Promise<City> => {
+    const city = await prisma.city.update({
+      where: { id },
+      data: attributes,
+    });
+    return city;
+  },
+
+  delete: async ({ id }: { id: number }): Promise<City> => {
+    const city = await prisma.city.delete({
+      where: { id },
     });
     return city;
   },
