@@ -27,57 +27,51 @@ const propertyServices = {
   },
 
   getOneProperty: async (id: number) => {
-    const property = await prisma.$queryRaw`
-      SELECT 
-      properties.id as id,
-      addresses.number as number,
-      addresses.street as street,
-      addresses.community_name as community,
-      addresses.city_name as city,
-      property_infos.price as price,
-      property_infos.furnished as furnished,
-      string_agg(utilities.name, ',') as utilities
-    FROM properties 
-    INNER JOIN addresses ON properties.id = addresses.property_id
-    INNER JOIN property_infos ON properties.id = property_infos.property_id
-	  INNER JOIN utilities_on_properties ON property_infos.id = utilities_on_properties.property_info_id
-	  INNER JOIN utilities ON utilities_on_properties.utility_id = utilities.id
-	  WHERE properties.id = 12
-	  GROUP BY ALL
-	  	properties.id, 
-      addresses.number,
-      addresses.street,
-	  	addresses.community_name,
-      addresses.city_name,
-      property_infos.price,
-	  	property_infos.furnished
-	  UNION
-	  SELECT 
-      properties.id as id,
-      addresses.number as number,
-      addresses.street as street,
-      addresses.community_name as community,
-      addresses.city_name as city,
-      property_infos.price as price,
-      property_infos.furnished as furnished,
-      string_agg(features.name, ',') as features
-    FROM properties 
-    INNER JOIN addresses ON properties.id = addresses.property_id
-    INNER JOIN property_infos ON properties.id = property_infos.property_id
-	  INNER JOIN features_on_propertyinfos ON property_infos.id = features_on_propertyinfos.property_info_id
-	  INNER JOIN features ON features_on_propertyinfos.feature_id = features.id
-	  WHERE properties.id = ${id}
-	  GROUP BY ALL
-	  	properties.id, 
-      addresses.number,
-      addresses.street,
-	  	addresses.community_name,
-      addresses.city_name,
-      property_infos.price,
-	  	property_infos.furnished
+    const property = await prisma.property.findUnique({
+      where: { id },
+      select: {
+        id: true,
+      },
+    });
+    const address = await prisma.address.findUnique({
+      where: { property_id: property!.id },
+      select: {
+        number: true,
+        street: true,
+        postal_code: true,
+        global_code: true,
+        place_id: true,
+        formatted_address: true,
+        community_name: true,
+        city_name: true,
+        province_name: true,
+      },
+    });
+    const property_info = await prisma.propertyInfo.findUnique({
+      where: { property_id: property!.id },
+      select: {
+        badrooms: true,
+        price: true,
+        furnished: true,
+        rented: true,
+        property_area: true,
+        type: { select: { name: true } },
+        id: true,
+      },
+    });
+    const features_query: Array<{ features: string }> = await prisma.$queryRaw`
+      SELECT features.name as features FROM property_infos
+      JOIN features_on_propertyinfos ON features_on_propertyinfos.property_info_id = property_infos.id
+      JOIN features ON features.id = features_on_propertyinfos.feature_id WHERE property_infos.id = ${property_info!.id}
     `;
-
-    return property;
+    const utilities_query: Array<{ utilities: string }> = await prisma.$queryRaw`
+      SELECT utilities.name as utilities FROM property_infos
+      JOIN utilities_on_properties ON utilities_on_properties.property_info_id = property_infos.id
+      JOIN utilities ON utilities.id = utilities_on_properties.utility_id WHERE property_infos.id = ${property_info!.id}
+  `;
+    const features = features_query.map((feature) => feature.features);
+    const utilities = utilities_query.map((utility) => utility.utilities);
+    return { ...property_info, ...property, ...address, features, utilities };
   },
 
   create: async (attributes: CreateProperty): Promise<Property> => {
