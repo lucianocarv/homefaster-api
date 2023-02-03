@@ -1,5 +1,5 @@
 import { Community } from '@prisma/client';
-import { prisma } from '../prisma-connect';
+import { prisma } from '../config/prisma-connect.js';
 import { PaginationParameters } from '../types/pagination-parameters';
 
 const communityServices = {

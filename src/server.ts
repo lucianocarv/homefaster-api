@@ -1,9 +1,8 @@
 import fastify from 'fastify';
-import { cityRoutes } from './routes/city-router.js';
-import { communityRoutes } from './routes/community-router.js';
-import { propertyRoutes } from './routes/property-router.js';
-
-import { provinceRoutes } from './routes/province-router.js';
+import { cityRoutes } from './api/routes/city-router.js';
+import { communityRoutes } from './api/routes/community-router.js';
+import { propertyRoutes } from './api/routes/property-router.js';
+import { provinceRoutes } from './api/routes/province-router.js';
 
 export const server = fastify({ logger: true });
 

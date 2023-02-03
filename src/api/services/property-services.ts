@@ -1,5 +1,5 @@
-import { prisma } from '../prisma-connect.js';
-import { Property, UtilitiesOnPropertyInfos } from '@prisma/client';
+import { prisma } from '../config/prisma-connect.js';
+import { City, Community, Property, Province } from '@prisma/client';
 import { PaginationParameters } from '../types/pagination-parameters.js';
 import { CreateProperty } from '../types/create-property.js';
 
@@ -50,6 +50,7 @@ const propertyServices = {
     const property_info = await prisma.propertyInfo.findUnique({
       where: { property_id: property!.id },
       select: {
+        bathrooms: true,
         badrooms: true,
         price: true,
         furnished: true,
@@ -59,24 +60,30 @@ const propertyServices = {
         id: true,
       },
     });
-    const features_query: Array<{ features: string }> = await prisma.$queryRaw`
-      SELECT features.name as features FROM property_infos
+
+    const features_query: Array<{ feature: string; type: string }> = await prisma.$queryRaw`
+      SELECT features.name as feature, features.type as type FROM property_infos
       JOIN features_on_propertyinfos ON features_on_propertyinfos.property_info_id = property_infos.id
       JOIN features ON features.id = features_on_propertyinfos.feature_id WHERE property_infos.id = ${property_info!.id}
     `;
-    const utilities_query: Array<{ utilities: string }> = await prisma.$queryRaw`
-      SELECT utilities.name as utilities FROM property_infos
-      JOIN utilities_on_properties ON utilities_on_properties.property_info_id = property_infos.id
-      JOIN utilities ON utilities.id = utilities_on_properties.utility_id WHERE property_infos.id = ${property_info!.id}
+    const utilities_query: Array<{ utility: string }> = await prisma.$queryRaw`
+      SELECT utilities.name as utility FROM property_infos
+      JOIN utilities_on_propertyinfos ON utilities_on_propertyinfos.property_info_id = property_infos.id
+      JOIN utilities ON utilities.id = utilities_on_propertyinfos.utility_id WHERE property_infos.id = ${property_info!.id}
   `;
-    const features = features_query.map((feature) => feature.features);
-    const utilities = utilities_query.map((utility) => utility.utilities);
+    const features = features_query.map(({ feature, type }) => ({ feature, type }));
+    const utilities = utilities_query.map((utility) => utility.utility);
     return { ...property_info, ...property, ...address, features, utilities };
   },
 
   create: async (attributes: CreateProperty): Promise<Property> => {
     const { property, property_info, address } = attributes;
-    const { location } = address;
+    const { community_id } = attributes.property;
+    const { name: community_name, city_id } = (await prisma.community.findUnique({ where: { id: community_id } })) as Community;
+    const { name: city_name, province_id } = (await prisma.city.findUnique({ where: { id: city_id } })) as City;
+    const { name: province_name } = (await prisma.province.findUnique({ where: { id: province_id } })) as Province;
+    console.log(community_name, city_name, province_name);
+
     const _property = await prisma.property.create({
       data: {
         ...property,
@@ -87,13 +94,10 @@ const propertyServices = {
         },
         address: {
           create: {
+            city_name,
+            province_name,
+            community_name,
             ...address,
-            location: {
-              create: {
-                lat: location.lat,
-                lng: location.lng,
-              },
-            },
           },
         },
       },

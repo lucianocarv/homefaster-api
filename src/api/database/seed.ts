@@ -1,4 +1,4 @@
-import { prisma } from '../prisma-connect';
+import { prisma } from '../config/prisma-connect.js';
 
 async function seed() {
   await prisma.$transaction([
@@ -102,91 +102,7 @@ async function seed() {
         },
       ],
     }),
-    prisma.property.createMany({
-      data: [
-        {
-          id: 1,
-          community_id: 1,
-          manager_id: 2,
-        },
-        {
-          id: 2,
-          community_id: 2,
-          manager_id: 1,
-        },
-        {
-          id: 3,
-          community_id: 3,
-          manager_id: 1,
-        },
-      ],
-    }),
 
-    prisma.address.createMany({
-      data: [
-        {
-          id: 1,
-          number: 100,
-          street: 'Av SE Southeast',
-          community_name: 'Somerset',
-          city_name: 'Calgary',
-          province_name: 'Alberta',
-          property_id: 1,
-        },
-        {
-          id: 2,
-          number: 200,
-          street: 'Av SE Southeast',
-          community_name: 'Lake Bonavista',
-          city_name: 'Calgary',
-          province_name: 'Alberta',
-          property_id: 2,
-        },
-        {
-          id: 3,
-          number: 300,
-          street: 'Av SE Southeast',
-          community_name: 'Oakland',
-          city_name: 'Vancouver',
-          province_name: 'British Columbia',
-          property_id: 3,
-        },
-      ],
-    }),
-    prisma.propertyInfo.createMany({
-      data: [
-        {
-          id: 1,
-          badrooms: 2,
-          furnished: false,
-          price: 2000,
-          property_area: 50,
-          rented: false,
-          type_id: 1,
-          property_id: 1,
-        },
-        {
-          id: 2,
-          badrooms: 1,
-          furnished: true,
-          price: 2100,
-          property_area: 35.5,
-          rented: false,
-          type_id: 1,
-          property_id: 2,
-        },
-        {
-          id: 3,
-          badrooms: 4,
-          furnished: false,
-          price: 3500,
-          property_area: 120,
-          rented: false,
-          type_id: 2,
-          property_id: 3,
-        },
-      ],
-    }),
     prisma.utility.createMany({
       data: [
         {

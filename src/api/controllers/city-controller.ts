@@ -1,4 +1,4 @@
-import { City, Province } from '@prisma/client';
+import { City } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { getPagination } from '../helpers/get-pagination';
 import { citiesServices } from '../services/city-services';
