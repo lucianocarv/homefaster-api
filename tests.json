@@ -1,0 +1,3305 @@
+{
+  "data": {
+    "coffee": {
+      "Category": "coffee",
+      "Score": 10,
+      "Locations": [
+        {
+          "AmenityID": 15812,
+          "Country": "CA",
+          "Name": "Starbucks",
+          "Address": " ",
+          "Category": "coffee",
+          "Tag": "Coffee Shop",
+          "Coord": { "Lat": 51.0478699, "Long": -114.0623924 },
+          "Bounds": [
+            [
+              { "x": -114.164433, "y": 51.120334 },
+              { "x": -113.960352, "y": 51.120334 },
+              { "x": -113.960352, "y": 50.975406 },
+              { "x": -114.164433, "y": 50.975406 },
+              { "x": -114.164433, "y": 51.120334 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 4895,
+          "Country": "CA",
+          "Name": "Jugo Juice",
+          "Address": " ",
+          "Category": "coffee",
+          "Tag": "Coffee Shop",
+          "Coord": { "Lat": 51.045478, "Long": -114.0642261 },
+          "Bounds": [
+            [
+              { "x": -114.166267, "y": 51.117942 },
+              { "x": -113.962185, "y": 51.117942 },
+              { "x": -113.962185, "y": 50.973014 },
+              { "x": -114.166267, "y": 50.973014 },
+              { "x": -114.166267, "y": 51.117942 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 4609,
+          "Country": "CA",
+          "Name": "Starbucks",
+          "Address": " ",
+          "Category": "coffee",
+          "Tag": "Coffee Shop",
+          "Coord": { "Lat": 51.044834, "Long": -114.0628603 },
+          "Bounds": [
+            [
+              { "x": -114.164901, "y": 51.117298 },
+              { "x": -113.960819, "y": 51.117298 },
+              { "x": -113.960819, "y": 50.97237 },
+              { "x": -114.164901, "y": 50.97237 },
+              { "x": -114.164901, "y": 51.117298 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 2843,
+          "Country": "CA",
+          "Name": "Good Earth Coffeehouse and Bakery",
+          "Address": " ",
+          "Category": "coffee",
+          "Tag": "Coffee Shop",
+          "Coord": { "Lat": 51.0473813, "Long": -114.0651946 },
+          "Bounds": [
+            [
+              { "x": -114.167235, "y": 51.119845 },
+              { "x": -113.963154, "y": 51.119845 },
+              { "x": -113.963154, "y": 50.974918 },
+              { "x": -114.167235, "y": 50.974918 },
+              { "x": -114.167235, "y": 51.119845 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 4894,
+          "Country": "CA",
+          "Name": "Rosso Coffee",
+          "Address": " ",
+          "Category": "coffee",
+          "Tag": "Coffee Shop",
+          "Coord": { "Lat": 51.0455831, "Long": -114.0612711 },
+          "Bounds": [
+            [
+              { "x": -114.163312, "y": 51.118047 },
+              { "x": -113.95923, "y": 51.118047 },
+              { "x": -113.95923, "y": 50.973119 },
+              { "x": -114.163312, "y": 50.973119 },
+              { "x": -114.163312, "y": 51.118047 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 17416,
+          "Country": "CA",
+          "Name": "Deville Coffee",
+          "Address": " ",
+          "Category": "coffee",
+          "Tag": "Coffee Shop",
+          "Coord": { "Lat": 51.0454359, "Long": -114.0657168 },
+          "Bounds": [
+            [
+              { "x": -114.167758, "y": 51.1179 },
+              { "x": -113.963676, "y": 51.1179 },
+              { "x": -113.963676, "y": 50.972972 },
+              { "x": -114.167758, "y": 50.972972 },
+              { "x": -114.167758, "y": 51.1179 }
+            ]
+          ],
+          "WalkingTime": 4
+        },
+        {
+          "AmenityID": 2842,
+          "Country": "CA",
+          "Name": "Tim Hortons",
+          "Address": " ",
+          "Category": "coffee",
+          "Tag": "Coffee Shop",
+          "Coord": { "Lat": 51.0483189, "Long": -114.06565 },
+          "Bounds": [
+            [
+              { "x": -114.167691, "y": 51.120783 },
+              { "x": -113.963609, "y": 51.120783 },
+              { "x": -113.963609, "y": 50.975855 },
+              { "x": -114.167691, "y": 50.975855 },
+              { "x": -114.167691, "y": 51.120783 }
+            ]
+          ],
+          "WalkingTime": 4
+        },
+        {
+          "AmenityID": 9535,
+          "Country": "CA",
+          "Name": "Chatime",
+          "Address": "328 Centre Street S",
+          "Category": "coffee",
+          "Tag": "Coffee Shop",
+          "Coord": { "Lat": 51.0496426, "Long": -114.0624635 },
+          "Bounds": [
+            [
+              { "x": -114.164504, "y": 51.122106 },
+              { "x": -113.960423, "y": 51.122106 },
+              { "x": -113.960423, "y": 50.977179 },
+              { "x": -114.164504, "y": 50.977179 },
+              { "x": -114.164504, "y": 51.122106 }
+            ]
+          ],
+          "WalkingTime": 5
+        },
+        {
+          "AmenityID": 19895,
+          "Country": "CA",
+          "Name": "Starbucks",
+          "Address": " ",
+          "Category": "coffee",
+          "Tag": "Coffee Shop",
+          "Coord": { "Lat": 51.0443786, "Long": -114.0653713 },
+          "Bounds": [
+            [
+              { "x": -114.167412, "y": 51.116842 },
+              { "x": -113.96333, "y": 51.116842 },
+              { "x": -113.96333, "y": 50.971915 },
+              { "x": -114.167412, "y": 50.971915 },
+              { "x": -114.167412, "y": 51.116842 }
+            ]
+          ],
+          "WalkingTime": 5
+        },
+        {
+          "AmenityID": 30871,
+          "Country": "CA",
+          "Name": "Starbucks",
+          "Address": " ",
+          "Category": "coffee",
+          "Tag": "Coffee Shop",
+          "Coord": { "Lat": 51.0497307, "Long": -114.064312 },
+          "Bounds": [
+            [
+              { "x": -114.166353, "y": 51.122194 },
+              { "x": -113.962271, "y": 51.122194 },
+              { "x": -113.962271, "y": 50.977267 },
+              { "x": -114.166353, "y": 50.977267 },
+              { "x": -114.166353, "y": 51.122194 }
+            ]
+          ],
+          "WalkingTime": 6
+        },
+        {
+          "AmenityID": 1993,
+          "Country": "CA",
+          "Name": "Coco",
+          "Address": "100 3 Avenue SE",
+          "Category": "coffee",
+          "Tag": "Coffee Shop",
+          "Coord": { "Lat": 51.0503703, "Long": -114.062423 },
+          "Bounds": [
+            [
+              { "x": -114.164464, "y": 51.122834 },
+              { "x": -113.960382, "y": 51.122834 },
+              { "x": -113.960382, "y": 50.977907 },
+              { "x": -114.164464, "y": 50.977907 },
+              { "x": -114.164464, "y": 51.122834 }
+            ]
+          ],
+          "WalkingTime": 7
+        },
+        {
+          "AmenityID": 2417,
+          "Country": "CA",
+          "Name": "The Dessert House",
+          "Address": " ",
+          "Category": "coffee",
+          "Tag": "Coffee Shop",
+          "Coord": { "Lat": 51.0510586, "Long": -114.0620726 },
+          "Bounds": [
+            [
+              { "x": -114.164113, "y": 51.123522 },
+              { "x": -113.960032, "y": 51.123522 },
+              { "x": -113.960032, "y": 50.978595 },
+              { "x": -114.164113, "y": 50.978595 },
+              { "x": -114.164113, "y": 51.123522 }
+            ]
+          ],
+          "WalkingTime": 8
+        }
+      ],
+      "Count": 12
+    },
+    "shop": {
+      "Category": "shop",
+      "Score": 9,
+      "Locations": [
+        {
+          "AmenityID": 1247667,
+          "Country": "CA",
+          "Name": "Winners",
+          "Address": " ",
+          "Category": "shop",
+          "Tag": "Clothing",
+          "Coord": { "Lat": 51.0457197, "Long": -114.0647069 },
+          "Bounds": [
+            [
+              { "x": -114.166748, "y": 51.118183 },
+              { "x": -113.962666, "y": 51.118183 },
+              { "x": -113.962666, "y": 50.973256 },
+              { "x": -114.166748, "y": 50.973256 },
+              { "x": -114.166748, "y": 51.118183 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1093926,
+          "Country": "CA",
+          "Name": "Breslauer & Warren Jewellers",
+          "Address": "141 6 Avenue Southwest",
+          "Category": "shop",
+          "Tag": "Fashion",
+          "Coord": { "Lat": 51.0473684, "Long": -114.0649519 },
+          "Bounds": [
+            [
+              { "x": -114.166993, "y": 51.119832 },
+              { "x": -113.962911, "y": 51.119832 },
+              { "x": -113.962911, "y": 50.974905 },
+              { "x": -114.166993, "y": 50.974905 },
+              { "x": -114.166993, "y": 51.119832 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1231117,
+          "Country": "CA",
+          "Name": "Hudson's Bay",
+          "Address": "200 8 Avenue SW",
+          "Category": "shop",
+          "Tag": "Department Store",
+          "Coord": { "Lat": 51.0460923, "Long": -114.066054 },
+          "Bounds": [
+            [
+              { "x": -114.168095, "y": 51.118556 },
+              { "x": -113.964013, "y": 51.118556 },
+              { "x": -113.964013, "y": 50.973629 },
+              { "x": -114.168095, "y": 50.973629 },
+              { "x": -114.168095, "y": 51.118556 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 1116893,
+          "Country": "CA",
+          "Name": "Bell",
+          "Address": "205 5 Avenue SW",
+          "Category": "shop",
+          "Tag": "Electronics",
+          "Coord": { "Lat": 51.0480473, "Long": -114.0657761 },
+          "Bounds": [
+            [
+              { "x": -114.167817, "y": 51.120511 },
+              { "x": -113.963735, "y": 51.120511 },
+              { "x": -113.963735, "y": 50.975584 },
+              { "x": -114.167817, "y": 50.975584 },
+              { "x": -114.167817, "y": 51.120511 }
+            ]
+          ],
+          "WalkingTime": 4
+        },
+        {
+          "AmenityID": 1198175,
+          "Country": "CA",
+          "Name": "John Fluevog Shoes",
+          "Address": "207 8 Avenue SW;Stephen Avenue",
+          "Category": "shop",
+          "Tag": "Shoes",
+          "Coord": { "Lat": 51.0455196, "Long": -114.0660447 },
+          "Bounds": [
+            [
+              { "x": -114.168086, "y": 51.117983 },
+              { "x": -113.964004, "y": 51.117983 },
+              { "x": -113.964004, "y": 50.973056 },
+              { "x": -114.168086, "y": 50.973056 },
+              { "x": -114.168086, "y": 51.117983 }
+            ]
+          ],
+          "WalkingTime": 4
+        },
+        {
+          "AmenityID": 1205778,
+          "Country": "CA",
+          "Name": "Dollarama",
+          "Address": "232 8 Avenue SW",
+          "Category": "shop",
+          "Tag": "Discount Store",
+          "Coord": { "Lat": 51.0457736, "Long": -114.0671364 },
+          "Bounds": [
+            [
+              { "x": -114.169177, "y": 51.118237 },
+              { "x": -113.965096, "y": 51.118237 },
+              { "x": -113.965096, "y": 50.97331 },
+              { "x": -114.169177, "y": 50.97331 },
+              { "x": -114.169177, "y": 51.118237 }
+            ]
+          ],
+          "WalkingTime": 5
+        },
+        {
+          "AmenityID": 1182568,
+          "Country": "CA",
+          "Name": "Hing Wah Imports",
+          "Address": "312 Centre Street S",
+          "Category": "shop",
+          "Tag": "Gift Shop",
+          "Coord": { "Lat": 51.0497949, "Long": -114.0625766 },
+          "Bounds": [
+            [
+              { "x": -114.164617, "y": 51.122259 },
+              { "x": -113.960536, "y": 51.122259 },
+              { "x": -113.960536, "y": 50.977331 },
+              { "x": -114.164617, "y": 50.977331 },
+              { "x": -114.164617, "y": 51.122259 }
+            ]
+          ],
+          "WalkingTime": 6
+        },
+        {
+          "AmenityID": 1159850,
+          "Country": "CA",
+          "Name": "Viso Beauty Studio & Boutique",
+          "Address": " ",
+          "Category": "shop",
+          "Tag": "Beauty",
+          "Coord": { "Lat": 51.0499099, "Long": -114.0629742 },
+          "Bounds": [
+            [
+              { "x": -114.165015, "y": 51.122374 },
+              { "x": -113.960933, "y": 51.122374 },
+              { "x": -113.960933, "y": 50.977446 },
+              { "x": -114.165015, "y": 50.977446 },
+              { "x": -114.165015, "y": 51.122374 }
+            ]
+          ],
+          "WalkingTime": 6
+        },
+        {
+          "AmenityID": 1182567,
+          "Country": "CA",
+          "Name": "Chung Tai Import & Export Trading",
+          "Address": "308 Centre Street S",
+          "Category": "shop",
+          "Tag": "Gift Shop",
+          "Coord": { "Lat": 51.0500269, "Long": -114.0625623 },
+          "Bounds": [
+            [
+              { "x": -114.164603, "y": 51.122491 },
+              { "x": -113.960521, "y": 51.122491 },
+              { "x": -113.960521, "y": 50.977563 },
+              { "x": -114.164603, "y": 50.977563 },
+              { "x": -114.164603, "y": 51.122491 }
+            ]
+          ],
+          "WalkingTime": 6
+        },
+        {
+          "AmenityID": 1120668,
+          "Country": "CA",
+          "Name": "Rogers",
+          "Address": " ",
+          "Category": "shop",
+          "Tag": "Electronics",
+          "Coord": { "Lat": 51.0501772, "Long": -114.063282 },
+          "Bounds": [
+            [
+              { "x": -114.165323, "y": 51.122641 },
+              { "x": -113.961241, "y": 51.122641 },
+              { "x": -113.961241, "y": 50.977713 },
+              { "x": -114.165323, "y": 50.977713 },
+              { "x": -114.165323, "y": 51.122641 }
+            ]
+          ],
+          "WalkingTime": 6
+        },
+        {
+          "AmenityID": 1221985,
+          "Country": "CA",
+          "Name": "Visions Eyecare Centre",
+          "Address": " ",
+          "Category": "shop",
+          "Tag": "Optician",
+          "Coord": { "Lat": 51.0504099, "Long": -114.0628776 },
+          "Bounds": [
+            [
+              { "x": -114.164918, "y": 51.122874 },
+              { "x": -113.960837, "y": 51.122874 },
+              { "x": -113.960837, "y": 50.977946 },
+              { "x": -114.164918, "y": 50.977946 },
+              { "x": -114.164918, "y": 51.122874 }
+            ]
+          ],
+          "WalkingTime": 7
+        },
+        {
+          "AmenityID": 1159848,
+          "Country": "CA",
+          "Name": "May Yan Salon",
+          "Address": " ",
+          "Category": "shop",
+          "Tag": "Beauty",
+          "Coord": { "Lat": 51.0507602, "Long": -114.0625121 },
+          "Bounds": [
+            [
+              { "x": -114.164553, "y": 51.123224 },
+              { "x": -113.960471, "y": 51.123224 },
+              { "x": -113.960471, "y": 50.978296 },
+              { "x": -114.164553, "y": 50.978296 },
+              { "x": -114.164553, "y": 51.123224 }
+            ]
+          ],
+          "WalkingTime": 7
+        }
+      ],
+      "Count": 12
+    },
+    "childcare": {
+      "Category": "childcare",
+      "Score": 9,
+      "Locations": [
+        {
+          "AmenityID": 1751897,
+          "Country": "CA",
+          "Name": "Cwes Innovative Child Care Program",
+          "Address": "See File",
+          "Category": "childcare",
+          "Tag": "Child Care",
+          "Coord": { "Lat": 51.0453186035156, "Long": -114.063011169434 },
+          "Bounds": [
+            [
+              { "x": -114.165052, "y": 51.117782 },
+              { "x": -113.96097, "y": 51.117782 },
+              { "x": -113.96097, "y": 50.972855 },
+              { "x": -114.165052, "y": 50.972855 },
+              { "x": -114.165052, "y": 51.117782 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1752638,
+          "Country": "CA",
+          "Name": "Sonshine Family Day Homes",
+          "Address": "P.O Box 34067",
+          "Category": "childcare",
+          "Tag": "Child Care",
+          "Coord": { "Lat": 51.0453186035156, "Long": -114.063011169434 },
+          "Bounds": [
+            [
+              { "x": -114.165052, "y": 51.117782 },
+              { "x": -113.96097, "y": 51.117782 },
+              { "x": -113.96097, "y": 50.972855 },
+              { "x": -114.165052, "y": 50.972855 },
+              { "x": -114.165052, "y": 51.117782 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1752644,
+          "Country": "CA",
+          "Name": "Cwes Innovative Child Care Program",
+          "Address": "See File",
+          "Category": "childcare",
+          "Tag": "Child Care",
+          "Coord": { "Lat": 51.0453186035156, "Long": -114.063011169434 },
+          "Bounds": [
+            [
+              { "x": -114.165052, "y": 51.117782 },
+              { "x": -113.96097, "y": 51.117782 },
+              { "x": -113.96097, "y": 50.972855 },
+              { "x": -114.165052, "y": 50.972855 },
+              { "x": -114.165052, "y": 51.117782 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1753172,
+          "Country": "CA",
+          "Name": "Sonshine Family Day Homes",
+          "Address": "P.O Box 34067",
+          "Category": "childcare",
+          "Tag": "Child Care",
+          "Coord": { "Lat": 51.0453186035156, "Long": -114.063011169434 },
+          "Bounds": [
+            [
+              { "x": -114.165052, "y": 51.117782 },
+              { "x": -113.96097, "y": 51.117782 },
+              { "x": -113.96097, "y": 50.972855 },
+              { "x": -114.165052, "y": 50.972855 },
+              { "x": -114.165052, "y": 51.117782 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1754901,
+          "Country": "CA",
+          "Name": "Sonshine Children'S Centre",
+          "Address": "No Address",
+          "Category": "childcare",
+          "Tag": "Child Care",
+          "Coord": { "Lat": 51.0453186035156, "Long": -114.063011169434 },
+          "Bounds": [
+            [
+              { "x": -114.165052, "y": 51.117782 },
+              { "x": -113.96097, "y": 51.117782 },
+              { "x": -113.96097, "y": 50.972855 },
+              { "x": -114.165052, "y": 50.972855 },
+              { "x": -114.165052, "y": 51.117782 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1757808,
+          "Country": "CA",
+          "Name": "Sonshine Children'S Centre",
+          "Address": "No Address",
+          "Category": "childcare",
+          "Tag": "Child Care",
+          "Coord": { "Lat": 51.0453186035156, "Long": -114.063011169434 },
+          "Bounds": [
+            [
+              { "x": -114.165052, "y": 51.117782 },
+              { "x": -113.96097, "y": 51.117782 },
+              { "x": -113.96097, "y": 50.972855 },
+              { "x": -114.165052, "y": 50.972855 },
+              { "x": -114.165052, "y": 51.117782 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1758985,
+          "Country": "CA",
+          "Name": "Sonshine Family Day Homes",
+          "Address": "P.O Box 34067",
+          "Category": "childcare",
+          "Tag": "Child Care",
+          "Coord": { "Lat": 51.0453186035156, "Long": -114.063011169434 },
+          "Bounds": [
+            [
+              { "x": -114.165052, "y": 51.117782 },
+              { "x": -113.96097, "y": 51.117782 },
+              { "x": -113.96097, "y": 50.972855 },
+              { "x": -114.165052, "y": 50.972855 },
+              { "x": -114.165052, "y": 51.117782 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1759615,
+          "Country": "CA",
+          "Name": "Sonshine Family Day Homes",
+          "Address": "P.O Box 34067",
+          "Category": "childcare",
+          "Tag": "Child Care",
+          "Coord": { "Lat": 51.0453186035156, "Long": -114.063011169434 },
+          "Bounds": [
+            [
+              { "x": -114.165052, "y": 51.117782 },
+              { "x": -113.96097, "y": 51.117782 },
+              { "x": -113.96097, "y": 50.972855 },
+              { "x": -114.165052, "y": 50.972855 },
+              { "x": -114.165052, "y": 51.117782 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1759840,
+          "Country": "CA",
+          "Name": "Cwes Innovative Child Care Program",
+          "Address": "See File",
+          "Category": "childcare",
+          "Tag": "Child Care",
+          "Coord": { "Lat": 51.0453186035156, "Long": -114.063011169434 },
+          "Bounds": [
+            [
+              { "x": -114.165052, "y": 51.117782 },
+              { "x": -113.96097, "y": 51.117782 },
+              { "x": -113.96097, "y": 50.972855 },
+              { "x": -114.165052, "y": 50.972855 },
+              { "x": -114.165052, "y": 51.117782 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1762314,
+          "Country": "CA",
+          "Name": "Cwes Innovative Child Care Program",
+          "Address": "See File",
+          "Category": "childcare",
+          "Tag": "Child Care",
+          "Coord": { "Lat": 51.0453186035156, "Long": -114.063011169434 },
+          "Bounds": [
+            [
+              { "x": -114.165052, "y": 51.117782 },
+              { "x": -113.96097, "y": 51.117782 },
+              { "x": -113.96097, "y": 50.972855 },
+              { "x": -114.165052, "y": 50.972855 },
+              { "x": -114.165052, "y": 51.117782 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1754222,
+          "Country": "CA",
+          "Name": "Calgary Immigrant Women'S Association Linc Childminding Program",
+          "Address": "100, 138 - 4 Avenue Se",
+          "Category": "childcare",
+          "Tag": "Child Care",
+          "Coord": { "Lat": 51.0494384765625, "Long": -114.060661315918 },
+          "Bounds": [
+            [
+              { "x": -114.162702, "y": 51.121902 },
+              { "x": -113.95862, "y": 51.121902 },
+              { "x": -113.95862, "y": 50.976975 },
+              { "x": -114.162702, "y": 50.976975 },
+              { "x": -114.162702, "y": 51.121902 }
+            ]
+          ],
+          "WalkingTime": 6
+        },
+        {
+          "AmenityID": 1755044,
+          "Country": "CA",
+          "Name": "Calgary Immigrant Women'S Association Linc Childminding Program",
+          "Address": "100, 138 - 4 Avenue Se",
+          "Category": "childcare",
+          "Tag": "Child Care",
+          "Coord": { "Lat": 51.0494384765625, "Long": -114.060661315918 },
+          "Bounds": [
+            [
+              { "x": -114.162702, "y": 51.121902 },
+              { "x": -113.95862, "y": 51.121902 },
+              { "x": -113.95862, "y": 50.976975 },
+              { "x": -114.162702, "y": 50.976975 },
+              { "x": -114.162702, "y": 51.121902 }
+            ]
+          ],
+          "WalkingTime": 6
+        }
+      ],
+      "Count": 12
+    },
+    "entertainment": {
+      "Category": "entertainment",
+      "Score": 10,
+      "Locations": [
+        {
+          "AmenityID": 47373,
+          "Country": "CA",
+          "Name": "Lunchbox Theatre",
+          "Address": "115 9 Avenue SE",
+          "Category": "entertainment",
+          "Tag": "Theatre Arts",
+          "Coord": { "Lat": 51.0442636, "Long": -114.0624365 },
+          "Bounds": [
+            [
+              { "x": -114.164477, "y": 51.116727 },
+              { "x": -113.960396, "y": 51.116727 },
+              { "x": -113.960396, "y": 50.9718 },
+              { "x": -114.164477, "y": 50.9718 },
+              { "x": -114.164477, "y": 51.116727 }
+            ]
+          ],
+          "WalkingTime": 4
+        },
+        {
+          "AmenityID": 166906,
+          "Country": "CA",
+          "Name": "Glenbow Museum",
+          "Address": "130 9 Avenue SE",
+          "Category": "entertainment",
+          "Tag": "Museum",
+          "Coord": { "Lat": 51.0450370678074, "Long": -114.06124619948 },
+          "Bounds": [
+            [
+              { "x": -114.163287, "y": 51.117501 },
+              { "x": -113.959205, "y": 51.117501 },
+              { "x": -113.959205, "y": 50.972573 },
+              { "x": -114.163287, "y": 50.972573 },
+              { "x": -114.163287, "y": 51.117501 }
+            ]
+          ],
+          "WalkingTime": 4
+        },
+        {
+          "AmenityID": 61909,
+          "Country": "CA",
+          "Name": "Sub Rosa",
+          "Address": "200 8 Avenue SW",
+          "Category": "entertainment",
+          "Tag": "Nightclub",
+          "Coord": { "Lat": 51.0457502, "Long": -114.0663843 },
+          "Bounds": [
+            [
+              { "x": -114.168425, "y": 51.118214 },
+              { "x": -113.964343, "y": 51.118214 },
+              { "x": -113.964343, "y": 50.973286 },
+              { "x": -114.168425, "y": 50.973286 },
+              { "x": -114.168425, "y": 51.118214 }
+            ]
+          ],
+          "WalkingTime": 4
+        },
+        {
+          "AmenityID": 143703,
+          "Country": "CA",
+          "Name": "Famous Five Sculpture",
+          "Address": " ",
+          "Category": "entertainment",
+          "Tag": "Attraction",
+          "Coord": { "Lat": 51.0456242, "Long": -114.0600668 },
+          "Bounds": [
+            [
+              { "x": -114.162108, "y": 51.118088 },
+              { "x": -113.958026, "y": 51.118088 },
+              { "x": -113.958026, "y": 50.97316 },
+              { "x": -114.162108, "y": 50.97316 },
+              { "x": -114.162108, "y": 51.118088 }
+            ]
+          ],
+          "WalkingTime": 4
+        },
+        {
+          "AmenityID": 47374,
+          "Country": "CA",
+          "Name": "Vertigo Theatre",
+          "Address": "115 9 Avenue SE",
+          "Category": "entertainment",
+          "Tag": "Theatre Arts",
+          "Coord": { "Lat": 51.0439798, "Long": -114.0624434 },
+          "Bounds": [
+            [
+              { "x": -114.164484, "y": 51.116444 },
+              { "x": -113.960403, "y": 51.116444 },
+              { "x": -113.960403, "y": 50.971516 },
+              { "x": -114.164484, "y": 50.971516 },
+              { "x": -114.164484, "y": 51.116444 }
+            ]
+          ],
+          "WalkingTime": 5
+        },
+        {
+          "AmenityID": 47179,
+          "Country": "CA",
+          "Name": "Martha Cohen Theatre",
+          "Address": " ",
+          "Category": "entertainment",
+          "Tag": "Theatre Arts",
+          "Coord": { "Lat": 51.045235, "Long": -114.0594357 },
+          "Bounds": [
+            [
+              { "x": -114.161477, "y": 51.117699 },
+              { "x": -113.957395, "y": 51.117699 },
+              { "x": -113.957395, "y": 50.972771 },
+              { "x": -114.161477, "y": 50.972771 },
+              { "x": -114.161477, "y": 51.117699 }
+            ]
+          ],
+          "WalkingTime": 5
+        },
+        {
+          "AmenityID": 49749,
+          "Country": "CA",
+          "Name": "Arts Commons",
+          "Address": "205 8 Avenue SE",
+          "Category": "entertainment",
+          "Tag": "Theatre Arts",
+          "Coord": { "Lat": 51.044909715671, "Long": -114.059430684022 },
+          "Bounds": [
+            [
+              { "x": -114.161472, "y": 51.117373 },
+              { "x": -113.95739, "y": 51.117373 },
+              { "x": -113.95739, "y": 50.972446 },
+              { "x": -114.161472, "y": 50.972446 },
+              { "x": -114.161472, "y": 51.117373 }
+            ]
+          ],
+          "WalkingTime": 5
+        },
+        {
+          "AmenityID": 46822,
+          "Country": "CA",
+          "Name": "Big Secret Theatre",
+          "Address": "205 8 Avenue SE",
+          "Category": "entertainment",
+          "Tag": "Theatre Arts",
+          "Coord": { "Lat": 51.0450477, "Long": -114.0589859 },
+          "Bounds": [
+            [
+              { "x": -114.161027, "y": 51.117511 },
+              { "x": -113.956945, "y": 51.117511 },
+              { "x": -113.956945, "y": 50.972584 },
+              { "x": -114.161027, "y": 50.972584 },
+              { "x": -114.161027, "y": 51.117511 }
+            ]
+          ],
+          "WalkingTime": 6
+        },
+        {
+          "AmenityID": 45870,
+          "Country": "CA",
+          "Name": "Engineered Air Theatre",
+          "Address": " ",
+          "Category": "entertainment",
+          "Tag": "Theatre Arts",
+          "Coord": { "Lat": 51.0446058, "Long": -114.058858 },
+          "Bounds": [
+            [
+              { "x": -114.160899, "y": 51.11707 },
+              { "x": -113.956817, "y": 51.11707 },
+              { "x": -113.956817, "y": 50.972142 },
+              { "x": -114.160899, "y": 50.972142 },
+              { "x": -114.160899, "y": 51.11707 }
+            ]
+          ],
+          "WalkingTime": 6
+        },
+        {
+          "AmenityID": 61832,
+          "Country": "CA",
+          "Name": "Greta",
+          "Address": "213 10 Avenue SW",
+          "Category": "entertainment",
+          "Tag": "Nightclub",
+          "Coord": { "Lat": 51.0433046, "Long": -114.0665323 },
+          "Bounds": [
+            [
+              { "x": -114.168573, "y": 51.115768 },
+              { "x": -113.964491, "y": 51.115768 },
+              { "x": -113.964491, "y": 50.970841 },
+              { "x": -114.168573, "y": 50.970841 },
+              { "x": -114.168573, "y": 51.115768 }
+            ]
+          ],
+          "WalkingTime": 7
+        },
+        {
+          "AmenityID": 61833,
+          "Country": "CA",
+          "Name": "The HiFi Club",
+          "Address": "219 10 Avenue SW",
+          "Category": "entertainment",
+          "Tag": "Nightclub",
+          "Coord": { "Lat": 51.0433224, "Long": -114.0669708 },
+          "Bounds": [
+            [
+              { "x": -114.169012, "y": 51.115786 },
+              { "x": -113.96493, "y": 51.115786 },
+              { "x": -113.96493, "y": 50.970859 },
+              { "x": -114.169012, "y": 50.970859 },
+              { "x": -114.169012, "y": 51.115786 }
+            ]
+          ],
+          "WalkingTime": 7
+        },
+        {
+          "AmenityID": 174837,
+          "Country": "CA",
+          "Name": "The New Gallery",
+          "Address": " ",
+          "Category": "entertainment",
+          "Tag": "Art Gallery",
+          "Coord": { "Lat": 51.0508202045101, "Long": -114.062414072663 },
+          "Bounds": [
+            [
+              { "x": -114.164455, "y": 51.123284 },
+              { "x": -113.960373, "y": 51.123284 },
+              { "x": -113.960373, "y": 50.978356 },
+              { "x": -114.164455, "y": 50.978356 },
+              { "x": -114.164455, "y": 51.123284 }
+            ]
+          ],
+          "WalkingTime": 8
+        }
+      ],
+      "Count": 12
+    },
+    "fitness": {
+      "Category": "fitness",
+      "Score": 10,
+      "Locations": [
+        {
+          "AmenityID": 561002,
+          "Country": "CA",
+          "Name": "Cityscape Crossfit",
+          "Address": "128 7 Avenue SE",
+          "Category": "fitness",
+          "Tag": "Gym",
+          "Coord": { "Lat": 51.0467252786739, "Long": -114.06129086905 },
+          "Bounds": [
+            [
+              { "x": -114.163332, "y": 51.119189 },
+              { "x": -113.95925, "y": 51.119189 },
+              { "x": -113.95925, "y": 50.974262 },
+              { "x": -114.163332, "y": 50.974262 },
+              { "x": -114.163332, "y": 51.119189 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 552299,
+          "Country": "CA",
+          "Name": "GoodLife Fitness",
+          "Address": " ",
+          "Category": "fitness",
+          "Tag": "Gym",
+          "Coord": { "Lat": 51.0457573, "Long": -114.0651273 },
+          "Bounds": [
+            [
+              { "x": -114.167168, "y": 51.118221 },
+              { "x": -113.963086, "y": 51.118221 },
+              { "x": -113.963086, "y": 50.973294 },
+              { "x": -114.167168, "y": 50.973294 },
+              { "x": -114.167168, "y": 51.118221 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 566050,
+          "Country": "CA",
+          "Name": "Fukienese Association of Calgary",
+          "Address": "207 1 Street SE",
+          "Category": "fitness",
+          "Tag": "Community Centre",
+          "Coord": { "Lat": 51.0507293, "Long": -114.0605522 },
+          "Bounds": [
+            [
+              { "x": -114.162593, "y": 51.123193 },
+              { "x": -113.958511, "y": 51.123193 },
+              { "x": -113.958511, "y": 50.978266 },
+              { "x": -114.162593, "y": 50.978266 },
+              { "x": -114.162593, "y": 51.123193 }
+            ]
+          ],
+          "WalkingTime": 8
+        },
+        {
+          "AmenityID": 566887,
+          "Country": "CA",
+          "Name": "Calgary Chinese Cultural Centre",
+          "Address": "197 1 Street SW",
+          "Category": "fitness",
+          "Tag": "Community Centre",
+          "Coord": { "Lat": 51.0512968716783, "Long": -114.065513975779 },
+          "Bounds": [
+            [
+              { "x": -114.167555, "y": 51.123761 },
+              { "x": -113.963473, "y": 51.123761 },
+              { "x": -113.963473, "y": 50.978833 },
+              { "x": -114.167555, "y": 50.978833 },
+              { "x": -114.167555, "y": 51.123761 }
+            ]
+          ],
+          "WalkingTime": 9
+        },
+        {
+          "AmenityID": 551770,
+          "Country": "CA",
+          "Name": "UNDRCARD Boxing Studio",
+          "Address": "349 10 Avenue SW",
+          "Category": "fitness",
+          "Tag": "Gym",
+          "Coord": { "Lat": 51.0433911, "Long": -114.070859 },
+          "Bounds": [
+            [
+              { "x": -114.1729, "y": 51.115855 },
+              { "x": -113.968818, "y": 51.115855 },
+              { "x": -113.968818, "y": 50.970927 },
+              { "x": -114.1729, "y": 50.970927 },
+              { "x": -114.1729, "y": 51.115855 }
+            ]
+          ],
+          "WalkingTime": 10
+        },
+        {
+          "AmenityID": 560523,
+          "Country": "CA",
+          "Name": "Beltline Aquatic & Fitness Centre",
+          "Address": "221 12 Avenue SW",
+          "Category": "fitness",
+          "Tag": "Gym",
+          "Coord": { "Lat": 51.041220625642, "Long": -114.067116577116 },
+          "Bounds": [
+            [
+              { "x": -114.169157, "y": 51.113684 },
+              { "x": -113.965076, "y": 51.113684 },
+              { "x": -113.965076, "y": 50.968757 },
+              { "x": -114.169157, "y": 50.968757 },
+              { "x": -114.169157, "y": 51.113684 }
+            ]
+          ],
+          "WalkingTime": 11
+        },
+        {
+          "AmenityID": 557715,
+          "Country": "CA",
+          "Name": "GoodLife Fitness Calgary Eau Claire Market",
+          "Address": "200 Barclay Parade SW",
+          "Category": "fitness",
+          "Tag": "Gym",
+          "Coord": { "Lat": 51.0522938, "Long": -114.0690259 },
+          "Bounds": [
+            [
+              { "x": -114.171067, "y": 51.124758 },
+              { "x": -113.966985, "y": 51.124758 },
+              { "x": -113.966985, "y": 50.97983 },
+              { "x": -114.171067, "y": 50.97983 },
+              { "x": -114.171067, "y": 51.124758 }
+            ]
+          ],
+          "WalkingTime": 12
+        },
+        {
+          "AmenityID": 564608,
+          "Country": "CA",
+          "Name": "Bridgeland-Riverside Community Hall",
+          "Address": " ",
+          "Category": "fitness",
+          "Tag": "Community Centre",
+          "Coord": { "Lat": 51.0520472, "Long": -114.040714 },
+          "Bounds": [
+            [
+              { "x": -114.142755, "y": 51.124511 },
+              { "x": -113.938673, "y": 51.124511 },
+              { "x": -113.938673, "y": 50.979583 },
+              { "x": -114.142755, "y": 50.979583 },
+              { "x": -114.142755, "y": 51.124511 }
+            ]
+          ],
+          "WalkingTime": 27
+        },
+        {
+          "AmenityID": 567728,
+          "Country": "CA",
+          "Name": "Crescent Heights Community Hall",
+          "Address": "1102 2 Street NW",
+          "Category": "fitness",
+          "Tag": "Community Centre",
+          "Coord": { "Lat": 51.06196255, "Long": -114.06798 },
+          "Bounds": [
+            [
+              { "x": -114.170021, "y": 51.134426 },
+              { "x": -113.965939, "y": 51.134426 },
+              { "x": -113.965939, "y": 50.989499 },
+              { "x": -114.170021, "y": 50.989499 },
+              { "x": -114.170021, "y": 51.134426 }
+            ]
+          ],
+          "WalkingTime": 28
+        },
+        {
+          "AmenityID": 552856,
+          "Country": "CA",
+          "Name": "Crew Club Athletics",
+          "Address": "508 24 Avenue SW",
+          "Category": "fitness",
+          "Tag": "Gym",
+          "Coord": { "Lat": 51.0319178, "Long": -114.0719014 },
+          "Bounds": [
+            [
+              { "x": -114.173942, "y": 51.104382 },
+              { "x": -113.969861, "y": 51.104382 },
+              { "x": -113.969861, "y": 50.959454 },
+              { "x": -114.173942, "y": 50.959454 },
+              { "x": -114.173942, "y": 51.104382 }
+            ]
+          ],
+          "WalkingTime": 28
+        },
+        {
+          "AmenityID": 565381,
+          "Country": "CA",
+          "Name": "Cliff Bungalow-Mission Community Association",
+          "Address": "2201 Cliff Street SW",
+          "Category": "fitness",
+          "Tag": "Community Centre",
+          "Coord": { "Lat": 51.0334327, "Long": -114.0760913 },
+          "Bounds": [
+            [
+              { "x": -114.178132, "y": 51.105896 },
+              { "x": -113.97405, "y": 51.105896 },
+              { "x": -113.97405, "y": 50.960969 },
+              { "x": -114.178132, "y": 50.960969 },
+              { "x": -114.178132, "y": 51.105896 }
+            ]
+          ],
+          "WalkingTime": 28
+        },
+        {
+          "AmenityID": 570085,
+          "Country": "CA",
+          "Name": "Renfrew Community Association",
+          "Address": "811 Radford Road NE",
+          "Category": "fitness",
+          "Tag": "Community Centre",
+          "Coord": { "Lat": 51.0601946118141, "Long": -114.044740803354 },
+          "Bounds": [
+            [
+              { "x": -114.146782, "y": 51.132658 },
+              { "x": -113.9427, "y": 51.132658 },
+              { "x": -113.9427, "y": 50.987731 },
+              { "x": -114.146782, "y": 50.987731 },
+              { "x": -114.146782, "y": 51.132658 }
+            ]
+          ],
+          "WalkingTime": 32
+        }
+      ],
+      "Count": 12
+    },
+    "food": {
+      "Category": "food",
+      "Score": 9,
+      "Locations": [
+        {
+          "AmenityID": 239320,
+          "Country": "CA",
+          "Name": "The Palomino",
+          "Address": "109 7 Avenue SW",
+          "Category": "food",
+          "Tag": "Restaurant",
+          "Coord": { "Lat": 51.0463147, "Long": -114.0635124 },
+          "Bounds": [
+            [
+              { "x": -114.165553, "y": 51.118778 },
+              { "x": -113.961472, "y": 51.118778 },
+              { "x": -113.961472, "y": 50.973851 },
+              { "x": -114.165553, "y": 50.973851 },
+              { "x": -114.165553, "y": 51.118778 }
+            ]
+          ],
+          "WalkingTime": 1
+        },
+        {
+          "AmenityID": 192023,
+          "Country": "CA",
+          "Name": "Catch",
+          "Address": " ",
+          "Category": "food",
+          "Tag": "Restaurant",
+          "Coord": { "Lat": 51.0456657, "Long": -114.062814 },
+          "Bounds": [
+            [
+              { "x": -114.164855, "y": 51.118129 },
+              { "x": -113.960773, "y": 51.118129 },
+              { "x": -113.960773, "y": 50.973202 },
+              { "x": -114.164855, "y": 50.973202 },
+              { "x": -114.164855, "y": 51.118129 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 366169,
+          "Country": "CA",
+          "Name": "Bear & Kilt",
+          "Address": "110 8 Avenue SW",
+          "Category": "food",
+          "Tag": "Bar",
+          "Coord": { "Lat": 51.0456735, "Long": -114.063738 },
+          "Bounds": [
+            [
+              { "x": -114.165779, "y": 51.118137 },
+              { "x": -113.961697, "y": 51.118137 },
+              { "x": -113.961697, "y": 50.97321 },
+              { "x": -114.165779, "y": 50.97321 },
+              { "x": -114.165779, "y": 51.118137 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 192025,
+          "Country": "CA",
+          "Name": "Rose Garden Thai Restaurant",
+          "Address": " ",
+          "Category": "food",
+          "Tag": "Restaurant",
+          "Coord": { "Lat": 51.0456918, "Long": -114.0638005 },
+          "Bounds": [
+            [
+              { "x": -114.165841, "y": 51.118156 },
+              { "x": -113.96176, "y": 51.118156 },
+              { "x": -113.96176, "y": 50.973228 },
+              { "x": -114.165841, "y": 50.973228 },
+              { "x": -114.165841, "y": 51.118156 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 279975,
+          "Country": "CA",
+          "Name": "Modern Ocean",
+          "Address": "100 8 Avenue SE",
+          "Category": "food",
+          "Tag": "Restaurant",
+          "Coord": { "Lat": 51.0456706, "Long": -114.0626526 },
+          "Bounds": [
+            [
+              { "x": -114.164693, "y": 51.118134 },
+              { "x": -113.960612, "y": 51.118134 },
+              { "x": -113.960612, "y": 50.973207 },
+              { "x": -114.164693, "y": 50.973207 },
+              { "x": -114.164693, "y": 51.118134 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 277010,
+          "Country": "CA",
+          "Name": "James Joyce Irish Pub",
+          "Address": "114 8 Avenue SW",
+          "Category": "food",
+          "Tag": "Restaurant",
+          "Coord": { "Lat": 51.0456952, "Long": -114.0639475 },
+          "Bounds": [
+            [
+              { "x": -114.165988, "y": 51.118159 },
+              { "x": -113.961907, "y": 51.118159 },
+              { "x": -113.961907, "y": 50.973231 },
+              { "x": -114.165988, "y": 50.973231 },
+              { "x": -114.165988, "y": 51.118159 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 190957,
+          "Country": "CA",
+          "Name": "Saltlik",
+          "Address": "101 ",
+          "Category": "food",
+          "Tag": "Restaurant",
+          "Coord": { "Lat": 51.0454326, "Long": -114.0632747 },
+          "Bounds": [
+            [
+              { "x": -114.165316, "y": 51.117896 },
+              { "x": -113.961234, "y": 51.117896 },
+              { "x": -113.961234, "y": 50.972969 },
+              { "x": -114.165316, "y": 50.972969 },
+              { "x": -114.165316, "y": 51.117896 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 192026,
+          "Country": "CA",
+          "Name": "TRIB Steakhouse",
+          "Address": " ",
+          "Category": "food",
+          "Tag": "Restaurant",
+          "Coord": { "Lat": 51.0457034, "Long": -114.0641021 },
+          "Bounds": [
+            [
+              { "x": -114.166143, "y": 51.118167 },
+              { "x": -113.962061, "y": 51.118167 },
+              { "x": -113.962061, "y": 50.97324 },
+              { "x": -114.166143, "y": 50.97324 },
+              { "x": -114.166143, "y": 51.118167 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 192022,
+          "Country": "CA",
+          "Name": "Milestone's Grill + Bar",
+          "Address": " ",
+          "Category": "food",
+          "Tag": "Restaurant",
+          "Coord": { "Lat": 51.0453858, "Long": -114.0627409 },
+          "Bounds": [
+            [
+              { "x": -114.164782, "y": 51.11785 },
+              { "x": -113.9607, "y": 51.11785 },
+              { "x": -113.9607, "y": 50.972922 },
+              { "x": -114.164782, "y": 50.972922 },
+              { "x": -114.164782, "y": 51.11785 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 268246,
+          "Country": "CA",
+          "Name": "Blink",
+          "Address": "111 8 Avenue SW",
+          "Category": "food",
+          "Tag": "Restaurant",
+          "Coord": { "Lat": 51.0454549, "Long": -114.0638765 },
+          "Bounds": [
+            [
+              { "x": -114.165917, "y": 51.117919 },
+              { "x": -113.961836, "y": 51.117919 },
+              { "x": -113.961836, "y": 50.972991 },
+              { "x": -114.165917, "y": 50.972991 },
+              { "x": -114.165917, "y": 51.117919 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 379175,
+          "Country": "CA",
+          "Name": "The Bank & Baron",
+          "Address": "125 8 Avenue SW;Stephen Avenue",
+          "Category": "food",
+          "Tag": "Bar",
+          "Coord": { "Lat": 51.0454912, "Long": -114.0645955 },
+          "Bounds": [
+            [
+              { "x": -114.166636, "y": 51.117955 },
+              { "x": -113.962555, "y": 51.117955 },
+              { "x": -113.962555, "y": 50.973027 },
+              { "x": -114.166636, "y": 50.973027 },
+              { "x": -114.166636, "y": 51.117955 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 191031,
+          "Country": "CA",
+          "Name": "CHARCUT Roast House",
+          "Address": " ",
+          "Category": "food",
+          "Tag": "Restaurant",
+          "Coord": { "Lat": 51.0447427, "Long": -114.0633021 },
+          "Bounds": [
+            [
+              { "x": -114.165343, "y": 51.117206 },
+              { "x": -113.961261, "y": 51.117206 },
+              { "x": -113.961261, "y": 50.972279 },
+              { "x": -114.165343, "y": 50.972279 },
+              { "x": -114.165343, "y": 51.117206 }
+            ]
+          ],
+          "WalkingTime": 3
+        }
+      ],
+      "Count": 12
+    },
+    "grocery": {
+      "Category": "grocery",
+      "Score": 9,
+      "Locations": [
+        {
+          "AmenityID": 617695,
+          "Country": "CA",
+          "Name": "Baker's Hut Coffee & Cheesestart",
+          "Address": " ",
+          "Category": "grocery",
+          "Tag": "Bakery",
+          "Coord": { "Lat": 51.049958, "Long": -114.0631418 },
+          "Bounds": [
+            [
+              { "x": -114.165183, "y": 51.122422 },
+              { "x": -113.961101, "y": 51.122422 },
+              { "x": -113.961101, "y": 50.977494 },
+              { "x": -114.165183, "y": 50.977494 },
+              { "x": -114.165183, "y": 51.122422 }
+            ]
+          ],
+          "WalkingTime": 6
+        },
+        {
+          "AmenityID": 623199,
+          "Country": "CA",
+          "Name": "Wah Hing Meat Shop",
+          "Address": "106 3 Avenue SE",
+          "Category": "grocery",
+          "Tag": "Butcher",
+          "Coord": { "Lat": 51.0503824, "Long": -114.0622085 },
+          "Bounds": [
+            [
+              { "x": -114.164249, "y": 51.122846 },
+              { "x": -113.960168, "y": 51.122846 },
+              { "x": -113.960168, "y": 50.977919 },
+              { "x": -114.164249, "y": 50.977919 },
+              { "x": -114.164249, "y": 51.122846 }
+            ]
+          ],
+          "WalkingTime": 7
+        },
+        {
+          "AmenityID": 588991,
+          "Country": "CA",
+          "Name": "J:K Produce - Fresh Fruits and Vegetables",
+          "Address": "110 3 Avenue SE",
+          "Category": "grocery",
+          "Tag": "Grocery Store",
+          "Coord": { "Lat": 51.0503956, "Long": -114.0620776 },
+          "Bounds": [
+            [
+              { "x": -114.164118, "y": 51.122859 },
+              { "x": -113.960037, "y": 51.122859 },
+              { "x": -113.960037, "y": 50.977932 },
+              { "x": -114.164118, "y": 50.977932 },
+              { "x": -114.164118, "y": 51.122859 }
+            ]
+          ],
+          "WalkingTime": 7
+        },
+        {
+          "AmenityID": 580731,
+          "Country": "CA",
+          "Name": "Sunterra Market",
+          "Address": "200 ",
+          "Category": "grocery",
+          "Tag": "Grocery Store",
+          "Coord": { "Lat": 51.0414979, "Long": -114.0605577 },
+          "Bounds": [
+            [
+              { "x": -114.162599, "y": 51.113962 },
+              { "x": -113.958517, "y": 51.113962 },
+              { "x": -113.958517, "y": 50.969034 },
+              { "x": -114.162599, "y": 50.969034 },
+              { "x": -114.162599, "y": 51.113962 }
+            ]
+          ],
+          "WalkingTime": 10
+        },
+        {
+          "AmenityID": 589462,
+          "Country": "CA",
+          "Name": "Real Canadian Superstore",
+          "Address": "428 6 Avenue SE",
+          "Category": "grocery",
+          "Tag": "Grocery Store",
+          "Coord": { "Lat": 51.047501, "Long": -114.053798 },
+          "Bounds": [
+            [
+              { "x": -114.155839, "y": 51.119965 },
+              { "x": -113.951757, "y": 51.119965 },
+              { "x": -113.951757, "y": 50.975037 },
+              { "x": -114.155839, "y": 50.975037 },
+              { "x": -114.155839, "y": 51.119965 }
+            ]
+          ],
+          "WalkingTime": 11
+        },
+        {
+          "AmenityID": 577231,
+          "Country": "CA",
+          "Name": "Island Food",
+          "Address": " ",
+          "Category": "grocery",
+          "Tag": "Grocery Store",
+          "Coord": { "Lat": 51.0527754, "Long": -114.0684158 },
+          "Bounds": [
+            [
+              { "x": -114.170457, "y": 51.125239 },
+              { "x": -113.966375, "y": 51.125239 },
+              { "x": -113.966375, "y": 50.980312 },
+              { "x": -114.170457, "y": 50.980312 },
+              { "x": -114.170457, "y": 51.125239 }
+            ]
+          ],
+          "WalkingTime": 12
+        },
+        {
+          "AmenityID": 620288,
+          "Country": "CA",
+          "Name": "Mari Bake Shop",
+          "Address": "529 Riverfront Avenue SE",
+          "Category": "grocery",
+          "Tag": "Bakery",
+          "Coord": { "Lat": 51.0475888, "Long": -114.0508287 },
+          "Bounds": [
+            [
+              { "x": -114.15287, "y": 51.120053 },
+              { "x": -113.948788, "y": 51.120053 },
+              { "x": -113.948788, "y": 50.975125 },
+              { "x": -114.15287, "y": 50.975125 },
+              { "x": -114.15287, "y": 51.120053 }
+            ]
+          ],
+          "WalkingTime": 14
+        },
+        {
+          "AmenityID": 595655,
+          "Country": "CA",
+          "Name": "Safeway",
+          "Address": "813 11 Ave SW",
+          "Category": "grocery",
+          "Tag": "Grocery Store",
+          "Coord": { "Lat": 51.0423352311627, "Long": -114.080081505313 },
+          "Bounds": [
+            [
+              { "x": -114.182122, "y": 51.114799 },
+              { "x": -113.978041, "y": 51.114799 },
+              { "x": -113.978041, "y": 50.969871 },
+              { "x": -114.182122, "y": 50.969871 },
+              { "x": -114.182122, "y": 51.114799 }
+            ]
+          ],
+          "WalkingTime": 20
+        },
+        {
+          "AmenityID": 576929,
+          "Country": "CA",
+          "Name": "Kay's Food Market",
+          "Address": " ",
+          "Category": "grocery",
+          "Tag": "Grocery Store",
+          "Coord": { "Lat": 51.0478599, "Long": -114.0826967 },
+          "Bounds": [
+            [
+              { "x": -114.184738, "y": 51.120324 },
+              { "x": -113.980656, "y": 51.120324 },
+              { "x": -113.980656, "y": 50.975396 },
+              { "x": -114.184738, "y": 50.975396 },
+              { "x": -114.184738, "y": 51.120324 }
+            ]
+          ],
+          "WalkingTime": 22
+        },
+        {
+          "AmenityID": 614665,
+          "Country": "CA",
+          "Name": "Jelly Modern Doughnuts",
+          "Address": " ",
+          "Category": "grocery",
+          "Tag": "Bakery",
+          "Coord": { "Lat": 51.0398968, "Long": -114.0814215 },
+          "Bounds": [
+            [
+              { "x": -114.183462, "y": 51.112361 },
+              { "x": -113.979381, "y": 51.112361 },
+              { "x": -113.979381, "y": 50.967433 },
+              { "x": -114.183462, "y": 50.967433 },
+              { "x": -114.183462, "y": 51.112361 }
+            ]
+          ],
+          "WalkingTime": 24
+        },
+        {
+          "AmenityID": 597338,
+          "Country": "CA",
+          "Name": "Safeway",
+          "Address": "524 Elbow Drive SW",
+          "Category": "grocery",
+          "Tag": "Grocery Store",
+          "Coord": { "Lat": 51.0303240838769, "Long": -114.072680959026 },
+          "Bounds": [
+            [
+              { "x": -114.174722, "y": 51.102788 },
+              { "x": -113.97064, "y": 51.102788 },
+              { "x": -113.97064, "y": 50.95786 },
+              { "x": -114.174722, "y": 50.95786 },
+              { "x": -114.174722, "y": 51.102788 }
+            ]
+          ],
+          "WalkingTime": 31
+        },
+        {
+          "AmenityID": 574381,
+          "Country": "CA",
+          "Name": "Lambda Oriental Foods Market",
+          "Address": " ",
+          "Category": "grocery",
+          "Tag": "Grocery Store",
+          "Coord": { "Lat": 51.0649276, "Long": -114.0633139 },
+          "Bounds": [
+            [
+              { "x": -114.165355, "y": 51.137391 },
+              { "x": -113.961273, "y": 51.137391 },
+              { "x": -113.961273, "y": 50.992464 },
+              { "x": -114.165355, "y": 50.992464 },
+              { "x": -114.165355, "y": 51.137391 }
+            ]
+          ],
+          "WalkingTime": 33
+        }
+      ],
+      "Count": 12
+    },
+    "health": {
+      "Category": "health",
+      "Score": 9,
+      "Locations": [
+        {
+          "AmenityID": 681874,
+          "Country": "CA",
+          "Name": "LD Express",
+          "Address": "230 8 Avenue SW",
+          "Category": "health",
+          "Tag": "Pharmacy",
+          "Coord": { "Lat": 51.0457708, "Long": -114.0669542 },
+          "Bounds": [
+            [
+              { "x": -114.168995, "y": 51.118235 },
+              { "x": -113.964913, "y": 51.118235 },
+              { "x": -113.964913, "y": 50.973307 },
+              { "x": -114.168995, "y": 50.973307 },
+              { "x": -114.168995, "y": 51.118235 }
+            ]
+          ],
+          "WalkingTime": 4
+        },
+        {
+          "AmenityID": 736960,
+          "Country": "CA",
+          "Name": "Fire Station 1 (Downtown)",
+          "Address": "450 1 Street SE",
+          "Category": "health",
+          "Tag": "Fire Station",
+          "Coord": { "Lat": 51.048604401285, "Long": -114.059715480491 },
+          "Bounds": [
+            [
+              { "x": -114.161756, "y": 51.121068 },
+              { "x": -113.957675, "y": 51.121068 },
+              { "x": -113.957675, "y": 50.976141 },
+              { "x": -114.161756, "y": 50.976141 },
+              { "x": -114.161756, "y": 51.121068 }
+            ]
+          ],
+          "WalkingTime": 5
+        },
+        {
+          "AmenityID": 629657,
+          "Country": "CA",
+          "Name": "Centre Street Dental Clinic",
+          "Address": " ",
+          "Category": "health",
+          "Tag": "Dentist",
+          "Coord": { "Lat": 51.0498619, "Long": -114.0629809 },
+          "Bounds": [
+            [
+              { "x": -114.165022, "y": 51.122326 },
+              { "x": -113.96094, "y": 51.122326 },
+              { "x": -113.96094, "y": 50.977398 },
+              { "x": -114.165022, "y": 50.977398 },
+              { "x": -114.165022, "y": 51.122326 }
+            ]
+          ],
+          "WalkingTime": 6
+        },
+        {
+          "AmenityID": 693357,
+          "Country": "CA",
+          "Name": "Super M Drugs Prescription Service",
+          "Address": "216 Centre Street S",
+          "Category": "health",
+          "Tag": "Pharmacy",
+          "Coord": { "Lat": 51.050641247897, "Long": -114.06242512589 },
+          "Bounds": [
+            [
+              { "x": -114.164466, "y": 51.123105 },
+              { "x": -113.960384, "y": 51.123105 },
+              { "x": -113.960384, "y": 50.978177 },
+              { "x": -114.164466, "y": 50.978177 },
+              { "x": -114.164466, "y": 51.123105 }
+            ]
+          ],
+          "WalkingTime": 7
+        },
+        {
+          "AmenityID": 641574,
+          "Country": "CA",
+          "Name": "Calgary Laboratory Services Patient Service Centre",
+          "Address": "344 401-9 9 Avenue SW",
+          "Category": "health",
+          "Tag": "Clinic",
+          "Coord": { "Lat": 51.0446712, "Long": -114.0709979 },
+          "Bounds": [
+            [
+              { "x": -114.173039, "y": 51.117135 },
+              { "x": -113.968957, "y": 51.117135 },
+              { "x": -113.968957, "y": 50.972207 },
+              { "x": -114.173039, "y": 50.972207 },
+              { "x": -114.173039, "y": 51.117135 }
+            ]
+          ],
+          "WalkingTime": 9
+        },
+        {
+          "AmenityID": 680748,
+          "Country": "CA",
+          "Name": "Shoppers Drug Mart",
+          "Address": " ",
+          "Category": "health",
+          "Tag": "Pharmacy",
+          "Coord": { "Lat": 51.0386749, "Long": -114.060714 },
+          "Bounds": [
+            [
+              { "x": -114.162755, "y": 51.111139 },
+              { "x": -113.958673, "y": 51.111139 },
+              { "x": -113.958673, "y": 50.966211 },
+              { "x": -114.162755, "y": 50.966211 },
+              { "x": -114.162755, "y": 51.111139 }
+            ]
+          ],
+          "WalkingTime": 14
+        },
+        {
+          "AmenityID": 641581,
+          "Country": "CA",
+          "Name": "Calgary Laboratory Services Patient Service Centre",
+          "Address": "1213 4 Street SW",
+          "Category": "health",
+          "Tag": "Clinic",
+          "Coord": { "Lat": 51.0413142, "Long": -114.072126 },
+          "Bounds": [
+            [
+              { "x": -114.174167, "y": 51.113778 },
+              { "x": -113.970085, "y": 51.113778 },
+              { "x": -113.970085, "y": 50.96885 },
+              { "x": -114.174167, "y": 50.96885 },
+              { "x": -114.174167, "y": 51.113778 }
+            ]
+          ],
+          "WalkingTime": 14
+        },
+        {
+          "AmenityID": 668174,
+          "Country": "CA",
+          "Name": "Sheldon M. Chumir Health Centre",
+          "Address": "1213 4 Street SW",
+          "Category": "health",
+          "Tag": "Hospital",
+          "Coord": { "Lat": 51.0412027558495, "Long": -114.07217205556 },
+          "Bounds": [
+            [
+              { "x": -114.174213, "y": 51.113667 },
+              { "x": -113.970131, "y": 51.113667 },
+              { "x": -113.970131, "y": 50.968739 },
+              { "x": -114.174213, "y": 50.968739 },
+              { "x": -114.174213, "y": 51.113667 }
+            ]
+          ],
+          "WalkingTime": 14
+        },
+        {
+          "AmenityID": 638966,
+          "Country": "CA",
+          "Name": "Welcome Smile Dental",
+          "Address": "410 Memorial Drive NE",
+          "Category": "health",
+          "Tag": "Dentist",
+          "Coord": { "Lat": 51.05175685, "Long": -114.0536119 },
+          "Bounds": [
+            [
+              { "x": -114.155653, "y": 51.124221 },
+              { "x": -113.951571, "y": 51.124221 },
+              { "x": -113.951571, "y": 50.979293 },
+              { "x": -114.155653, "y": 50.979293 },
+              { "x": -114.155653, "y": 51.124221 }
+            ]
+          ],
+          "WalkingTime": 14
+        },
+        {
+          "AmenityID": 677103,
+          "Country": "CA",
+          "Name": "Corner Drugstore Inc.",
+          "Address": " ",
+          "Category": "health",
+          "Tag": "Pharmacy",
+          "Coord": { "Lat": 51.0453289, "Long": -114.0504973 },
+          "Bounds": [
+            [
+              { "x": -114.152538, "y": 51.117793 },
+              { "x": -113.948456, "y": 51.117793 },
+              { "x": -113.948456, "y": 50.972865 },
+              { "x": -114.152538, "y": 50.972865 },
+              { "x": -114.152538, "y": 51.117793 }
+            ]
+          ],
+          "WalkingTime": 14
+        },
+        {
+          "AmenityID": 677183,
+          "Country": "CA",
+          "Name": "Lukes Drug Mart",
+          "Address": "112 4 Street NE",
+          "Category": "health",
+          "Tag": "Pharmacy",
+          "Coord": { "Lat": 51.0531202, "Long": -114.0514808 },
+          "Bounds": [
+            [
+              { "x": -114.153522, "y": 51.125584 },
+              { "x": -113.94944, "y": 51.125584 },
+              { "x": -113.94944, "y": 50.980656 },
+              { "x": -114.153522, "y": 50.980656 },
+              { "x": -114.153522, "y": 51.125584 }
+            ]
+          ],
+          "WalkingTime": 17
+        },
+        {
+          "AmenityID": 658606,
+          "Country": "CA",
+          "Name": "Chiropractic Family Care Centre",
+          "Address": " ",
+          "Category": "health",
+          "Tag": "Doctor",
+          "Coord": { "Lat": 51.0369316, "Long": -114.0707182 },
+          "Bounds": [
+            [
+              { "x": -114.172759, "y": 51.109395 },
+              { "x": -113.968677, "y": 51.109395 },
+              { "x": -113.968677, "y": 50.964468 },
+              { "x": -114.172759, "y": 50.964468 },
+              { "x": -114.172759, "y": 51.109395 }
+            ]
+          ],
+          "WalkingTime": 19
+        }
+      ],
+      "Count": 12
+    },
+    "park": {
+      "Category": "park",
+      "Score": 10,
+      "Locations": [
+        {
+          "AmenityID": 840995,
+          "Country": "CA",
+          "Name": "South Bow park",
+          "Address": null,
+          "Category": "park",
+          "Tag": "Park",
+          "Coord": { "Lat": 51.0469055328115, "Long": -114.062360658734 },
+          "Bounds": [
+            [
+              { "x": -114.164401, "y": 51.119369 },
+              { "x": -113.96032, "y": 51.119369 },
+              { "x": -113.96032, "y": 50.974442 },
+              { "x": -114.164401, "y": 50.974442 },
+              { "x": -114.164401, "y": 51.119369 }
+            ]
+          ],
+          "WalkingTime": 1
+        },
+        {
+          "AmenityID": 806166,
+          "Country": "CA",
+          "Name": null,
+          "Address": null,
+          "Category": "park",
+          "Tag": "Park",
+          "Coord": { "Lat": 51.0487742022553, "Long": -114.06320427289 },
+          "Bounds": [
+            [
+              { "x": -114.165245, "y": 51.121238 },
+              { "x": -113.961163, "y": 51.121238 },
+              { "x": -113.961163, "y": 50.97631 },
+              { "x": -114.165245, "y": 50.97631 },
+              { "x": -114.165245, "y": 51.121238 }
+            ]
+          ],
+          "WalkingTime": 4
+        },
+        {
+          "AmenityID": 806167,
+          "Country": "CA",
+          "Name": "James Short Park",
+          "Address": null,
+          "Category": "park",
+          "Tag": "Park",
+          "Coord": { "Lat": 51.0488441789115, "Long": -114.06349623595 },
+          "Bounds": [
+            [
+              { "x": -114.165537, "y": 51.121308 },
+              { "x": -113.961455, "y": 51.121308 },
+              { "x": -113.961455, "y": 50.97638 },
+              { "x": -114.165537, "y": 50.97638 },
+              { "x": -114.165537, "y": 51.121308 }
+            ]
+          ],
+          "WalkingTime": 4
+        },
+        {
+          "AmenityID": 817866,
+          "Country": "CA",
+          "Name": null,
+          "Address": null,
+          "Category": "park",
+          "Tag": "Park",
+          "Coord": { "Lat": 51.0478173037709, "Long": -114.059867287745 },
+          "Bounds": [
+            [
+              { "x": -114.161908, "y": 51.120281 },
+              { "x": -113.957826, "y": 51.120281 },
+              { "x": -113.957826, "y": 50.975354 },
+              { "x": -114.161908, "y": 50.975354 },
+              { "x": -114.161908, "y": 51.120281 }
+            ]
+          ],
+          "WalkingTime": 4
+        },
+        {
+          "AmenityID": 806186,
+          "Country": "CA",
+          "Name": "Olympic Plaza",
+          "Address": "228 8 Avenue SE",
+          "Category": "park",
+          "Tag": "Park",
+          "Coord": { "Lat": 51.0458896560456, "Long": -114.05920861174 },
+          "Bounds": [
+            [
+              { "x": -114.161249, "y": 51.118353 },
+              { "x": -113.957168, "y": 51.118353 },
+              { "x": -113.957168, "y": 50.973426 },
+              { "x": -114.161249, "y": 50.973426 },
+              { "x": -114.161249, "y": 51.118353 }
+            ]
+          ],
+          "WalkingTime": 5
+        },
+        {
+          "AmenityID": 946134,
+          "Country": "CA",
+          "Name": null,
+          "Address": null,
+          "Category": "park",
+          "Tag": "Park",
+          "Coord": { "Lat": 51.0511951799669, "Long": -114.058858150245 },
+          "Bounds": [
+            [
+              { "x": -114.160899, "y": 51.123659 },
+              { "x": -113.956817, "y": 51.123659 },
+              { "x": -113.956817, "y": 50.978731 },
+              { "x": -114.160899, "y": 50.978731 },
+              { "x": -114.160899, "y": 51.123659 }
+            ]
+          ],
+          "WalkingTime": 9
+        },
+        {
+          "AmenityID": 841226,
+          "Country": "CA",
+          "Name": null,
+          "Address": null,
+          "Category": "park",
+          "Tag": "Park",
+          "Coord": { "Lat": 51.0519981906582, "Long": -114.06402222508 },
+          "Bounds": [
+            [
+              { "x": -114.166063, "y": 51.124462 },
+              { "x": -113.961981, "y": 51.124462 },
+              { "x": -113.961981, "y": 50.979534 },
+              { "x": -114.166063, "y": 50.979534 },
+              { "x": -114.166063, "y": 51.124462 }
+            ]
+          ],
+          "WalkingTime": 10
+        },
+        {
+          "AmenityID": 865201,
+          "Country": "CA",
+          "Name": null,
+          "Address": null,
+          "Category": "park",
+          "Tag": "Park",
+          "Coord": { "Lat": 51.0417585550552, "Long": -114.057973189975 },
+          "Bounds": [
+            [
+              { "x": -114.160014, "y": 51.114222 },
+              { "x": -113.955932, "y": 51.114222 },
+              { "x": -113.955932, "y": 50.969295 },
+              { "x": -114.160014, "y": 50.969295 },
+              { "x": -114.160014, "y": 51.114222 }
+            ]
+          ],
+          "WalkingTime": 10
+        },
+        {
+          "AmenityID": 841225,
+          "Country": "CA",
+          "Name": "Sien Lok Park",
+          "Address": null,
+          "Category": "park",
+          "Tag": "Park",
+          "Coord": { "Lat": 51.0526189094708, "Long": -114.064169986822 },
+          "Bounds": [
+            [
+              { "x": -114.166211, "y": 51.125083 },
+              { "x": -113.962129, "y": 51.125083 },
+              { "x": -113.962129, "y": 50.980155 },
+              { "x": -114.166211, "y": 50.980155 },
+              { "x": -114.166211, "y": 51.125083 }
+            ]
+          ],
+          "WalkingTime": 11
+        },
+        {
+          "AmenityID": 815902,
+          "Country": "CA",
+          "Name": "Haultain Park",
+          "Address": null,
+          "Category": "park",
+          "Tag": "Park",
+          "Coord": { "Lat": 51.0401232321602, "Long": -114.067426032163 },
+          "Bounds": [
+            [
+              { "x": -114.169467, "y": 51.112587 },
+              { "x": -113.965385, "y": 51.112587 },
+              { "x": -113.965385, "y": 50.967659 },
+              { "x": -114.169467, "y": 50.967659 },
+              { "x": -114.169467, "y": 51.112587 }
+            ]
+          ],
+          "WalkingTime": 13
+        },
+        {
+          "AmenityID": 885030,
+          "Country": "CA",
+          "Name": null,
+          "Address": null,
+          "Category": "park",
+          "Tag": "Park",
+          "Coord": { "Lat": 51.0534912219524, "Long": -114.0588039665 },
+          "Bounds": [
+            [
+              { "x": -114.160845, "y": 51.125955 },
+              { "x": -113.956763, "y": 51.125955 },
+              { "x": -113.956763, "y": 50.981027 },
+              { "x": -114.160845, "y": 50.981027 },
+              { "x": -114.160845, "y": 51.125955 }
+            ]
+          ],
+          "WalkingTime": 13
+        },
+        {
+          "AmenityID": 952381,
+          "Country": "CA",
+          "Name": "Kid's Zone",
+          "Address": " ",
+          "Category": "park",
+          "Tag": "Playground",
+          "Coord": { "Lat": 51.0530932, "Long": -114.0683153 },
+          "Bounds": [
+            [
+              { "x": -114.170356, "y": 51.125557 },
+              { "x": -113.966274, "y": 51.125557 },
+              { "x": -113.966274, "y": 50.980629 },
+              { "x": -114.170356, "y": 50.980629 },
+              { "x": -114.170356, "y": 51.125557 }
+            ]
+          ],
+          "WalkingTime": 13
+        }
+      ],
+      "Count": 12
+    },
+    "transit": {
+      "Category": "transit",
+      "Score": 9,
+      "Locations": [
+        {
+          "AmenityID": 1387952,
+          "Country": "CA",
+          "Name": null,
+          "Address": " ",
+          "Category": "transit",
+          "Tag": "Bus Stop",
+          "Coord": { "Lat": 51.0464564, "Long": -114.063846 },
+          "Bounds": [
+            [
+              { "x": -114.165887, "y": 51.11892 },
+              { "x": -113.961805, "y": 51.11892 },
+              { "x": -113.961805, "y": 50.973993 },
+              { "x": -114.165887, "y": 50.973993 },
+              { "x": -114.165887, "y": 51.11892 }
+            ]
+          ],
+          "WalkingTime": 1
+        },
+        {
+          "AmenityID": 1317766,
+          "Country": "CA",
+          "Name": "1 Street Southwest",
+          "Address": " ",
+          "Category": "transit",
+          "Tag": "Transit Station",
+          "Coord": { "Lat": 51.0465822, "Long": -114.064237 },
+          "Bounds": [
+            [
+              { "x": -114.166278, "y": 51.119046 },
+              { "x": -113.962196, "y": 51.119046 },
+              { "x": -113.962196, "y": 50.974118 },
+              { "x": -114.166278, "y": 50.974118 },
+              { "x": -114.166278, "y": 51.119046 }
+            ]
+          ],
+          "WalkingTime": 1
+        },
+        {
+          "AmenityID": 1317765,
+          "Country": "CA",
+          "Name": "Centre Street",
+          "Address": " ",
+          "Category": "transit",
+          "Tag": "Transit Station",
+          "Coord": { "Lat": 51.0464027, "Long": -114.061784 },
+          "Bounds": [
+            [
+              { "x": -114.163825, "y": 51.118866 },
+              { "x": -113.959743, "y": 51.118866 },
+              { "x": -113.959743, "y": 50.973939 },
+              { "x": -114.163825, "y": 50.973939 },
+              { "x": -114.163825, "y": 51.118866 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1467592,
+          "Country": "CA",
+          "Name": "1 Street & 7 Avenue SW",
+          "Address": " ",
+          "Category": "transit",
+          "Tag": "Bus Stop",
+          "Coord": { "Lat": 51.0463986, "Long": -114.06535 },
+          "Bounds": [
+            [
+              { "x": -114.167391, "y": 51.118862 },
+              { "x": -113.963309, "y": 51.118862 },
+              { "x": -113.963309, "y": 50.973935 },
+              { "x": -114.167391, "y": 50.973935 },
+              { "x": -114.167391, "y": 51.118862 }
+            ]
+          ],
+          "WalkingTime": 2
+        },
+        {
+          "AmenityID": 1481502,
+          "Country": "CA",
+          "Name": null,
+          "Address": " ",
+          "Category": "transit",
+          "Tag": "Bus Stop",
+          "Coord": { "Lat": 51.0483503, "Long": -114.06453 },
+          "Bounds": [
+            [
+              { "x": -114.166571, "y": 51.120814 },
+              { "x": -113.962489, "y": 51.120814 },
+              { "x": -113.962489, "y": 50.975887 },
+              { "x": -114.166571, "y": 50.975887 },
+              { "x": -114.166571, "y": 51.120814 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 1467591,
+          "Country": "CA",
+          "Name": null,
+          "Address": " ",
+          "Category": "transit",
+          "Tag": "Bus Stop",
+          "Coord": { "Lat": 51.0460404, "Long": -114.065363 },
+          "Bounds": [
+            [
+              { "x": -114.167404, "y": 51.118504 },
+              { "x": -113.963322, "y": 51.118504 },
+              { "x": -113.963322, "y": 50.973577 },
+              { "x": -114.167404, "y": 50.973577 },
+              { "x": -114.167404, "y": 51.118504 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 1588503,
+          "Country": "CA",
+          "Name": "1 Street & 7 Avenue SW",
+          "Address": " ",
+          "Category": "transit",
+          "Tag": "Bus Stop",
+          "Coord": { "Lat": 51.0467069, "Long": -114.0655375 },
+          "Bounds": [
+            [
+              { "x": -114.167578, "y": 51.119171 },
+              { "x": -113.963497, "y": 51.119171 },
+              { "x": -113.963497, "y": 50.974243 },
+              { "x": -114.167578, "y": 50.974243 },
+              { "x": -114.167578, "y": 51.119171 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 1588502,
+          "Country": "CA",
+          "Name": "1 Street & 6 Avenue SW",
+          "Address": " ",
+          "Category": "transit",
+          "Tag": "Bus Stop",
+          "Coord": { "Lat": 51.0470298, "Long": -114.0655254 },
+          "Bounds": [
+            [
+              { "x": -114.167566, "y": 51.119494 },
+              { "x": -113.963485, "y": 51.119494 },
+              { "x": -113.963485, "y": 50.974566 },
+              { "x": -114.167566, "y": 50.974566 },
+              { "x": -114.167566, "y": 51.119494 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 1588527,
+          "Country": "CA",
+          "Name": null,
+          "Address": " ",
+          "Category": "transit",
+          "Tag": "Bus Stop",
+          "Coord": { "Lat": 51.0454655, "Long": -114.0654124 },
+          "Bounds": [
+            [
+              { "x": -114.167453, "y": 51.117929 },
+              { "x": -113.963372, "y": 51.117929 },
+              { "x": -113.963372, "y": 50.973002 },
+              { "x": -114.167453, "y": 50.973002 },
+              { "x": -114.167453, "y": 51.117929 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 1405151,
+          "Country": "CA",
+          "Name": null,
+          "Address": " ",
+          "Category": "transit",
+          "Tag": "Bus Stop",
+          "Coord": { "Lat": 51.0457842, "Long": -114.0656058 },
+          "Bounds": [
+            [
+              { "x": -114.167647, "y": 51.118248 },
+              { "x": -113.963565, "y": 51.118248 },
+              { "x": -113.963565, "y": 50.97332 },
+              { "x": -114.167647, "y": 50.97332 },
+              { "x": -114.167647, "y": 51.118248 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 1467448,
+          "Country": "CA",
+          "Name": "7 Avenue & 1 Street SW",
+          "Address": " ",
+          "Category": "transit",
+          "Tag": "Bus Stop",
+          "Coord": { "Lat": 51.0465085, "Long": -114.065857 },
+          "Bounds": [
+            [
+              { "x": -114.167898, "y": 51.118972 },
+              { "x": -113.963816, "y": 51.118972 },
+              { "x": -113.963816, "y": 50.974045 },
+              { "x": -114.167898, "y": 50.974045 },
+              { "x": -114.167898, "y": 51.118972 }
+            ]
+          ],
+          "WalkingTime": 3
+        },
+        {
+          "AmenityID": 1463892,
+          "Country": "CA",
+          "Name": "9 Avenue & Centre Street S",
+          "Address": " ",
+          "Category": "transit",
+          "Tag": "Bus Stop",
+          "Coord": { "Lat": 51.0444865, "Long": -114.062335 },
+          "Bounds": [
+            [
+              { "x": -114.164376, "y": 51.11695 },
+              { "x": -113.960294, "y": 51.11695 },
+              { "x": -113.960294, "y": 50.972023 },
+              { "x": -114.164376, "y": 50.972023 },
+              { "x": -114.164376, "y": 51.11695 }
+            ]
+          ],
+          "WalkingTime": 4
+        }
+      ],
+      "Count": 12
+    },
+    "highschools": {
+      "Category": "highschools",
+      "Score": 10,
+      "Locations": [
+        {
+          "NCESSchoolID": "1020-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "9",
+          "HighGrade": "12",
+          "SchoolName": "Alberta Chung Wah School",
+          "SchoolType": "Private School",
+          "District": null,
+          "Address": "#270, 328 Centre Street S.E.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2G 4X8",
+          "Phone": "403-271-8033",
+          "Site": "http://www.AlbertaChungWahSchool.ca",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0496253967285, "Long": -114.062240600586 },
+          "IsPre": 0,
+          "IsElem": 0,
+          "IsMid": 0,
+          "IsHigh": 1,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.164281, "y": 51.122089 },
+              { "x": -113.9602, "y": 51.122089 },
+              { "x": -113.9602, "y": 50.977162 },
+              { "x": -114.164281, "y": 50.977162 },
+              { "x": -114.164281, "y": 51.122089 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Alberta Chung Wah School",
+          "geom": null,
+          "WalkingTime": 5
+        },
+        {
+          "NCESSchoolID": "9995-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "9",
+          "HighGrade": "12",
+          "SchoolName": "Bow Valley College - Main Campus",
+          "SchoolType": "Provincial",
+          "District": null,
+          "Address": "345 - 6 Ave SE",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2G 4V1",
+          "Phone": "403-410-1500",
+          "Site": null,
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0469627380371, "Long": -114.056610107422 },
+          "IsPre": 0,
+          "IsElem": 0,
+          "IsMid": 0,
+          "IsHigh": 1,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.158651, "y": 51.119427 },
+              { "x": -113.954569, "y": 51.119427 },
+              { "x": -113.954569, "y": 50.974499 },
+              { "x": -114.158651, "y": 50.974499 },
+              { "x": -114.158651, "y": 51.119427 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Bow Valley College - Main Campus",
+          "geom": null,
+          "WalkingTime": 7
+        },
+        {
+          "NCESSchoolID": "9963-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "9",
+          "HighGrade": "12",
+          "SchoolName": "Calgary Chinese Private School",
+          "SchoolType": "Private School",
+          "District": null,
+          "Address": "126 2nd Avenue S.W",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2P 0B9",
+          "Phone": "403-264-2233",
+          "Site": null,
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0515251159668, "Long": -114.064094543457 },
+          "IsPre": 0,
+          "IsElem": 0,
+          "IsMid": 0,
+          "IsHigh": 1,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.166135, "y": 51.123989 },
+              { "x": -113.962054, "y": 51.123989 },
+              { "x": -113.962054, "y": 50.979061 },
+              { "x": -114.166135, "y": 50.979061 },
+              { "x": -114.166135, "y": 51.123989 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Calgary Chinese Private School",
+          "geom": null,
+          "WalkingTime": 9
+        },
+        {
+          "NCESSchoolID": "9868-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "9",
+          "HighGrade": "12",
+          "SchoolName": "Discovering Choices",
+          "SchoolType": "Public School",
+          "District": null,
+          "Address": "206, 315 - 10 Avenue S.E.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2G 0W2",
+          "Phone": "403-268-3265",
+          "Site": "http://schools.cbe.ab.ca/b868/",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0429382324219, "Long": -114.056617736816 },
+          "IsPre": 0,
+          "IsElem": 0,
+          "IsMid": 0,
+          "IsHigh": 1,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.158659, "y": 51.115402 },
+              { "x": -113.954577, "y": 51.115402 },
+              { "x": -113.954577, "y": 50.970474 },
+              { "x": -114.158659, "y": 50.970474 },
+              { "x": -114.158659, "y": 51.115402 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Discovering Choices",
+          "geom": null,
+          "WalkingTime": 10
+        },
+        {
+          "NCESSchoolID": "9599-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "9",
+          "HighGrade": "12",
+          "SchoolName": "Project Trust",
+          "SchoolType": "Public School",
+          "District": null,
+          "Address": "#206, 315 10 avenue  S.E.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2G 0W2",
+          "Phone": "",
+          "Site": "http://schools.cbe.ab.ca/b868/",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0429382324219, "Long": -114.056617736816 },
+          "IsPre": 0,
+          "IsElem": 0,
+          "IsMid": 0,
+          "IsHigh": 1,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.158659, "y": 51.115402 },
+              { "x": -113.954577, "y": 51.115402 },
+              { "x": -113.954577, "y": 50.970474 },
+              { "x": -114.158659, "y": 50.970474 },
+              { "x": -114.158659, "y": 51.115402 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Project Trust",
+          "geom": null,
+          "WalkingTime": 10
+        },
+        {
+          "NCESSchoolID": "1271-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "9",
+          "HighGrade": "12",
+          "SchoolName": "Access Academy",
+          "SchoolType": "Private School",
+          "District": null,
+          "Address": "\nBox 100",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T3E 7K1",
+          "Phone": "403-455-3033",
+          "Site": "http://www.accessacademy.ca",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0447311401367, "Long": -114.071884155273 },
+          "IsPre": 0,
+          "IsElem": 0,
+          "IsMid": 0,
+          "IsHigh": 1,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.173925, "y": 51.117195 },
+              { "x": -113.969843, "y": 51.117195 },
+              { "x": -113.969843, "y": 50.972267 },
+              { "x": -114.173925, "y": 50.972267 },
+              { "x": -114.173925, "y": 51.117195 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Access Academy",
+          "geom": null,
+          "WalkingTime": 10
+        },
+        {
+          "NCESSchoolID": "1246-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "9",
+          "HighGrade": "12",
+          "SchoolName": "SCcyber E-learning Community",
+          "SchoolType": "Private School",
+          "District": null,
+          "Address": "PO Box 91099",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T3G 5W6",
+          "Phone": "403-872-0487",
+          "Site": "http://www.sccyber.net/",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0447311401367, "Long": -114.071884155273 },
+          "IsPre": 0,
+          "IsElem": 0,
+          "IsMid": 0,
+          "IsHigh": 1,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.173925, "y": 51.117195 },
+              { "x": -113.969843, "y": 51.117195 },
+              { "x": -113.969843, "y": 50.972267 },
+              { "x": -114.173925, "y": 50.972267 },
+              { "x": -114.173925, "y": 51.117195 }
+            ]
+          ],
+          "ID": null,
+          "Name": "SCcyber E-learning Community",
+          "geom": null,
+          "WalkingTime": 10
+        },
+        {
+          "NCESSchoolID": "0013-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "9",
+          "HighGrade": "12",
+          "SchoolName": "The Chinese Academy",
+          "SchoolType": "Private School",
+          "District": null,
+          "Address": "\nCentre Street N.E.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2E 2R9",
+          "Phone": "403-777-7663",
+          "Site": "http://www.chineseacademy.ca",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0525932312012, "Long": -114.062538146973 },
+          "IsPre": 0,
+          "IsElem": 0,
+          "IsMid": 0,
+          "IsHigh": 1,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.164579, "y": 51.125057 },
+              { "x": -113.960497, "y": 51.125057 },
+              { "x": -113.960497, "y": 50.980129 },
+              { "x": -114.164579, "y": 50.980129 },
+              { "x": -114.164579, "y": 51.125057 }
+            ]
+          ],
+          "ID": null,
+          "Name": "The Chinese Academy",
+          "geom": null,
+          "WalkingTime": 11
+        },
+        {
+          "NCESSchoolID": "8904-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "9",
+          "HighGrade": "12",
+          "SchoolName": "St. Mary's High School",
+          "SchoolType": "Separate",
+          "District": null,
+          "Address": "111 - 18 Avenue S.W.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2S 0B8",
+          "Phone": "403-500-2024",
+          "Site": "http://www.cssd.ab.ca/stmarys",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0367050170898, "Long": -114.064567565918 },
+          "IsPre": 0,
+          "IsElem": 0,
+          "IsMid": 0,
+          "IsHigh": 1,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.166608, "y": 51.109169 },
+              { "x": -113.962527, "y": 51.109169 },
+              { "x": -113.962527, "y": 50.964241 },
+              { "x": -114.166608, "y": 50.964241 },
+              { "x": -114.166608, "y": 51.109169 }
+            ]
+          ],
+          "ID": null,
+          "Name": "St. Mary's High School",
+          "geom": null,
+          "WalkingTime": 18
+        },
+        {
+          "NCESSchoolID": "1126-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "PK",
+          "HighGrade": "12",
+          "SchoolName": "Calgary Arts Academy",
+          "SchoolType": "Charter",
+          "District": null,
+          "Address": "640 14th Avenue S.E.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2G 1E8",
+          "Phone": "403-532-3020",
+          "Site": "http://www.caaschool.com",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.039421081543, "Long": -114.049324035645 },
+          "IsPre": 1,
+          "IsElem": 1,
+          "IsMid": 1,
+          "IsHigh": 1,
+          "ProfMath": 56.2,
+          "ProfLang": 74.35,
+          "SchoolScore": 66.9625,
+          "Bounds": [
+            [
+              { "x": -114.151365, "y": 51.111885 },
+              { "x": -113.947283, "y": 51.111885 },
+              { "x": -113.947283, "y": 50.966957 },
+              { "x": -114.151365, "y": 50.966957 },
+              { "x": -114.151365, "y": 51.111885 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Calgary Arts Academy",
+          "geom": null,
+          "WalkingTime": 20
+        },
+        {
+          "NCESSchoolID": "9816-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "9",
+          "HighGrade": "12",
+          "SchoolName": "Western Canada High School",
+          "SchoolType": "Public School",
+          "District": null,
+          "Address": "641 - 17 Avenue S.W.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2S 0B5",
+          "Phone": "403-228-5363",
+          "Site": "http://www.cbe.ab.ca/b816",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0373077392578, "Long": -114.077285766602 },
+          "IsPre": 0,
+          "IsElem": 0,
+          "IsMid": 0,
+          "IsHigh": 1,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.179327, "y": 51.109772 },
+              { "x": -113.975245, "y": 51.109772 },
+              { "x": -113.975245, "y": 50.964844 },
+              { "x": -114.179327, "y": 50.964844 },
+              { "x": -114.179327, "y": 51.109772 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Western Canada High School",
+          "geom": null,
+          "WalkingTime": 23
+        },
+        {
+          "NCESSchoolID": "9815-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "9",
+          "HighGrade": "12",
+          "SchoolName": "Crescent Heights High School",
+          "SchoolType": "Public School",
+          "District": null,
+          "Address": "1019 1 St NW",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2M 2S2",
+          "Phone": "403-276-5521",
+          "Site": "http://www.cbe.ab.ca/b815",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0615730285645, "Long": -114.066246032715 },
+          "IsPre": 0,
+          "IsElem": 0,
+          "IsMid": 0,
+          "IsHigh": 1,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.168287, "y": 51.134037 },
+              { "x": -113.964205, "y": 51.134037 },
+              { "x": -113.964205, "y": 50.989109 },
+              { "x": -114.168287, "y": 50.989109 },
+              { "x": -114.168287, "y": 51.134037 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Crescent Heights High School",
+          "geom": null,
+          "WalkingTime": 27
+        }
+      ],
+      "Count": 12
+    },
+    "elementaryschools": {
+      "Category": "elementaryschools",
+      "Score": 9,
+      "Locations": [
+        {
+          "NCESSchoolID": "9387-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "",
+          "HighGrade": "",
+          "SchoolName": "W.H.Cushing Workplace School",
+          "SchoolType": "Public School",
+          "District": null,
+          "Address": "130 - 7 Avenue S.W.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2P 0W4",
+          "Phone": "403-777-8900",
+          "Site": null,
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0467834472656, "Long": -114.065208435059 },
+          "IsPre": 0,
+          "IsElem": 1,
+          "IsMid": 0,
+          "IsHigh": 0,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.167249, "y": 51.119247 },
+              { "x": -113.963168, "y": 51.119247 },
+              { "x": -113.963168, "y": 50.97432 },
+              { "x": -114.167249, "y": 50.97432 },
+              { "x": -114.167249, "y": 51.119247 }
+            ]
+          ],
+          "ID": null,
+          "Name": "W.H.Cushing Workplace School",
+          "geom": null,
+          "WalkingTime": 2
+        },
+        {
+          "NCESSchoolID": "5199-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "",
+          "HighGrade": "",
+          "SchoolName": "Bow Valley College - Airdrie Campus",
+          "SchoolType": "Provincial",
+          "District": null,
+          "Address": "345 - 6 Avenue SE",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2G 4V1",
+          "Phone": "403-355-1910",
+          "Site": null,
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0469627380371, "Long": -114.056610107422 },
+          "IsPre": 0,
+          "IsElem": 1,
+          "IsMid": 0,
+          "IsHigh": 0,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.158651, "y": 51.119427 },
+              { "x": -113.954569, "y": 51.119427 },
+              { "x": -113.954569, "y": 50.974499 },
+              { "x": -114.158651, "y": 50.974499 },
+              { "x": -114.158651, "y": 51.119427 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Bow Valley College - Airdrie Campus",
+          "geom": null,
+          "WalkingTime": 7
+        },
+        {
+          "NCESSchoolID": "5298-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "",
+          "HighGrade": "",
+          "SchoolName": "Bow Valley College - High School Extension",
+          "SchoolType": "Provincial",
+          "District": null,
+          "Address": "345 - 6 Ave SE",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2G 4V1",
+          "Phone": "403-410-1400",
+          "Site": null,
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0469627380371, "Long": -114.056610107422 },
+          "IsPre": 0,
+          "IsElem": 1,
+          "IsMid": 0,
+          "IsHigh": 0,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.158651, "y": 51.119427 },
+              { "x": -113.954569, "y": 51.119427 },
+              { "x": -113.954569, "y": 50.974499 },
+              { "x": -114.158651, "y": 50.974499 },
+              { "x": -114.158651, "y": 51.119427 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Bow Valley College - High School Extension",
+          "geom": null,
+          "WalkingTime": 7
+        },
+        {
+          "NCESSchoolID": "5350-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "",
+          "HighGrade": "",
+          "SchoolName": "Bow Valley College (Outreach)",
+          "SchoolType": "Provincial",
+          "District": null,
+          "Address": "346 - 6 Avenue SE",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2G 4V1",
+          "Phone": "403-410-1400",
+          "Site": null,
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0469665527344, "Long": -114.05598449707 },
+          "IsPre": 0,
+          "IsElem": 1,
+          "IsMid": 0,
+          "IsHigh": 0,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.158025, "y": 51.11943 },
+              { "x": -113.953944, "y": 51.11943 },
+              { "x": -113.953944, "y": 50.974503 },
+              { "x": -114.158025, "y": 50.974503 },
+              { "x": -114.158025, "y": 51.11943 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Bow Valley College (Outreach)",
+          "geom": null,
+          "WalkingTime": 8
+        },
+        {
+          "NCESSchoolID": "1162-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "PK",
+          "HighGrade": "PK",
+          "SchoolName": "One World Child Development Centre",
+          "SchoolType": "ECS Private Operator",
+          "District": null,
+          "Address": "622 - 11 Avenue SW",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2R 0E2",
+          "Phone": "403-390-3441",
+          "Site": "http://www.cupscalgary.com",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0430526733398, "Long": -114.075309753418 },
+          "IsPre": 1,
+          "IsElem": 0,
+          "IsMid": 0,
+          "IsHigh": 0,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.177351, "y": 51.115516 },
+              { "x": -113.973269, "y": 51.115516 },
+              { "x": -113.973269, "y": 50.970589 },
+              { "x": -114.177351, "y": 50.970589 },
+              { "x": -114.177351, "y": 51.115516 }
+            ]
+          ],
+          "ID": null,
+          "Name": "One World Child Development Centre",
+          "geom": null,
+          "WalkingTime": 15
+        },
+        {
+          "NCESSchoolID": "9926-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "",
+          "HighGrade": "",
+          "SchoolName": "Italian School of Calgary",
+          "SchoolType": "Private School",
+          "District": null,
+          "Address": "416-1 Avenue N.E.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2E 0B4",
+          "Phone": "403-264-6349",
+          "Site": null,
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0537605285645, "Long": -114.053207397461 },
+          "IsPre": 0,
+          "IsElem": 1,
+          "IsMid": 0,
+          "IsHigh": 0,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.155248, "y": 51.126224 },
+              { "x": -113.951167, "y": 51.126224 },
+              { "x": -113.951167, "y": 50.981297 },
+              { "x": -114.155248, "y": 50.981297 },
+              { "x": -114.155248, "y": 51.126224 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Italian School of Calgary",
+          "geom": null,
+          "WalkingTime": 17
+        },
+        {
+          "NCESSchoolID": "8530-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "PK",
+          "HighGrade": "8",
+          "SchoolName": "St. Monica School",
+          "SchoolType": "Separate",
+          "District": null,
+          "Address": "235 - 18 Avenue S.W.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2S 0C2",
+          "Phone": "403-500-2001",
+          "Site": "http://Www.cssd.ab.ca/schools/stmonica",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0367698669434, "Long": -114.067825317383 },
+          "IsPre": 1,
+          "IsElem": 1,
+          "IsMid": 1,
+          "IsHigh": 0,
+          "ProfMath": 67.2,
+          "ProfLang": 69,
+          "SchoolScore": 72.4,
+          "Bounds": [
+            [
+              { "x": -114.169866, "y": 51.109234 },
+              { "x": -113.965785, "y": 51.109234 },
+              { "x": -113.965785, "y": 50.964306 },
+              { "x": -114.169866, "y": 50.964306 },
+              { "x": -114.169866, "y": 51.109234 }
+            ]
+          ],
+          "ID": null,
+          "Name": "St. Monica School",
+          "geom": null,
+          "WalkingTime": 18
+        },
+        {
+          "NCESSchoolID": "0598-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "K",
+          "HighGrade": "8",
+          "SchoolName": "Our Lady of Lourdes",
+          "SchoolType": "Separate",
+          "District": null,
+          "Address": "1916 2nd Street SW",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2S 1S3",
+          "Phone": "403-500-2002",
+          "Site": "http://www.cssd.ab.ca/schools/ourladyoflourdes",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0357513427734, "Long": -114.068145751953 },
+          "IsPre": 0,
+          "IsElem": 1,
+          "IsMid": 1,
+          "IsHigh": 0,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.170187, "y": 51.108215 },
+              { "x": -113.966105, "y": 51.108215 },
+              { "x": -113.966105, "y": 50.963288 },
+              { "x": -114.170187, "y": 50.963288 },
+              { "x": -114.170187, "y": 51.108215 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Our Lady of Lourdes",
+          "geom": null,
+          "WalkingTime": 20
+        },
+        {
+          "NCESSchoolID": "1126-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "PK",
+          "HighGrade": "12",
+          "SchoolName": "Calgary Arts Academy",
+          "SchoolType": "Charter",
+          "District": null,
+          "Address": "640 14th Avenue S.E.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2G 1E8",
+          "Phone": "403-532-3020",
+          "Site": "http://www.caaschool.com",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.039421081543, "Long": -114.049324035645 },
+          "IsPre": 1,
+          "IsElem": 1,
+          "IsMid": 1,
+          "IsHigh": 1,
+          "ProfMath": 56.2,
+          "ProfLang": 74.35,
+          "SchoolScore": 66.9625,
+          "Bounds": [
+            [
+              { "x": -114.151365, "y": 51.111885 },
+              { "x": -113.947283, "y": 51.111885 },
+              { "x": -113.947283, "y": 50.966957 },
+              { "x": -114.151365, "y": 50.966957 },
+              { "x": -114.151365, "y": 51.111885 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Calgary Arts Academy",
+          "geom": null,
+          "WalkingTime": 20
+        },
+        {
+          "NCESSchoolID": "9609-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "PK",
+          "HighGrade": "8",
+          "SchoolName": "Langevin School",
+          "SchoolType": "Public School",
+          "District": null,
+          "Address": "107 - 6A Street N.E.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2E 0B7",
+          "Phone": "403-777-7350",
+          "Site": "http://schools.cbe.ab.ca/b609/",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0528144836426, "Long": -114.047828674316 },
+          "IsPre": 1,
+          "IsElem": 1,
+          "IsMid": 1,
+          "IsHigh": 0,
+          "ProfMath": 70.55,
+          "ProfLang": 73.25,
+          "SchoolScore": 74.4875,
+          "Bounds": [
+            [
+              { "x": -114.149869, "y": 51.125278 },
+              { "x": -113.945788, "y": 51.125278 },
+              { "x": -113.945788, "y": 50.980351 },
+              { "x": -114.149869, "y": 50.980351 },
+              { "x": -114.149869, "y": 51.125278 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Langevin School",
+          "geom": null,
+          "WalkingTime": 20
+        },
+        {
+          "NCESSchoolID": "8510-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "PK",
+          "HighGrade": "6",
+          "SchoolName": "St. Angela Elementary",
+          "SchoolType": "Separate",
+          "District": null,
+          "Address": "231 - 6 Street N.E.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2E 3Y1",
+          "Phone": "403-500-2011",
+          "Site": "http://www.cssd.ab.ca\\schools\\stangela",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0543823242188, "Long": -114.048767089844 },
+          "IsPre": 1,
+          "IsElem": 1,
+          "IsMid": 0,
+          "IsHigh": 0,
+          "ProfMath": 67.8,
+          "ProfLang": 72.8,
+          "SchoolScore": 72.225,
+          "Bounds": [
+            [
+              { "x": -114.150808, "y": 51.126846 },
+              { "x": -113.946726, "y": 51.126846 },
+              { "x": -113.946726, "y": 50.981919 },
+              { "x": -114.150808, "y": 50.981919 },
+              { "x": -114.150808, "y": 51.126846 }
+            ]
+          ],
+          "ID": null,
+          "Name": "St. Angela Elementary",
+          "geom": null,
+          "WalkingTime": 21
+        },
+        {
+          "NCESSchoolID": "0254-CA",
+          "NCESDistrictID": null,
+          "LowGrade": "PK",
+          "HighGrade": "6",
+          "SchoolName": "Montessori School of Calgary",
+          "SchoolType": "Private School",
+          "District": null,
+          "Address": "2201 Cliff Street S.W.",
+          "City": "Calgary",
+          "StateAbbr": "AB",
+          "ZIP": "T2S 2G4",
+          "Phone": "403-229-1011",
+          "Site": "http://www.montessorischoolofcalgary.com",
+          "Students": null,
+          "Teachers": null,
+          "StudentTeacherRatio": null,
+          "Coord": { "Lat": 51.0333862304688, "Long": -114.075988769531 },
+          "IsPre": 1,
+          "IsElem": 1,
+          "IsMid": 0,
+          "IsHigh": 0,
+          "ProfMath": null,
+          "ProfLang": null,
+          "SchoolScore": null,
+          "Bounds": [
+            [
+              { "x": -114.17803, "y": 51.10585 },
+              { "x": -113.973948, "y": 51.10585 },
+              { "x": -113.973948, "y": 50.960922 },
+              { "x": -114.17803, "y": 50.960922 },
+              { "x": -114.17803, "y": 51.10585 }
+            ]
+          ],
+          "ID": null,
+          "Name": "Montessori School of Calgary",
+          "geom": null,
+          "WalkingTime": 28
+        }
+      ],
+      "Count": 12
+    }
+  },
+  "is_active": 1
+}

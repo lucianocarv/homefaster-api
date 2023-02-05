@@ -2,6 +2,7 @@ import { prisma } from '../config/prisma-connect.js';
 import { City, Community, Property, Province } from '@prisma/client';
 import { PaginationParameters } from '../types/pagination-parameters.js';
 import { CreateProperty } from '../types/create-property.js';
+import { ValidateAddressAPI, IReplyOfValidateAddressAPI } from '../maps/validate-address-api.js';
 
 const propertyServices = {
   index: async ({ page_number, per_page_number, skip }: PaginationParameters) => {
@@ -10,16 +11,7 @@ const propertyServices = {
       skip,
       include: {
         address: true,
-        property_info: {
-          include: {
-            features: {
-              select: { feature: true },
-            },
-            utilities: {
-              select: { utility: true },
-            },
-          },
-        },
+        description: true,
         manager: true,
       },
     });
@@ -41,13 +33,13 @@ const propertyServices = {
         postal_code: true,
         global_code: true,
         place_id: true,
+        community: true,
+        city: true,
+        province: true,
         formatted_address: true,
-        community_name: true,
-        city_name: true,
-        province_name: true,
       },
     });
-    const property_info = await prisma.propertyInfo.findUnique({
+    const property_info = await prisma.description.findUnique({
       where: { property_id: property!.id },
       select: {
         bathrooms: true,
@@ -76,66 +68,75 @@ const propertyServices = {
     return { ...property_info, ...property, ...address, features, utilities };
   },
 
-  create: async (attributes: CreateProperty): Promise<Property> => {
-    const { property, property_info, address } = attributes;
+  create: async (attributes: CreateProperty): Promise<Property | Error> => {
+    const { property, description, address } = attributes;
     const { community_id } = attributes.property;
     const { name: community_name, city_id } = (await prisma.community.findUnique({ where: { id: community_id } })) as Community;
     const { name: city_name, province_id } = (await prisma.city.findUnique({ where: { id: city_id } })) as City;
     const { name: province_name } = (await prisma.province.findUnique({ where: { id: province_id } })) as Province;
-    console.log(community_name, city_name, province_name);
 
-    const _property = await prisma.property.create({
-      data: {
-        ...property,
-        property_info: {
-          create: {
-            ...property_info,
-          },
-        },
-        address: {
-          create: {
-            city_name,
-            province_name,
-            community_name,
-            ...address,
-          },
-        },
-      },
+    const geocodeAPI = await ValidateAddressAPI.getDataForProperty({
+      province: province_name,
+      city: city_name,
+      community: community_name,
+      address: `${address.number} ${address.street}`,
     });
 
-    console.log(_property);
+    if (typeof geocodeAPI == 'object') {
+      const { postal_code, latitude, longitude, global_code, place_id, formatted_address } = geocodeAPI;
 
-    if (_property.id) {
-      const property_info = await prisma.propertyInfo.findFirst({
-        where: { property_id: _property.id },
+      const _property = await prisma.property.create({
+        data: {
+          ...property,
+          address: {
+            create: {
+              ...address,
+              formatted_address,
+              postal_code,
+              global_code,
+              place_id,
+              latitude,
+              longitude,
+              community: community_name,
+              city: city_name,
+              province: province_name,
+            },
+          },
+          description: {
+            create: {
+              ...description,
+            },
+          },
+        },
       });
-      if (property_info) {
-        await prisma.$transaction([
-          prisma.utilitiesOnPropertyInfos.createMany({
-            data: attributes.utilities.map((utility_id) => ({
-              utility_id,
-              property_info_id: property_info.id,
-            })),
-          }),
-          prisma.featuresOnPropertyInfos.createMany({
-            data: attributes.features.map((feature_id) => ({
-              feature_id,
-              property_info_id: property_info.id,
-            })),
-          }),
-        ]);
+
+      if (_property.id) {
+        const description = await prisma.description.findFirst({
+          where: { property_id: _property.id },
+        });
+        if (description) {
+          await prisma.$transaction([
+            prisma.utilitiesOnDescriptions.createMany({
+              data: attributes.utilities.map((utility) => ({ description_id: description.id, utility_id: utility })),
+            }),
+            prisma.featuresOnDescriptions.createMany({
+              data: attributes.features.map((feature) => ({ description_id: description.id, feature_id: feature })),
+            }),
+          ]);
+        }
       }
+      const newProperty = await prisma.property.findUnique({
+        where: { id: _property.id },
+        include: {
+          address: true,
+          description: true,
+          manager: true,
+        },
+      });
+      return newProperty!;
     }
 
-    const newProperty = await prisma.property.findUnique({
-      where: { id: _property.id },
-      include: {
-        address: { include: { location: true } },
-        property_info: true,
-        manager: true,
-      },
-    });
-    return newProperty!;
+    return new Error('Invalid Property Creation');
   },
 };
 

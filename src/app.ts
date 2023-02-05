@@ -1,7 +1,9 @@
-import { server } from './server.js';
+import * as dotenv from 'dotenv';
+dotenv.config();
+import { server } from './index.js';
 
 const app = async () => {
-  const port = 3000;
+  const port = 3001;
   try {
     await server.listen({ port });
     console.log(`App running at port ${port}`);

@@ -6,17 +6,18 @@ export interface CreateProperty {
   address: {
     number: number;
     street: string;
-    postal_code: string | null;
-    formatted_address: string | null;
-    global_code: string | null;
-    place_id: string | null;
   };
-  property_info: {
+  description: {
+    title: string;
+    thumb: string;
     price: number;
     bathrooms: number;
     badrooms: number;
     furnished: boolean;
     property_area: number;
+    pets_cats: number;
+    pets_dogs: number;
+    smoking: boolean;
     type_id: number;
   };
   utilities: Array<number>;

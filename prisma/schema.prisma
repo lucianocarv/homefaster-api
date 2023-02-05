@@ -8,34 +8,30 @@ generator client {
 }
 
 model Province {
-  id                Int      @id @default(autoincrement())
-  name              String   @unique @db.VarChar(64)
-  short_name        String   @unique @db.VarChar(2)
-  global_code       String   @unique @db.VarChar(255)
-  formatted_address String?  @db.VarChar(255)
-  type              String?  @db.VarChar(255)
-  img_cover         String?  @db.VarChar(255)
-  created_at        DateTime @default(now()) @db.Timestamp()
-  updated_at        DateTime @updatedAt @db.Timestamp()
-  cities            City[]
+  id         Int      @id @default(autoincrement())
+  name       String   @unique @db.VarChar(64)
+  short_name String   @unique @db.VarChar(2)
+  img_cover  String?  @db.VarChar(255)
+  cities     City[]
+  created_at DateTime @default(now()) @db.Timestamp()
+  updated_at DateTime @updatedAt @db.Timestamp()
 
   @@map("provinces")
 }
 
 model City {
-  id                Int         @id @default(autoincrement())
-  name              String      @db.VarChar(64)
-  global_code       String      @unique @db.VarChar(255)
-  formatted_address String?     @db.VarChar(255)
-  type              String?     @db.VarChar(255)
-  img_cover         String?     @db.VarChar(255)
-  created_at        DateTime    @default(now()) @db.Timestamp()
-  updated_at        DateTime    @updatedAt @db.Timestamp()
-  province          Province    @relation(fields: [province_id], references: [id], onUpdate: Cascade)
-  province_id       Int
-  communities       Community[]
+  id          Int         @id @default(autoincrement())
+  name        String      @db.VarChar(64)
+  latitude    Float
+  longitude   Float
+  place_id    String      @db.VarChar(255)
+  img_cover   String?     @db.VarChar(255)
+  province    Province    @relation(fields: [province_id], references: [id], onUpdate: Cascade)
+  province_id Int
+  communities Community[]
+  created_at  DateTime    @default(now()) @db.Timestamp()
+  updated_at  DateTime    @updatedAt @db.Timestamp()
 
-  @@unique([name, province_id, global_code])
   @@map("cities")
 }
 
@@ -43,107 +39,102 @@ model Community {
   id                Int        @id @default(autoincrement())
   name              String     @db.VarChar(64)
   global_code       String     @unique @db.VarChar(255)
-  formatted_address String?    @db.VarChar(255)
-  type              String?    @db.VarChar(255)
+  formatted_address String     @db.VarChar(255)
+  latitude          Float
+  longitude         Float
   img_cover         String?    @db.VarChar(255)
-  created_at        DateTime   @default(now()) @db.Timestamp()
-  updated_at        DateTime   @updatedAt @db.Timestamp()
-  city              City       @relation(fields: [city_id], references: [id], onUpdate: Cascade)
+  city              City       @relation(fields: [city_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   city_id           Int
   properties        Property[]
+  created_at        DateTime   @default(now()) @db.Timestamp()
+  updated_at        DateTime   @updatedAt @db.Timestamp()
 
-  @@unique([name, city_id, global_code])
   @@map("communities")
 }
 
 model Property {
-  id            Int           @id @default(autoincrement())
-  community     Community     @relation(fields: [community_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id            Int          @id @default(autoincrement())
+  community     Community    @relation(fields: [community_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   community_id  Int
+  description   Description?
   address       Address?
-  property_info PropertyInfo?
-  manager       Manager       @relation(fields: [manager_id], references: [id])
+  manager       Manager      @relation(fields: [manager_id], references: [id], onUpdate: Cascade)
   manager_id    Int
-  created_at    DateTime      @default(now()) @db.Timestamp()
-  updated_at    DateTime      @updatedAt @db.Timestamp()
+  created_at    DateTime     @default(now()) @db.Timestamp()
+  updated_at    DateTime     @updatedAt @db.Timestamp()
+  descriptionId Int?
 
   @@map("properties")
 }
 
 model Address {
-  id                Int       @id @default(autoincrement())
+  id                Int      @id @default(autoincrement())
   number            Int
-  street            String    @db.VarChar(255)
-  postal_code       String?   @unique @db.VarChar(255)
-  formatted_address String?   @db.VarChar(255)
-  global_code       String?   @unique @db.VarChar(255)
-  place_id          String?   @unique @db.VarChar(255)
-  community_name    String    @db.VarChar(255)
-  city_name         String    @db.VarChar(255)
-  province_name     String    @db.VarChar(255)
-  Property          Property  @relation(fields: [property_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  property_id       Int       @unique
-  created_at        DateTime  @default(now()) @db.Timestamp()
-  updated_at        DateTime  @updatedAt @db.Timestamp()
-  location          Location?
+  street            String   @db.VarChar(255)
+  postal_code       String   @unique @db.VarChar(16)
+  global_code       String   @unique @db.VarChar(255)
+  place_id          String   @unique @db.VarChar(255)
+  formatted_address String
+  latitude          Float
+  longitude         Float
+  community         String   @db.VarChar(255)
+  city              String   @db.VarChar(255)
+  province          String   @db.VarChar(255)
+  property          Property @relation(fields: [property_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  property_id       Int      @unique
+  created_at        DateTime @default(now()) @db.Timestamp()
+  updated_at        DateTime @updatedAt @db.Timestamp()
 
   @@unique([id, property_id])
-  @@map("addresses")
+  @@map("p_addresses")
 }
 
-model Location {
-  id         Int     @id @default(autoincrement())
-  lat        Decimal
-  lng        Decimal
-  address    Address @relation(fields: [address_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  address_id Int     @unique
-}
-
-model PropertyInfo {
-  id            Int                        @id @default(autoincrement())
-  price         Float                      @db.Real
+model Description {
+  id            Int                       @id @default(autoincrement())
+  title         String                    @db.VarChar(255)
+  thumb         String
+  price         Float                     @db.Real
   bathrooms     Int
   badrooms      Int
   furnished     Boolean
-  rented        Boolean?                   @default(false)
-  property_area Float                      @db.Real
-  type          PropertyType               @relation(fields: [type_id], references: [id])
+  rented        Boolean?                  @default(false)
+  property_area Float                     @db.Real
+  pets_cats     Int
+  pets_dogs     Int
+  smoking       Boolean
+  type          Type                      @relation(fields: [type_id], references: [id])
   type_id       Int
-  Property      Property                   @relation(fields: [property_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  property_id   Int                        @unique
-  created_at    DateTime                   @default(now()) @db.Timestamp()
-  updated_at    DateTime                   @updatedAt @db.Timestamp()
-  utilities     UtilitiesOnPropertyInfos[]
-  features      FeaturesOnPropertyInfos[]
+  utilities     UtilitiesOnDescriptions[]
+  features      FeaturesOnDescriptions[]
+  created_at    DateTime                  @default(now()) @db.Timestamp()
+  updated_at    DateTime                  @updatedAt @db.Timestamp()
+  property      Property                  @relation(fields: [property_id], references: [id])
+  property_id   Int                       @unique
 
   @@unique([id, property_id])
-  @@map("property_infos")
+  @@map("p_descriptions")
 }
 
 model Utility {
-  id                         Int                        @id @default(autoincrement())
-  name                       String                     @unique @db.VarChar(255)
-  utilities_on_propertyinfos UtilitiesOnPropertyInfos[]
+  id                        Int                       @id @default(autoincrement())
+  name                      String                    @unique @db.VarChar(255)
+  utilities_on_descriptions UtilitiesOnDescriptions[]
+  created_at                DateTime                  @default(now()) @db.Timestamp()
+  updated_at                DateTime                  @updatedAt @db.Timestamp()
 
-  @@map("utilities")
+  @@map("p_utilities")
 }
 
-model UtilitiesOnPropertyInfos {
-  property_info    PropertyInfo @relation(fields: [property_info_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  property_info_id Int
-  utility          Utility      @relation(fields: [utility_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  utility_id       Int
+model UtilitiesOnDescriptions {
+  description    Description @relation(fields: [description_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  description_id Int
+  utility        Utility     @relation(fields: [utility_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  utility_id     Int
+  created_at     DateTime    @default(now()) @db.Timestamp()
+  updated_at     DateTime    @updatedAt @db.Timestamp()
 
-  @@id([property_info_id, utility_id])
-  @@map("utilities_on_propertyinfos")
-}
-
-model PropertyType {
-  id             Int            @id @default(autoincrement())
-  name           String         @unique @db.VarChar(255)
-  property_infos PropertyInfo[]
-
-  @@map("property_types")
+  @@unique([description_id, utility_id])
+  @@map("utilities_on_descriptions")
 }
 
 enum FeatureType {
@@ -153,39 +144,49 @@ enum FeatureType {
 }
 
 model Feature {
-  id                        Int                       @id @default(autoincrement())
-  name                      String                    @db.VarChar(255)
-  type                      FeatureType
-  features_on_propertyinfos FeaturesOnPropertyInfos[]
+  id                       Int                      @id @default(autoincrement())
+  name                     String                   @db.VarChar(255)
+  type                     FeatureType
+  features_on_descriptions FeaturesOnDescriptions[]
+  created_at               DateTime                 @default(now()) @db.Timestamp()
+  updated_at               DateTime                 @updatedAt @db.Timestamp()
 
-  @@map("features")
+  @@map("p_features")
 }
 
-model FeaturesOnPropertyInfos {
-  property_info    PropertyInfo @relation(fields: [property_info_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  property_info_id Int
-  feature          Feature      @relation(fields: [feature_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  feature_id       Int
+model FeaturesOnDescriptions {
+  description    Description @relation(fields: [description_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  description_id Int
+  feature        Feature     @relation(fields: [feature_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  feature_id     Int
+  created_at     DateTime    @default(now()) @db.Timestamp()
+  updated_at     DateTime    @updatedAt @db.Timestamp()
 
-  @@id([property_info_id, feature_id])
-  @@map("features_on_propertyinfos")
+  @@id([description_id, feature_id])
+  @@map("features_on_descriptions")
 }
 
-enum ManagerType {
-  Organization
-  Private
+model Type {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique @db.VarChar(255)
+  Description Description[]
+  created_at  DateTime      @default(now()) @db.Timestamp()
+  updated_at  DateTime      @updatedAt @db.Timestamp()
+
+  @@map("p_types")
 }
 
 model Manager {
-  id          Int         @id @default(autoincrement())
-  type        ManagerType
-  name        String      @db.VarChar(255)
-  website     String      @db.VarChar(255)
-  phone       String      @db.VarChar(255)
-  email       String      @db.VarChar(255)
-  img_logo    String?     @db.VarChar(255)
-  img_profile String?     @db.VarChar(255)
+  id          Int        @id @default(autoincrement())
+  name        String     @db.VarChar(255)
+  website     String     @db.VarChar(255)
+  phone       String     @db.VarChar(255)
+  email       String     @db.VarChar(255)
+  img_logo    String?    @db.VarChar(255)
+  img_profile String?    @db.VarChar(255)
   properties  Property[]
+  created_at  DateTime   @default(now()) @db.Timestamp()
+  updated_at  DateTime   @updatedAt @db.Timestamp()
 
-  @@map("managers")
+  @@map("p_managers")
 }
