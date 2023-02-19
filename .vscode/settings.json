@@ -1,5 +1,6 @@
 {
   "material-icon-theme.folders.associations": {
-    "maps": "plugin"
+    "maps": "plugin",
+    "queries": "core"
   }
 }

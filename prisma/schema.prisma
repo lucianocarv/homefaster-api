@@ -4,7 +4,8 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 model Province {
@@ -29,6 +30,7 @@ model City {
   province    Province    @relation(fields: [province_id], references: [id], onUpdate: Cascade)
   province_id Int
   communities Community[]
+  properties  Property[]
   created_at  DateTime    @default(now()) @db.Timestamp()
   updated_at  DateTime    @updatedAt @db.Timestamp()
 
@@ -53,16 +55,17 @@ model Community {
 }
 
 model Property {
-  id            Int          @id @default(autoincrement())
-  community     Community    @relation(fields: [community_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  community_id  Int
-  description   Description?
-  address       Address?
-  manager       Manager      @relation(fields: [manager_id], references: [id], onUpdate: Cascade)
-  manager_id    Int
-  created_at    DateTime     @default(now()) @db.Timestamp()
-  updated_at    DateTime     @updatedAt @db.Timestamp()
-  descriptionId Int?
+  id           Int          @id @default(autoincrement())
+  community    Community    @relation(fields: [community_id], references: [id], onUpdate: Cascade)
+  community_id Int
+  description  Description?
+  address      Address?
+  manager      Manager      @relation(fields: [manager_id], references: [id], onUpdate: Cascade)
+  manager_id   Int
+  created_at   DateTime     @default(now()) @db.Timestamp()
+  updated_at   DateTime     @updatedAt @db.Timestamp()
+  city         City         @relation(fields: [city_id], references: [id], onUpdate: Cascade)
+  city_id      Int
 
   @@map("properties")
 }
@@ -108,7 +111,7 @@ model Description {
   features      FeaturesOnDescriptions[]
   created_at    DateTime                  @default(now()) @db.Timestamp()
   updated_at    DateTime                  @updatedAt @db.Timestamp()
-  property      Property                  @relation(fields: [property_id], references: [id])
+  property      Property                  @relation(fields: [property_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   property_id   Int                       @unique
 
   @@unique([id, property_id])

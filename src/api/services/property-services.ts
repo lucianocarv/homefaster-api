@@ -2,7 +2,11 @@ import { prisma } from '../config/prisma-connect.js';
 import { City, Community, Property, Province } from '@prisma/client';
 import { PaginationParameters } from '../types/pagination-parameters.js';
 import { CreateProperty } from '../types/create-property.js';
-import { ValidateAddressAPI, IReplyOfValidateAddressAPI } from '../maps/validate-address-api.js';
+import { ValidateAddressAPI } from '../maps/validate-address-api.js';
+import { _address, _description, _manager } from '../helpers/query-properties.js';
+import { IPagination } from '../interfaces/pagination.js';
+import { ISearchAddress } from '../interfaces/search-address.js';
+import { IFilter } from '../interfaces/search-filter.js';
 
 const propertyServices = {
   index: async ({ page_number, per_page_number, skip }: PaginationParameters) => {
@@ -10,9 +14,9 @@ const propertyServices = {
       take: per_page_number,
       skip,
       include: {
-        address: true,
-        description: true,
-        manager: true,
+        address: { select: _address },
+        description: { select: _description },
+        manager: { select: _manager },
       },
     });
     return { page: page_number, per_page: per_page_number, properties };
@@ -21,51 +25,96 @@ const propertyServices = {
   getOneProperty: async (id: number) => {
     const property = await prisma.property.findUnique({
       where: { id },
-      select: {
-        id: true,
+      include: {
+        address: true,
+        description: true,
+        manager: true,
       },
     });
-    const address = await prisma.address.findUnique({
-      where: { property_id: property!.id },
-      select: {
-        number: true,
-        street: true,
-        postal_code: true,
-        global_code: true,
-        place_id: true,
-        community: true,
-        city: true,
-        province: true,
-        formatted_address: true,
-      },
+    const _features = await prisma.featuresOnDescriptions.findMany({
+      where: { description_id: property?.description?.id },
+      include: { feature: true },
     });
-    const property_info = await prisma.description.findUnique({
-      where: { property_id: property!.id },
-      select: {
-        bathrooms: true,
-        badrooms: true,
-        price: true,
-        furnished: true,
-        rented: true,
-        property_area: true,
-        type: { select: { name: true } },
-        id: true,
-      },
+    const _utilities = await prisma.utilitiesOnDescriptions.findMany({
+      where: { description_id: property?.description?.id },
+      include: { utility: true },
     });
+    const features = _features.map((feature) => feature.feature.name);
+    const utilities = _utilities.map((utility) => utility.utility.name);
+    const fullProperty = { ...property } as { features: string[]; utilities: string[] };
+    fullProperty.features = features;
+    fullProperty.utilities = utilities;
+    return fullProperty;
+  },
 
-    const features_query: Array<{ feature: string; type: string }> = await prisma.$queryRaw`
-      SELECT features.name as feature, features.type as type FROM property_infos
-      JOIN features_on_propertyinfos ON features_on_propertyinfos.property_info_id = property_infos.id
-      JOIN features ON features.id = features_on_propertyinfos.feature_id WHERE property_infos.id = ${property_info!.id}
-    `;
-    const utilities_query: Array<{ utility: string }> = await prisma.$queryRaw`
-      SELECT utilities.name as utility FROM property_infos
-      JOIN utilities_on_propertyinfos ON utilities_on_propertyinfos.property_info_id = property_infos.id
-      JOIN utilities ON utilities.id = utilities_on_propertyinfos.utility_id WHERE property_infos.id = ${property_info!.id}
-  `;
-    const features = features_query.map(({ feature, type }) => ({ feature, type }));
-    const utilities = utilities_query.map((utility) => utility.utility);
-    return { ...property_info, ...property, ...address, features, utilities };
+  searchByAddress: async ({ pagination, address }: { pagination: IPagination; address: ISearchAddress }) => {
+    address.community ? '' : (address.community = '');
+    address.street ? '' : (address.street = '');
+    console.log(address.city);
+    const properties = await prisma.property.findMany({
+      skip: pagination.skip,
+      take: pagination.per_page_number,
+      include: {
+        address: true,
+        description: {
+          include: {
+            type: true,
+          },
+        },
+        manager: true,
+      },
+      where: {
+        address: {
+          city: {
+            contains: address.city,
+            mode: 'insensitive',
+          },
+          community: {
+            contains: address.community,
+            mode: 'insensitive',
+          },
+          formatted_address: {
+            contains: address.street,
+            mode: 'insensitive',
+          },
+        },
+      },
+    });
+    const count = properties.length;
+    return { count, page: pagination.page_number, per_page: pagination.per_page_number, properties };
+  },
+
+  filterByDescription: async ({ pagination, filters }: { pagination: IPagination; filters: IFilter }) => {
+    console.log(filters);
+    const properties = await prisma.property.findMany({
+      skip: pagination.skip,
+      take: pagination.per_page_number,
+      include: {
+        address: true,
+        description: {
+          include: {
+            type: true,
+          },
+        },
+        manager: true,
+      },
+      where: {
+        description: {
+          price: { lte: filters.price_max, gte: filters.price_min },
+          badrooms: { equals: filters.badrooms },
+          bathrooms: { equals: filters.bathrooms },
+          furnished: { equals: filters.furnished },
+          pets_cats: { equals: filters.pets_cats },
+          pets_dogs: { equals: filters.pets_dogs },
+          smoking: { equals: filters.smoking },
+          type: {
+            name: { equals: filters.type, mode: 'insensitive' },
+          },
+        },
+      },
+    });
+    const count = properties.length;
+    return { count, page: pagination.page_number, per_page: pagination.per_page_number, properties };
   },
 
   create: async (attributes: CreateProperty): Promise<Property | Error> => {
@@ -88,6 +137,7 @@ const propertyServices = {
       const _property = await prisma.property.create({
         data: {
           ...property,
+          city_id,
           address: {
             create: {
               ...address,
