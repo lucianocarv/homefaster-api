@@ -1,6 +1,5 @@
 import { Province } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { fstat, writeFile } from 'fs';
 import { getPagination } from '../helpers/get-pagination.js';
 import { provinceServices } from '../services/province-services.js';
 import { PaginationParameters } from '../types/pagination-parameters.js';

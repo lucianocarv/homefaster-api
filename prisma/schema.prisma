@@ -66,6 +66,7 @@ model Property {
   updated_at   DateTime     @updatedAt @db.Timestamp()
   city         City         @relation(fields: [city_id], references: [id], onUpdate: Cascade)
   city_id      Int
+  favorites    Favorites[]
 
   @@map("properties")
 }
@@ -190,6 +191,40 @@ model Manager {
   properties  Property[]
   created_at  DateTime   @default(now()) @db.Timestamp()
   updated_at  DateTime   @updatedAt @db.Timestamp()
+  user        User[]
 
   @@map("p_managers")
+}
+
+enum Role {
+  User
+  Manager
+  Admin
+}
+
+model User {
+  id         Int         @id @default(autoincrement())
+  first_name String      @db.VarChar(255)
+  last_name  String      @db.VarChar(255)
+  avatar_url String
+  email      String      @unique
+  password   String
+  phone      String
+  city       String
+  managing   Manager?    @relation(fields: [manager_id], references: [id], onUpdate: Cascade)
+  manager_id Int?
+  role       Role
+  favorites  Favorites[]
+
+  @@map("users")
+}
+
+model Favorites {
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id     Int
+  property    Property @relation(fields: [property_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  property_id Int
+
+  @@id([user_id, property_id])
+  @@map("u_favorites")
 }
