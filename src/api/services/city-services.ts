@@ -1,8 +1,7 @@
 import { prisma } from '../config/prisma-connect.js';
 import { City, Province } from '@prisma/client';
 import { PaginationParameters } from '../types/pagination-parameters.js';
-import { ValidateAddressAPI } from '../maps/validate-address-api.js';
-import { GeocodeAPI, IReplyOfGeocodeAPI } from '../maps/geocode-api.js';
+import { GeocodeAPI } from '../maps/geocode-api.js';
 
 const citiesServices = {
   index: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {

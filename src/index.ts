@@ -7,6 +7,7 @@ import { propertyRoutes } from './api/routes/property-router.js';
 import { provinceRoutes } from './api/routes/province-router.js';
 import { userRouter } from './api/routes/user-router.js';
 import JWT from '@fastify/jwt';
+import { privateSystem } from './subsystems/private.js';
 
 export const apiUrl = process.env.GMAPS_VALIDATE_ADDRESS_API_URL;
 export const apiKey = process.env.GMAPS_VALIDATE_ADDRESS_API_KEY;
@@ -22,3 +23,6 @@ server.register(cityRoutes);
 server.register(communityRoutes);
 server.register(propertyRoutes);
 server.register(userRouter);
+
+// Subsystems
+server.register(privateSystem, { prefix: '/private' });

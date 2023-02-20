@@ -220,11 +220,12 @@ model User {
 }
 
 model Favorites {
+  id          Int      @id @default(autoincrement())
   user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id     Int
   property    Property @relation(fields: [property_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   property_id Int
 
-  @@id([user_id, property_id])
+  @@unique([user_id, property_id])
   @@map("u_favorites")
 }
