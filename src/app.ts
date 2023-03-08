@@ -1,14 +1,14 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import { server } from './index.js';
+import { fastify } from './index.js';
 
 const app = async () => {
-  const port = 3001;
+  const port = 50021;
   try {
-    await server.listen({ port });
+    await fastify.listen({ port });
     console.log(`App running at port ${port}`);
   } catch (error) {
-    server.log.error(error);
+    fastify.log.error(error);
     process.exit(1);
   }
 };

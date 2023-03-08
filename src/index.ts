@@ -1,28 +1,30 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import fastify from 'fastify';
+import Fastify, { FastifyRequest } from 'fastify';
+import JWT from '@fastify/jwt';
+import fastifyMultipart from '@fastify/multipart';
 import { cityRoutes } from './api/routes/city-router.js';
 import { communityRoutes } from './api/routes/community-router.js';
 import { propertyRoutes } from './api/routes/property-router.js';
 import { provinceRoutes } from './api/routes/province-router.js';
 import { userRouter } from './api/routes/user-router.js';
-import JWT from '@fastify/jwt';
 import { privateSystem } from './subsystems/private.js';
 
 export const apiUrl = process.env.GMAPS_VALIDATE_ADDRESS_API_URL;
 export const apiKey = process.env.GMAPS_VALIDATE_ADDRESS_API_KEY;
 const jwtSecret = process.env.JWT_SECRET;
 
-export const server = fastify({ logger: true });
+export const fastify = Fastify({ logger: true, bodyLimit: 1024 * 1024 * 10, keepAliveTimeout: 20 });
 
-server.register(JWT, {
+fastify.register(JWT, {
   secret: jwtSecret!,
 });
-server.register(provinceRoutes);
-server.register(cityRoutes);
-server.register(communityRoutes);
-server.register(propertyRoutes);
-server.register(userRouter);
+fastify.register(fastifyMultipart);
+fastify.register(provinceRoutes);
+fastify.register(cityRoutes);
+fastify.register(communityRoutes);
+fastify.register(propertyRoutes);
+fastify.register(userRouter);
 
 // Subsystems
-server.register(privateSystem, { prefix: '/private' });
+fastify.register(privateSystem, { prefix: '/private' });

@@ -1,7 +1,7 @@
 import { prisma } from '../config/prisma-connect.js';
 import { City, Province } from '@prisma/client';
 import { PaginationParameters } from '../types/pagination-parameters.js';
-import { GeocodeAPI } from '../maps/geocode-api.js';
+import { GeocodingAPI } from '../maps/geocode-api.js';
 
 const citiesServices = {
   index: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
@@ -21,7 +21,7 @@ const citiesServices = {
 
   create: async (attributes: City): Promise<City | Error> => {
     const { short_name } = (await prisma.province.findUnique({ where: { id: attributes.province_id } })) as Province;
-    const geocode = await GeocodeAPI.getDataForCity(short_name, attributes.name);
+    const geocode = await GeocodingAPI.getDataForCity(short_name, attributes.name);
     if (typeof geocode === 'object') {
       const { latitude, longitude, place_id } = geocode;
       const city = await prisma.city.create({
@@ -29,7 +29,7 @@ const citiesServices = {
       });
       return city;
     } else {
-      return new Error('Invalid City');
+      return new Error(`Invalid City: (${geocode})`);
     }
   },
 

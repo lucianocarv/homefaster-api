@@ -8,6 +8,8 @@
     "@fastify/env": "^4.2.0",
     "@fastify/jwt": "^6.5.0",
     "@fastify/middie": "^8.1.0",
+    "@fastify/multipart": "^7.4.1",
+    "@google-cloud/storage": "^6.9.4",
     "@prisma/client": "^4.9.0",
     "axios": "^1.3.2",
     "bcrypt": "^5.1.0",

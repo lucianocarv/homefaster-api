@@ -1,14 +1,14 @@
-import { server } from '../../index';
+import { fastify } from '../../index';
 import { IJWTPayload } from '../interfaces/jwt-payload';
 
 const jwtService = {
   createToken: async (payload: IJWTPayload) => {
-    const token = server.jwt.sign(payload);
+    const token = fastify.jwt.sign(payload);
     return token;
   },
 
   verifyToken: async (token: string) => {
-    const decoded = server.jwt.verify(token);
+    const decoded = fastify.jwt.verify(token);
     return decoded as IJWTPayload;
   },
 };

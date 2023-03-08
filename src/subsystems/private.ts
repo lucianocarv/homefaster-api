@@ -2,13 +2,15 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import middie from '@fastify/middie';
 import { jwtService } from '../api/services/jwt-services';
 import { userServices } from '../api/services/user-services';
-import { favoritesRouter } from '../api/routes/private/favorites-router';
+import { favoritesRouter } from '../api/routes/favorites-router';
+import { imagesUpload } from '../api/routes/private/images-upload-router';
+import fastifyMultipart from '@fastify/multipart';
 
 export async function privateSystem(fastify: FastifyInstance) {
   fastify.register(middie, { hook: 'onRequest' });
-
   // Routes
   fastify.register(favoritesRouter);
+  fastify.register(imagesUpload);
 
   fastify.addHook('onRequest', async (req: FastifyRequest, res: FastifyReply) => {
     const token = req.headers.authorization;

@@ -1,4 +1,4 @@
-import { prisma } from '../../config/prisma-connect';
+import { prisma } from '../config/prisma-connect';
 
 const favoritesService = {
   favorites: async (user_id: number) => {

@@ -1,12 +1,20 @@
 import { prisma } from '../config/prisma-connect.js';
 import { City, Community, Property, Province } from '@prisma/client';
 import { PaginationParameters } from '../types/pagination-parameters.js';
-import { CreateProperty } from '../types/create-property.js';
+import { PropertyWithAddressAndDescription, PropertyWithAddressAndDescriptionUpdate } from '../types/create-property.js';
 import { ValidateAddressAPI } from '../maps/validate-address-api.js';
 import { _address, _description, _manager } from '../helpers/query-properties.js';
 import { IPagination } from '../interfaces/pagination.js';
 import { ISearchAddress } from '../interfaces/search-address.js';
 import { IFilter } from '../interfaces/search-filter.js';
+import { storage } from '../storage/google-cloud-storage.js';
+import { MultipartFile } from '@fastify/multipart';
+
+import fs from 'fs';
+import util from 'util';
+import { pipeline } from 'stream';
+import path from 'path';
+const pump = util.promisify(pipeline);
 
 const propertyServices = {
   index: async ({ page_number, per_page_number, skip }: PaginationParameters) => {
@@ -22,7 +30,7 @@ const propertyServices = {
     return { page: page_number, per_page: per_page_number, properties };
   },
 
-  getOneProperty: async (id: number) => {
+  property: async (id: number) => {
     const property = await prisma.property.findUnique({
       where: { id },
       include: {
@@ -31,6 +39,7 @@ const propertyServices = {
         manager: true,
       },
     });
+    if (!property) return 'A propriedade informada não existe!';
     const _features = await prisma.featuresOnDescriptions.findMany({
       where: { description_id: property?.description?.id },
       include: { feature: true },
@@ -41,7 +50,7 @@ const propertyServices = {
     });
     const features = _features.map((feature) => feature.feature.name);
     const utilities = _utilities.map((utility) => utility.utility.name);
-    const fullProperty = { ...property } as { features: string[]; utilities: string[] };
+    const fullProperty = { ...property };
     fullProperty.features = features;
     fullProperty.utilities = utilities;
     return fullProperty;
@@ -117,7 +126,7 @@ const propertyServices = {
     return { count, page: pagination.page_number, per_page: pagination.per_page_number, properties };
   },
 
-  create: async (attributes: CreateProperty): Promise<Property | Error> => {
+  create: async (attributes: PropertyWithAddressAndDescription): Promise<Property | Error> => {
     const { property, description, address } = attributes;
     const { community_id } = attributes.property;
     const { name: community_name, city_id } = (await prisma.community.findUnique({ where: { id: community_id } })) as Community;
@@ -186,7 +195,86 @@ const propertyServices = {
       return newProperty!;
     }
 
-    return new Error('Invalid Property Creation');
+    return new Error(`Erro ao criar propriedade: (${geocodeAPI})`);
+  },
+  update: async (id: number, attributes: PropertyWithAddressAndDescriptionUpdate) => {
+    const _property = await prisma.property.findUnique({ where: { id } });
+    if (_property && _property.id) {
+      const desc = await prisma.description.findUnique({ where: { property_id: _property.id } });
+      console.log(attributes);
+      if (desc!.id) {
+        await prisma.property.update({
+          where: { id },
+          data: {
+            description: {
+              update: {
+                title: attributes.description.title,
+                thumb: attributes.description.thumb,
+                badrooms: attributes.description.badrooms,
+                bathrooms: attributes.description.bathrooms,
+                price: attributes.description.price,
+                furnished: attributes.description.furnished,
+                pets_cats: attributes.description.pets_cats,
+                pets_dogs: attributes.description.pets_dogs,
+                smoking: attributes.description.smoking,
+                property_area: attributes.description.property_area,
+              },
+            },
+          },
+        });
+        if (attributes.features || attributes.utilities) {
+          if (attributes.features && attributes.features.length >= 1) {
+            await prisma.featuresOnDescriptions.deleteMany({ where: { description_id: desc!.id } });
+            await prisma
+              .$transaction([
+                prisma.featuresOnDescriptions.createMany({
+                  data: attributes.features.map((feature) => ({ feature_id: feature, description_id: desc!.id })),
+                }),
+              ])
+              .catch((err) => {
+                throw { message: 'Feature incorreta não pode ser atualizada', code: err.code };
+              });
+          }
+          if (attributes.utilities && attributes.utilities.length >= 1) {
+            await prisma.utilitiesOnDescriptions.deleteMany({ where: { description_id: desc!.id } });
+            await prisma
+              .$transaction([
+                prisma.utilitiesOnDescriptions.createMany({
+                  data: attributes.utilities.map((utility) => ({ utility_id: utility, description_id: desc!.id })),
+                }),
+              ])
+              .catch((err) => {
+                throw { message: 'Utilidade incorreta não pode ser atualizada', code: err.code };
+              });
+          }
+        }
+        const property = await propertyServices.property(id);
+        return property;
+      }
+    }
+  },
+
+  uploadThumb: async (data: MultipartFile, property_id: string) => {
+    const property = await prisma.property.findUnique({ where: { id: Number(property_id) } });
+    const filename = data.filename.replace(/\b(\s)\b/g, '-');
+    const filenameSplit = data.filename.split('.');
+    const type = filenameSplit[filenameSplit.length - 1];
+    if (property) {
+      await pump(data.file, fs.createWriteStream(`./images/${filename}`));
+      const bucket = storage.bucket('rentfaster-clone-files');
+      const file = bucket.file(`properties/${property_id}/${filename}`);
+      const writableStream = file.createWriteStream();
+      const readableStream = fs.createReadStream(`./images/${filename}`);
+      readableStream.pipe(writableStream);
+      writableStream.on('error', async (err) => {}).on('finish', async () => {});
+
+      // update thumb on property
+      await propertyServices.update(Number(property_id), {
+        description: { thumb: `${process.env.CLOUD_STORAGE_IMAGES_URL}${property_id}/${filename}` },
+      });
+    } else {
+      return { message: 'A propriedade informada não existe!' };
+    }
   },
 };
 

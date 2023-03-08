@@ -71,7 +71,7 @@ export class ValidateAddressAPI {
         formatted_address,
       };
     }
-    return 'Invalid Address';
+    return 'Endereço Inválido';
   }
 
   static async getDataForCommunity({

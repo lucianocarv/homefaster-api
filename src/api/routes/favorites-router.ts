@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { favoritesController } from '../../controllers/private/favorites-controller';
+import { favoritesController } from '../controllers/favorites-controller';
 
 async function favoritesRouter(fastify: FastifyInstance) {
   fastify.get('/user/favorites', favoritesController.favorites);

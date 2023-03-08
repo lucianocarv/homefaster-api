@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { IJWTPayload } from '../../interfaces/jwt-payload';
-import { favoritesService } from '../../services/private/favorites-services';
+import { IJWTPayload } from '../interfaces/jwt-payload';
+import { favoritesService } from '../services/favorites-services';
 
 const favoritesController = {
   favorites: async (req: FastifyRequest, res: FastifyReply) => {
