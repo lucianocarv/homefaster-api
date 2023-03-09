@@ -12,8 +12,9 @@ import { MultipartFile } from '@fastify/multipart';
 
 import fs from 'fs';
 import util from 'util';
-import { pipeline } from 'stream';
+import { pipeline, Readable } from 'stream';
 import path from 'path';
+import { streamToBuffer } from '../helpers/stream-to-buffer.js';
 const pump = util.promisify(pipeline);
 
 const propertyServices = {
@@ -257,18 +258,17 @@ const propertyServices = {
   uploadThumb: async (data: MultipartFile, property_id: string) => {
     const property = await prisma.property.findUnique({ where: { id: Number(property_id) } });
     const filename = data.filename.replace(/\b(\s)\b/g, '-');
-    const filenameSplit = data.filename.split('.');
-    const type = filenameSplit[filenameSplit.length - 1];
     if (property) {
-      await pump(data.file, fs.createWriteStream(`./images/${filename}`));
+      const buffer = await streamToBuffer(data.file);
       const bucket = storage.bucket('rentfaster-clone-files');
       const file = bucket.file(`properties/${property_id}/${filename}`);
       const writableStream = file.createWriteStream();
-      const readableStream = fs.createReadStream(`./images/${filename}`);
+      const readableStream = new Readable();
+      readableStream.push(buffer);
+      readableStream.push(null);
       readableStream.pipe(writableStream);
       writableStream.on('error', async (err) => {}).on('finish', async () => {});
 
-      // update thumb on property
       await propertyServices.update(Number(property_id), {
         description: { thumb: `${process.env.CLOUD_STORAGE_IMAGES_URL}${property_id}/${filename}` },
       });
