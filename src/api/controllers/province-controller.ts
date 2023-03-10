@@ -2,6 +2,7 @@ import { Province } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { getPagination } from '../helpers/get-pagination.js';
 import { provinceServices } from '../services/province-services.js';
+import { imageUpload } from '../storage/upload-image.js';
 import { PaginationParameters } from '../types/pagination-parameters.js';
 
 const provinceController = {
@@ -13,6 +14,16 @@ const provinceController = {
       res.send(provinces);
     } catch (error) {
       res.send(error);
+    }
+  },
+
+  province: async (req: FastifyRequest, res: FastifyReply) => {
+    const { id } = req.params as { id: number };
+    try {
+      const province = await provinceServices.province(Number(id));
+      return res.send(province);
+    } catch (error) {
+      return res.send(error);
     }
   },
 
@@ -48,6 +59,17 @@ const provinceController = {
     } catch (error) {
       res.send(error);
     }
+  },
+
+  uploadImgCover: async (req: FastifyRequest, res: FastifyReply) => {
+    const data = await req.file();
+    const { id } = req.params as { id: string };
+    if (!data?.file) return res.status(406).send({});
+    if (!id) return res.status(406).send({});
+    try {
+      const upload = await provinceServices.uploadImgCover(data, 'provinces', Number(id));
+      return upload;
+    } catch (error) {}
   },
 };
 

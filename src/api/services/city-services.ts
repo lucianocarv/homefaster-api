@@ -20,6 +20,11 @@ const citiesServices = {
     return { page: page_number, per_page: per_page_number, cities };
   },
 
+  city: async (id: number) => {
+    const city = await prisma.city.findUnique({ where: { id } });
+    return city;
+  },
+
   create: async (attributes: City): Promise<City | Error> => {
     const { short_name } = (await prisma.province.findUnique({ where: { id: attributes.province_id } })) as Province;
     const geocode = await GeocodingAPI.getDataForCity(short_name, attributes.name);
