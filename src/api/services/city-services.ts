@@ -2,6 +2,7 @@ import { prisma } from '../config/prisma-connect.js';
 import { City, Province } from '@prisma/client';
 import { PaginationParameters } from '../types/pagination-parameters.js';
 import { GeocodingAPI } from '../maps/geocode-api.js';
+import { IUpdateCity } from '../interfaces/update-city.js';
 
 const citiesServices = {
   index: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
@@ -33,7 +34,7 @@ const citiesServices = {
     }
   },
 
-  update: async ({ id, attributes }: { id: number; attributes: City }): Promise<City> => {
+  update: async ({ id, attributes }: { id: number; attributes: IUpdateCity }): Promise<City> => {
     const city = await prisma.city.update({
       where: { id },
       data: attributes,

@@ -1,5 +1,5 @@
 import { prisma } from '../config/prisma-connect.js';
-import { City, Community, Property, Province } from '@prisma/client';
+import { Address, City, Community, Description, Manager, Property, Province } from '@prisma/client';
 import { PaginationParameters } from '../types/pagination-parameters.js';
 import { PropertyWithAddressAndDescription, PropertyWithAddressAndDescriptionUpdate } from '../types/create-property.js';
 import { ValidateAddressAPI } from '../maps/validate-address-api.js';
@@ -15,6 +15,11 @@ import util from 'util';
 import { pipeline, Readable } from 'stream';
 import path from 'path';
 import { streamToBuffer } from '../helpers/stream-to-buffer.js';
+import { IFullProperty } from '../interfaces/full-property.js';
+import { imageUpload } from '../storage/upload-image.js';
+import { UploadImageTo } from '../types/upload-image-to.js';
+import { provinceServices } from './province-services.js';
+import { citiesServices } from './city-services.js';
 const pump = util.promisify(pipeline);
 
 const propertyServices = {
@@ -51,7 +56,7 @@ const propertyServices = {
     });
     const features = _features.map((feature) => feature.feature.name);
     const utilities = _utilities.map((utility) => utility.utility.name);
-    const fullProperty = { ...property };
+    const fullProperty = { ...property } as IFullProperty;
     fullProperty.features = features;
     fullProperty.utilities = utilities;
     return fullProperty;
@@ -255,23 +260,12 @@ const propertyServices = {
     }
   },
 
-  uploadThumb: async (data: MultipartFile, property_id: string) => {
-    const property = await prisma.property.findUnique({ where: { id: Number(property_id) } });
+  uploadThumb: async (data: MultipartFile, to: UploadImageTo, id: number) => {
     const filename = data.filename.replace(/\b(\s)\b/g, '-');
+    const property = await prisma.property.findUnique({ where: { id: Number(id) } });
     if (property) {
-      const buffer = await streamToBuffer(data.file);
-      const bucket = storage.bucket('rentfaster-clone-files');
-      const file = bucket.file(`properties/${property_id}/${filename}`);
-      const writableStream = file.createWriteStream();
-      const readableStream = new Readable();
-      readableStream.push(buffer);
-      readableStream.push(null);
-      readableStream.pipe(writableStream);
-      writableStream.on('error', async (err) => {}).on('finish', async () => {});
-
-      await propertyServices.update(Number(property_id), {
-        description: { thumb: `${process.env.CLOUD_STORAGE_IMAGES_URL}${property_id}/${filename}` },
-      });
+      const res = await imageUpload({ to, file: data.file, filename, id });
+      return res;
     } else {
       return { message: 'A propriedade informada não existe!' };
     }

@@ -9,7 +9,7 @@ async function propertyRoutes(fastify: FastifyInstance) {
   fastify.get('/properties/search', propertyController.searchByAddress);
   fastify.post('/properties/filter', propertyController.filterByDescription);
   fastify.post('/properties', propertyController.create);
-  fastify.post('/properties/image/upload', propertyController.uploadThumbImage);
+  fastify.post('/properties/image/upload/:id', propertyController.uploadThumbImage);
 }
 
 export { propertyRoutes };

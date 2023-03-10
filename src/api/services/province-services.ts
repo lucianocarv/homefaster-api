@@ -1,6 +1,7 @@
 import { prisma } from '../config/prisma-connect.js';
 import { Province } from '@prisma/client';
 import { PaginationParameters } from '../types/pagination-parameters.js';
+import { IUpdateProperty } from '../interfaces/update-property.js';
 
 const provinceServices = {
   index: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
@@ -22,7 +23,7 @@ const provinceServices = {
     return province;
   },
 
-  update: async ({ id, attibutes }: { id: number; attibutes: Province }): Promise<Province> => {
+  update: async ({ id, attibutes }: { id: number; attibutes: IUpdateProperty }): Promise<Province> => {
     const province = await prisma.province.update({
       where: {
         id,

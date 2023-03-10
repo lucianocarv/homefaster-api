@@ -86,12 +86,12 @@ const propertyController = {
 
   uploadThumbImage: async (req: FastifyRequest, res: FastifyReply) => {
     const data = await req.file();
-    const { property_id } = req.query as { property_id: string };
+    const { id } = req.params as { id: string };
+    if (!data?.filename) return res.status(406).send({ message: 'É necessário incluir um arquivo para realizar o upload!' });
+    if (!id) return res.status(406).send({ message: 'É necessário informar uma propriedade!' });
     try {
-      if (data?.filename) {
-        const result = await propertyServices.uploadThumb(data, property_id);
-        res.send(result);
-      }
+      const result = await propertyServices.uploadThumb(data, 'properties', Number(id));
+      res.send(result);
     } catch (error) {
       res.send(error);
     }

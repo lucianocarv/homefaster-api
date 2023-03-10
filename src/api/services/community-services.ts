@@ -1,5 +1,6 @@
 import { City, Community } from '@prisma/client';
 import { prisma } from '../config/prisma-connect.js';
+import { IUpdateCommunity } from '../interfaces/update-community.js';
 import { IReplyOfValidateAddressAPI, ValidateAddressAPI } from '../maps/validate-address-api.js';
 import { PaginationParameters } from '../types/pagination-parameters';
 
@@ -43,7 +44,7 @@ const communityServices = {
     }
   },
 
-  update: async ({ id, attributes }: { id: number; attributes: Community }): Promise<Community> => {
+  update: async ({ id, attributes }: { id: number; attributes: IUpdateCommunity }): Promise<Community> => {
     const community = await prisma.community.update({
       where: { id },
       data: attributes,
