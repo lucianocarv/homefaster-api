@@ -31,8 +31,8 @@ const favoritesController = {
     const { id } = req.body as { id: number };
     if (user_id) {
       try {
-        const favoriteDeleted = await favoritesService.removeFavorite(id);
-        return res.send(favoriteDeleted);
+        const favorite = await favoritesService.removeFavorite(id);
+        return res.send(favorite);
       } catch (error) {
         return res.send(error);
       }

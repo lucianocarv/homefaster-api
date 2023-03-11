@@ -24,7 +24,7 @@ export interface PropertyWithAddressAndDescription {
   features: Array<number>;
 }
 
-export interface PropertyWithAddressAndDescriptionUpdate {
+export interface IPropertyUpdate {
   description: {
     title?: string;
     thumb?: string;

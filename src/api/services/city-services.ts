@@ -3,6 +3,10 @@ import { City, Province } from '@prisma/client';
 import { PaginationParameters } from '../types/pagination-parameters.js';
 import { GeocodingAPI } from '../maps/geocode-api.js';
 import { IUpdateCity } from '../interfaces/update-city.js';
+import { MultipartFile } from '@fastify/multipart';
+import { UploadImageTo } from '../types/upload-image-to.js';
+import { imageUpload } from '../storage/upload-image.js';
+import { CustomError } from '../helpers/custom-error.js';
 
 const citiesServices = {
   index: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
@@ -45,6 +49,17 @@ const citiesServices = {
       data: attributes,
     });
     return city;
+  },
+
+  uploadCoverImage: async (data: MultipartFile, to: UploadImageTo, id: number) => {
+    const filename = data.filename.replace(/\b(\s)\b/g, '-');
+    const property = await prisma.city.findUnique({ where: { id: Number(id) } });
+    if (property) {
+      const res = await imageUpload({ to, file: data.file, filename, id });
+      return res;
+    } else {
+      return CustomError('_', 'Insira uma cidade válida!', 400);
+    }
   },
 
   delete: async ({ id }: { id: number }): Promise<City> => {

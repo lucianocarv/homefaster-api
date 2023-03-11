@@ -76,7 +76,7 @@ model Address {
   id                Int      @id @default(autoincrement())
   number            Int
   street            String   @db.VarChar(255)
-  postal_code       String   @unique @db.VarChar(16)
+  postal_code       String?  @db.VarChar(16)
   global_code       String   @unique @db.VarChar(255)
   place_id          String   @unique @db.VarChar(255)
   formatted_address String

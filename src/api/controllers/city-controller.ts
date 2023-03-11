@@ -1,5 +1,6 @@
 import { City } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
 import { citiesServices } from '../services/city-services';
 import { PaginationParameters } from '../types/pagination-parameters';
@@ -35,6 +36,19 @@ const cityController = {
       res.send(city);
     } catch (error) {
       res.send(error);
+    }
+  },
+
+  uploadCoverImage: async (req: FastifyRequest, res: FastifyReply) => {
+    const data = await req.file();
+    const { id } = req.params as { id: string };
+    if (!data?.filename) return CustomError('_', 'É necessário incluir um arquivo para realizar o upload!', 406);
+    if (!id) return CustomError('_', 'É necessário informar uma propriedade!', 406);
+    try {
+      const upload = await citiesServices.uploadCoverImage(data, 'cities', Number(id));
+      return upload;
+    } catch (error) {
+      return res.send(error);
     }
   },
 

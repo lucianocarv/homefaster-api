@@ -50,17 +50,6 @@ const provinceController = {
     }
   },
 
-  delete: async (req: FastifyRequest, res: FastifyReply) => {
-    const params = req.params as { id: string };
-    const id = Number(params.id);
-    try {
-      const province = await provinceServices.delete({ id });
-      res.send(province);
-    } catch (error) {
-      res.send(error);
-    }
-  },
-
   uploadImgCover: async (req: FastifyRequest, res: FastifyReply) => {
     const data = await req.file();
     const { id } = req.params as { id: string };
@@ -70,6 +59,17 @@ const provinceController = {
       const upload = await provinceServices.uploadImgCover(data, 'provinces', Number(id));
       return upload;
     } catch (error) {}
+  },
+
+  delete: async (req: FastifyRequest, res: FastifyReply) => {
+    const params = req.params as { id: string };
+    const id = Number(params.id);
+    try {
+      const province = await provinceServices.delete({ id });
+      res.send(province);
+    } catch (error) {
+      res.send(error);
+    }
   },
 };
 

@@ -8,9 +8,9 @@ const userController = {
     const data = req.body as User;
     try {
       const user = await userServices.register(data);
-      res.send(user);
+      return res.send(user);
     } catch (error) {
-      res.send(error);
+      return res.send(error);
     }
   },
 
@@ -18,9 +18,9 @@ const userController = {
     const data = req.body as IUserLogin;
     try {
       const user = await userServices.login(data);
-      res.send(user);
+      return res.send(user);
     } catch (error) {
-      res.send(error);
+      return res.send(error);
     }
   },
 };

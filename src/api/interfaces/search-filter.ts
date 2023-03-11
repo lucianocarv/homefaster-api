@@ -1,4 +1,4 @@
-export interface IFilter {
+export interface IDescriptionFilter {
   price_min?: number;
   price_max?: number;
   bathrooms?: number;
@@ -9,6 +9,6 @@ export interface IFilter {
   pets_cats?: number;
   pets_dogs?: number;
   smoking?: boolean;
-  type?: string;
+  type?: number;
   order?: string;
 }

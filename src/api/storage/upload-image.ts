@@ -1,4 +1,4 @@
-import { pipeline, Readable } from 'stream';
+import { Readable } from 'stream';
 import { getFileName } from '../helpers/get-filename';
 import { streamToBuffer } from '../helpers/stream-to-buffer';
 import { IUploadImage } from '../interfaces/image-upload';
@@ -21,34 +21,67 @@ const imageUpload = async ({ to, file, filename, id }: IUploadImage) => {
     readableStream.push(buffer);
     readableStream.push(null);
     readableStream.pipe(writableStream);
-    const updateThumb = updateThumbUrl({ to, id, filename });
-    return updateThumb;
+    const updateUrl = await updateImgUrl({ to, id, filename });
+    return updateUrl;
   } catch (error) {
     return error;
   }
 };
 
-const updateThumbUrl = async ({ to, id, filename }: { to: string; id: number; filename: string }) => {
+const message = 'Imagem alterada com sucesso!';
+
+const updateImgUrl = async ({ to, id, filename }: { to: string; id: number; filename: string }) => {
   if (to == 'provinces') {
-    const province = await provinceServices.province(id);
-    if (province?.img_cover) {
-      const filename = await getFileName(province.img_cover);
-      await storage.bucket(bucketName).file(`${to}/${id}/${filename}`).delete({ ignoreNotFound: true });
+    try {
+      const province = await provinceServices.province(id);
+      if (province?.img_cover) {
+        const filename = await getFileName(province.img_cover);
+        await storage.bucket(bucketName).file(`${to}/${id}/${filename}`).delete({ ignoreNotFound: true });
+      }
+      await provinceServices.update({ id, attibutes: { img_cover: `${storageBaseUrl}${to}/${id}/${filename}` } });
+      return { message };
+    } catch (error) {
+      return error;
     }
-    await provinceServices.update({ id, attibutes: { img_cover: `${storageBaseUrl}${to}/${id}/${filename}` } });
-    return { message: 'Imagem da província alterada com sucesso!' };
   }
   if (to == 'cities') {
-    await citiesServices.update({ id, attributes: { img_cover: `${storageBaseUrl}${to}/${id}/${filename}` } });
-    return { message: 'Imagem da cidade alterada com sucesso!' };
+    try {
+      const city = await citiesServices.city(id);
+      if (city?.img_cover) {
+        const filename = await getFileName(city.img_cover);
+        await storage.bucket(bucketName).file(`${to}/${id}/${filename}`).delete({ ignoreNotFound: true });
+      }
+      await citiesServices.update({ id, attributes: { img_cover: `${storageBaseUrl}${to}/${id}/${filename}` } });
+      return { message };
+    } catch (error) {
+      return error;
+    }
   }
   if (to == 'communities') {
-    await communityServices.update({ id, attributes: { img_cover: `${storageBaseUrl}${to}/${id}/${filename}` } });
-    return { message: 'Imagem da comunidade alterada com sucesso!' };
+    try {
+      const community = await communityServices.community(id);
+      if (community?.img_cover) {
+        const filename = await getFileName(community.img_cover);
+        await storage.bucket(bucketName).file(`${to}/${id}/${filename}`).delete({ ignoreNotFound: true });
+      }
+      await communityServices.update({ id, attributes: { img_cover: `${storageBaseUrl}${to}/${id}/${filename}` } });
+      return { message };
+    } catch (error) {
+      return error;
+    }
   }
   if (to == 'properties') {
-    await propertyServices.update(id, { description: { thumb: `${storageBaseUrl}${to}/${id}/${filename}` } });
-    return { message: 'Imagem da propriedade alterada com sucesso!' };
+    try {
+      const property = (await propertyServices.getOneProperty(id)) as { description: { thumb: string } };
+      if (property.description.thumb) {
+        const filename = await getFileName(property.description.thumb);
+        await storage.bucket(bucketName).file(`${to}/${id}/${filename}`).delete({ ignoreNotFound: true });
+      }
+      await propertyServices.updateOneProperty(id, { description: { thumb: `${storageBaseUrl}${to}/${id}/${filename}` } });
+      return { message };
+    } catch (error) {
+      return error;
+    }
   }
 };
 

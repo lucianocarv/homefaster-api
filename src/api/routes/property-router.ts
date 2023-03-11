@@ -3,12 +3,11 @@ import { propertyController } from '../controllers/property-controller';
 
 async function propertyRoutes(fastify: FastifyInstance) {
   fastify.get('/properties/:id', propertyController.property);
-  fastify.put('/properties/:id', propertyController.updateOneProperty);
-
+  fastify.delete('/properties/:id', propertyController.delete);
   fastify.get('/properties', propertyController.index);
-  fastify.get('/properties/search', propertyController.searchByAddress);
-  fastify.post('/properties/filter', propertyController.filterByDescription);
+  fastify.post('/properties/search', propertyController.filter);
   fastify.post('/properties', propertyController.create);
+  fastify.put('/properties/:id', propertyController.update);
   fastify.post('/properties/image/upload/:id', propertyController.uploadThumbImage);
 }
 

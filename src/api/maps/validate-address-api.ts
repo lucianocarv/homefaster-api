@@ -1,45 +1,24 @@
 import axios from 'axios';
+import { FastifyError } from 'fastify';
+import { IValidationAddressReply } from '../interfaces/validation-address-reply';
 
 const API_URL = process.env.GMAPS_VALIDATE_ADDRESS_API_URL;
 const API_KEY = process.env.GMAPS_API_KEY;
 
-interface IPropsOfPropertyAddress {
+interface IProps {
   province: string;
   city: string;
-  address: string;
+  address?: string;
   community?: string;
-}
-interface IPropsOfCommunityAddress {
-  province: string;
-  city: string;
-  community: string;
-}
-
-export interface IReplyOfValidateAddressAPI {
-  postal_code?: string;
-  latitude: number;
-  longitude: number;
-  global_code: string;
-  place_id?: string;
-  formatted_address: string;
-}
-
-export interface IReplyOfValidateAddressAPIProperty {
-  postal_code: string;
-  latitude: number;
-  longitude: number;
-  global_code: string;
-  place_id: string;
-  formatted_address: string;
 }
 
 export class ValidateAddressAPI {
-  static async getDataForProperty({
+  static async validatePropertyAddress({
     province,
     city,
     address,
     community,
-  }: IPropsOfPropertyAddress): Promise<IReplyOfValidateAddressAPIProperty | string> {
+  }: IProps): Promise<IValidationAddressReply | FastifyError> {
     const body = {
       address: {
         administrativeArea: province,
@@ -48,37 +27,37 @@ export class ValidateAddressAPI {
         addressLines: [`${address}`],
       },
     };
-    const res = await axios.post(`${API_URL}?key=${API_KEY}`, body);
-    const data = await res.data;
+    try {
+      const res = await axios.post(`${API_URL}?key=${API_KEY}`, body);
+      const data = await res.data;
+      const postal_code = data.result.address.postalAddress.postalCode;
+      const formatted_address = data.result.address.formattedAddress;
+      const addressComponents = data.result.address.addressComponents as Array<{ confirmationLevel: string }>;
+      const geocode = data.result.geocode.location;
+      const global_code = data.result.geocode.plusCode.globalCode;
+      const place_id = data.result.geocode.placeId;
+      const metadata = data.result.metadata;
+      const validateAddress = addressComponents.map((component) => component.confirmationLevel);
+      const confirmed = validateAddress.find((address) => address !== 'CONFIRMED') == undefined ? true : false;
 
-    const postal_code = data.result.address.postalAddress.postalCode;
-    const formatted_address = data.result.address.formattedAddress;
-    const addressComponents = data.result.address.addressComponents as Array<{ confirmationLevel: string }>;
-    const geocode = data.result.geocode.location;
-    const global_code = data.result.geocode.plusCode.globalCode;
-    const place_id = data.result.geocode.placeId;
-    const metadata = data.result.metadata;
-    const validateAddress = addressComponents.map((component) => component.confirmationLevel);
-    const confirmed = validateAddress.find((address) => address !== 'CONFIRMED') == undefined ? true : false;
-
-    if (confirmed && metadata.residential) {
-      return {
-        postal_code,
-        latitude: geocode.latitude,
-        longitude: geocode.longitude,
-        global_code,
-        place_id,
-        formatted_address,
-      };
+      if (confirmed && metadata.residential && formatted_address && global_code && geocode && place_id) {
+        return {
+          postal_code,
+          latitude: geocode.latitude,
+          longitude: geocode.longitude,
+          global_code,
+          place_id,
+          formatted_address,
+        };
+      } else {
+        throw new Error();
+      }
+    } catch (error) {
+      return error as FastifyError;
     }
-    return 'Endereço Inválido';
   }
 
-  static async getDataForCommunity({
-    province,
-    city,
-    community,
-  }: IPropsOfCommunityAddress): Promise<IReplyOfValidateAddressAPI | string> {
+  static async getDataForCommunity({ province, city, community }: IProps): Promise<IValidationAddressReply | string> {
     const body = {
       address: { administrativeArea: province, locality: city, addressLines: [`${community}`] },
     };

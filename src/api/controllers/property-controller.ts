@@ -1,9 +1,9 @@
-import {} from '@prisma/client/runtime';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { readFileSync } from 'fs';
-import path from 'path';
+import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
-import { IFilter } from '../interfaces/search-filter';
+import { ICustomError } from '../interfaces/custom-error';
+import { IAddressFilter } from '../interfaces/search-address';
+import { IDescriptionFilter } from '../interfaces/search-filter';
 import { propertyServices } from '../services/property-services';
 import { PropertyWithAddressAndDescription } from '../types/create-property';
 
@@ -11,40 +11,8 @@ const propertyController = {
   index: async (req: FastifyRequest, res: FastifyReply) => {
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page);
-
     try {
-      const properties = await propertyServices.index({ page_number, per_page_number, skip });
-      return res.send(properties);
-    } catch (error) {
-      return res.send(error);
-    }
-  },
-
-  searchByAddress: async (req: FastifyRequest, res: FastifyReply) => {
-    const { page, per_page } = req.query as { page: string; per_page: string };
-    const { page_number, per_page_number, skip } = getPagination(page, per_page);
-    const { city, community, street } = req.query as { city: string; community?: string; street?: string };
-
-    try {
-      const properties = await propertyServices.searchByAddress({
-        address: { city, community, street },
-        pagination: { page_number, per_page_number, skip },
-      });
-      return res.send(properties);
-    } catch (error) {
-      return res.send(error);
-    }
-  },
-
-  filterByDescription: async (req: FastifyRequest, res: FastifyReply) => {
-    const { page, per_page } = req.query as { page: string; per_page: string };
-    const { page_number, per_page_number, skip } = getPagination(page, per_page);
-    const { filters } = req.body as { filters: IFilter };
-    try {
-      const properties = await propertyServices.filterByDescription({
-        pagination: { page_number, per_page_number, skip },
-        filters,
-      });
+      const properties = await propertyServices.getAllProperties({ page_number, per_page_number, skip });
       return res.send(properties);
     } catch (error) {
       return res.send(error);
@@ -55,7 +23,7 @@ const propertyController = {
     const params = req.params as { id: string };
     const id = Number(params.id);
     try {
-      const property = await propertyServices.property(id);
+      const property = await propertyServices.getOneProperty(id);
       return res.send(property);
     } catch (error) {
       return res.send(error);
@@ -65,35 +33,66 @@ const propertyController = {
   create: async (req: FastifyRequest, res: FastifyReply) => {
     const attibutes = req.body as PropertyWithAddressAndDescription;
     try {
-      const property = await propertyServices.create(attibutes);
+      const property = await propertyServices.createOneProperty(attibutes);
       return res.send(property);
     } catch (error) {
       return res.send(error);
     }
   },
 
-  updateOneProperty: async (req: FastifyRequest, res: FastifyReply) => {
+  update: async (req: FastifyRequest, res: FastifyReply) => {
     const { id } = req.params as { id: string };
     const attributes = req.body as PropertyWithAddressAndDescription;
     console.log(attributes);
     try {
-      const property = await propertyServices.update(Number(id), attributes);
-      res.send(property);
+      const property = await propertyServices.updateOneProperty(Number(id), attributes);
+      return res.send(property);
     } catch (error) {
-      res.send(error);
+      return res.send(error);
+    }
+  },
+
+  filter: async (req: FastifyRequest, res: FastifyReply) => {
+    const { page, per_page } = req.query as { page: string; per_page: string };
+    const { page_number, per_page_number, skip } = getPagination(page, per_page);
+    const { description, address } = req.body as { description: IDescriptionFilter; address: IAddressFilter };
+    try {
+      const properties = await propertyServices.filter({
+        pagination: { page_number, per_page_number, skip },
+        description,
+        address,
+      });
+      return res.send(properties);
+    } catch (error) {
+      return res.send(error);
     }
   },
 
   uploadThumbImage: async (req: FastifyRequest, res: FastifyReply) => {
     const data = await req.file();
     const { id } = req.params as { id: string };
-    if (!data?.filename) return res.status(406).send({ message: 'É necessário incluir um arquivo para realizar o upload!' });
-    if (!id) return res.status(406).send({ message: 'É necessário informar uma propriedade!' });
+    if (!data?.filename) return CustomError('_', 'É necessário incluir um arquivo para realizar o upload!', 406);
+    if (!id) return CustomError('_', 'É necessário informar uma propriedade!', 406);
     try {
-      const result = await propertyServices.uploadThumb(data, 'properties', Number(id));
-      res.send(result);
+      const result = await propertyServices.uploadThumbImage(data, 'properties', Number(id));
+      return res.send(result);
     } catch (error) {
-      res.send(error);
+      return res.send(error);
+    }
+  },
+
+  delete: async (req: FastifyRequest, res: FastifyReply) => {
+    const { id } = req.params as { id: string };
+    try {
+      const property = await propertyServices.deleteOneProperty(Number(id));
+      return res.send(property);
+    } catch (error) {
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 };
