@@ -33,12 +33,12 @@ const message = 'Imagem alterada com sucesso!';
 const updateImgUrl = async ({ to, id, filename }: { to: string; id: number; filename: string }) => {
   if (to == 'provinces') {
     try {
-      const province = await provinceServices.province(id);
+      const province = await provinceServices.getOneProvince(id);
       if (province?.img_cover) {
         const filename = await getFileName(province.img_cover);
         await storage.bucket(bucketName).file(`${to}/${id}/${filename}`).delete({ ignoreNotFound: true });
       }
-      await provinceServices.update({ id, attibutes: { img_cover: `${storageBaseUrl}${to}/${id}/${filename}` } });
+      await provinceServices.updateOneProvince({ id, attibutes: { img_cover: `${storageBaseUrl}${to}/${id}/${filename}` } });
       return { message };
     } catch (error) {
       return error;
@@ -46,12 +46,12 @@ const updateImgUrl = async ({ to, id, filename }: { to: string; id: number; file
   }
   if (to == 'cities') {
     try {
-      const city = await citiesServices.city(id);
+      const city = await citiesServices.getOneCity(id);
       if (city?.img_cover) {
         const filename = await getFileName(city.img_cover);
         await storage.bucket(bucketName).file(`${to}/${id}/${filename}`).delete({ ignoreNotFound: true });
       }
-      await citiesServices.update({ id, attributes: { img_cover: `${storageBaseUrl}${to}/${id}/${filename}` } });
+      await citiesServices.updateOneCity({ id, attributes: { img_cover: `${storageBaseUrl}${to}/${id}/${filename}` } });
       return { message };
     } catch (error) {
       return error;
@@ -59,12 +59,12 @@ const updateImgUrl = async ({ to, id, filename }: { to: string; id: number; file
   }
   if (to == 'communities') {
     try {
-      const community = await communityServices.community(id);
+      const community = await communityServices.getOneCommunity(id);
       if (community?.img_cover) {
         const filename = await getFileName(community.img_cover);
         await storage.bucket(bucketName).file(`${to}/${id}/${filename}`).delete({ ignoreNotFound: true });
       }
-      await communityServices.update({ id, attributes: { img_cover: `${storageBaseUrl}${to}/${id}/${filename}` } });
+      await communityServices.updateOneCommunity({ id, attributes: { img_cover: `${storageBaseUrl}${to}/${id}/${filename}` } });
       return { message };
     } catch (error) {
       return error;

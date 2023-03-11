@@ -15,7 +15,12 @@ const propertyController = {
       const properties = await propertyServices.getAllProperties({ page_number, per_page_number, skip });
       return res.send(properties);
     } catch (error) {
-      return res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
@@ -26,7 +31,12 @@ const propertyController = {
       const property = await propertyServices.getOneProperty(id);
       return res.send(property);
     } catch (error) {
-      return res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
@@ -36,7 +46,12 @@ const propertyController = {
       const property = await propertyServices.createOneProperty(attibutes);
       return res.send(property);
     } catch (error) {
-      return res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
@@ -48,7 +63,12 @@ const propertyController = {
       const property = await propertyServices.updateOneProperty(Number(id), attributes);
       return res.send(property);
     } catch (error) {
-      return res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
@@ -64,7 +84,12 @@ const propertyController = {
       });
       return res.send(properties);
     } catch (error) {
-      return res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
@@ -77,7 +102,12 @@ const propertyController = {
       const result = await propertyServices.uploadThumbImage(data, 'properties', Number(id));
       return res.send(result);
     } catch (error) {
-      return res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
@@ -91,7 +121,12 @@ const propertyController = {
       if (err.code) {
         return res.send(CustomError(err.code, err.message, err.statusCode));
       } else {
-        return res.send(error);
+        const err = error as ICustomError;
+        if (err.code) {
+          return res.send(CustomError(err.code, err.message, err.statusCode));
+        } else {
+          return res.send(error);
+        }
       }
     }
   },

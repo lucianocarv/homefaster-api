@@ -7,7 +7,7 @@ import { imageUpload } from '../storage/upload-image.js';
 import { MultipartFile } from '@fastify/multipart';
 
 const provinceServices = {
-  index: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
+  getAllProvinces: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
     const provinces = await prisma.province.findMany({
       take: per_page_number,
       skip,
@@ -19,19 +19,19 @@ const provinceServices = {
     };
   },
 
-  province: async (id: number) => {
+  getOneProvince: async (id: number) => {
     const province = await prisma.province.findUnique({ where: { id } });
     return province;
   },
 
-  create: async (attributes: Province): Promise<Province> => {
+  createOneProvince: async (attributes: Province): Promise<Province> => {
     const province = await prisma.province.create({
       data: attributes,
     });
     return province;
   },
 
-  update: async ({ id, attibutes }: { id: number; attibutes: IUpdateProperty }): Promise<Province> => {
+  updateOneProvince: async ({ id, attibutes }: { id: number; attibutes: IUpdateProperty }): Promise<Province> => {
     const province = await prisma.province.update({
       where: {
         id,
@@ -41,7 +41,7 @@ const provinceServices = {
     return province;
   },
 
-  delete: async ({ id }: { id: number }): Promise<Province> => {
+  deleteOneProvince: async ({ id }: { id: number }): Promise<Province> => {
     const province = await prisma.province.delete({
       where: { id },
     });

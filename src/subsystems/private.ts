@@ -17,7 +17,7 @@ export async function privateSystem(fastify: FastifyInstance) {
     if (token) {
       const decoded = await jwtService.verifyToken(token);
       if (decoded) {
-        const userExists = await userServices.findUser(decoded.email);
+        const userExists = await userServices.findOneUser(decoded.email);
         if (userExists) {
           req.user = decoded;
         } else {

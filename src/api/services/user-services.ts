@@ -6,7 +6,7 @@ import { jwtService } from './jwt-services';
 import { IJWTPayload } from '../interfaces/jwt-payload';
 
 const userServices = {
-  register: async (data: User) => {
+  registerOneUser: async (data: User) => {
     const password = await bcrypt.hash(data.password, 10);
     const user = await prisma.user.create({
       data: {
@@ -18,7 +18,7 @@ const userServices = {
   },
 
   login: async (data: IUserLogin) => {
-    const user = await userServices.findUser(data.email);
+    const user = await userServices.findOneUser(data.email);
     if (user) {
       const validatePassword = await bcrypt.compare(data.password, user.password);
       if (validatePassword) {
@@ -32,7 +32,7 @@ const userServices = {
     }
   },
 
-  findUser: async (email: string) => {
+  findOneUser: async (email: string) => {
     const user = await prisma.user.findFirst({ where: { email } });
     return user;
   },

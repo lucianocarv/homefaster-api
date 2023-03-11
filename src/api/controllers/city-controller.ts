@@ -2,6 +2,7 @@ import { City } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
+import { ICustomError } from '../interfaces/custom-error';
 import { citiesServices } from '../services/city-services';
 import { PaginationParameters } from '../types/pagination-parameters';
 
@@ -10,20 +11,45 @@ const cityController = {
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page) as PaginationParameters;
     try {
-      const cities = await citiesServices.index({ page_number, per_page_number, skip });
+      const cities = await citiesServices.getAllCities({ page_number, per_page_number, skip });
       res.send(cities);
     } catch (error) {
-      res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
+    }
+  },
+
+  city: async (req: FastifyRequest, res: FastifyReply) => {
+    const { id } = req.params as { id: string };
+    try {
+      const city = await citiesServices.getOneCity(Number(id));
+      return city;
+    } catch (error) {
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
   create: async (req: FastifyRequest, res: FastifyReply) => {
     const attributes = req.body as City;
     try {
-      const city = await citiesServices.create(attributes);
+      const city = await citiesServices.createOneCity(attributes);
       res.send(city);
     } catch (error) {
-      res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
@@ -32,23 +58,34 @@ const cityController = {
     const id = Number(params.id);
     const attributes = req.body as City;
     try {
-      const city = await citiesServices.update({ id, attributes });
-      res.send(city);
+      if (!attributes) throw { code: '_', message: 'Insira pelo menos um atributo a ser atualizado!', statusCode: 422 };
+      const city = await citiesServices.updateOneCity({ id, attributes });
+      return res.send(city);
     } catch (error) {
-      res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
   uploadCoverImage: async (req: FastifyRequest, res: FastifyReply) => {
     const data = await req.file();
     const { id } = req.params as { id: string };
-    if (!data?.filename) return CustomError('_', 'É necessário incluir um arquivo para realizar o upload!', 406);
-    if (!id) return CustomError('_', 'É necessário informar uma propriedade!', 406);
+    if (!data?.filename) throw { code: '_', message: 'É necessário incluir um arquivo para realizar o upload!', statusCode: 422 };
+    if (!id) throw { code: '_', message: 'É necessário informar uma propriedade!', statusCode: 422 };
     try {
-      const upload = await citiesServices.uploadCoverImage(data, 'cities', Number(id));
-      return upload;
+      const uploaded = await citiesServices.uploadCoverImage(data, 'cities', Number(id));
+      return res.send(uploaded);
     } catch (error) {
-      return res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
@@ -56,10 +93,15 @@ const cityController = {
     const params = req.params as { id: string };
     const id = Number(params.id);
     try {
-      const city = await citiesServices.delete({ id });
-      res.send(city);
+      const city = await citiesServices.deleteOneCity({ id });
+      return res.send(city);
     } catch (error) {
-      res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 };

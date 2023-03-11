@@ -10,7 +10,7 @@ import { PaginationParameters } from '../types/pagination-parameters';
 import { UploadImageTo } from '../types/upload-image-to.js';
 
 const communityServices = {
-  index: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
+  getAllCommunities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
     const communities = await prisma.community.findMany({
       take: per_page_number,
       skip,
@@ -22,12 +22,12 @@ const communityServices = {
     };
   },
 
-  community: async (id: number) => {
+  getOneCommunity: async (id: number) => {
     const community = await prisma.community.findUnique({ where: { id } });
     return community;
   },
 
-  create: async (attributes: Community): Promise<Community | Error> => {
+  createOneCommunity: async (attributes: Community): Promise<Community | Error> => {
     const city = (await prisma.city.findUnique({
       where: { id: attributes.city_id },
       select: {
@@ -54,7 +54,7 @@ const communityServices = {
     }
   },
 
-  update: async ({ id, attributes }: { id: number; attributes: IUpdateCommunity }): Promise<Community> => {
+  updateOneCommunity: async ({ id, attributes }: { id: number; attributes: IUpdateCommunity }): Promise<Community> => {
     const community = await prisma.community.update({
       where: { id },
       data: attributes,
@@ -73,7 +73,7 @@ const communityServices = {
     }
   },
 
-  delete: async ({ id }: { id: number }): Promise<Community> => {
+  deleteOneCommunity: async ({ id }: { id: number }): Promise<Community> => {
     const community = await prisma.community.delete({
       where: { id },
     });

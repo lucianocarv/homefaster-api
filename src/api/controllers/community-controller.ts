@@ -2,6 +2,7 @@ import { Community } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
+import { ICustomError } from '../interfaces/custom-error';
 import { IUpdateCommunity } from '../interfaces/update-community';
 import { communityServices } from '../services/community-services';
 
@@ -10,20 +11,30 @@ const communityController = {
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page);
     try {
-      const communities = await communityServices.index({ page_number, per_page_number, skip });
-      res.send(communities);
+      const communities = await communityServices.getAllCommunities({ page_number, per_page_number, skip });
+      return res.send(communities);
     } catch (error) {
-      res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
   create: async (req: FastifyRequest, res: FastifyReply) => {
     const attributes = req.body as Community;
     try {
-      const community = await communityServices.create(attributes);
-      res.send(community);
+      const community = await communityServices.createOneCommunity(attributes);
+      return res.send(community);
     } catch (error) {
-      res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
@@ -32,10 +43,15 @@ const communityController = {
     const id = Number(params.id);
     const attributes = req.body as IUpdateCommunity;
     try {
-      const community = await communityServices.update({ id, attributes });
-      res.send(community);
+      const community = await communityServices.updateOneCommunity({ id, attributes });
+      return res.send(community);
     } catch (error) {
-      res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
@@ -46,9 +62,14 @@ const communityController = {
     if (!id) return CustomError('_', 'É necessário informar uma comunidade!', 406);
     try {
       const result = await communityServices.uploadCoverImage(data, 'communities', Number(id));
-      res.send(result);
+      return res.send(result);
     } catch (error) {
-      res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 
@@ -56,10 +77,15 @@ const communityController = {
     const params = req.params as { id: string };
     const id = Number(params.id);
     try {
-      const community = await communityServices.delete({ id });
-      res.send(community);
+      const community = await communityServices.deleteOneCommunity({ id });
+      return res.send(community);
     } catch (error) {
-      res.send(error);
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
     }
   },
 };

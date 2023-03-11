@@ -6,10 +6,9 @@ import { IUpdateCity } from '../interfaces/update-city.js';
 import { MultipartFile } from '@fastify/multipart';
 import { UploadImageTo } from '../types/upload-image-to.js';
 import { imageUpload } from '../storage/upload-image.js';
-import { CustomError } from '../helpers/custom-error.js';
 
 const citiesServices = {
-  index: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
+  getAllCities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
     const cities = await prisma.city.findMany({
       skip,
       take: per_page_number,
@@ -21,15 +20,21 @@ const citiesServices = {
         },
       },
     });
-    return { page: page_number, per_page: per_page_number, cities };
+    const count = cities.length;
+    return { count, page: page_number, per_page: per_page_number, cities };
   },
 
-  city: async (id: number) => {
+  getOneCity: async (id: number) => {
     const city = await prisma.city.findUnique({ where: { id } });
-    return city;
+
+    if (city) {
+      return city;
+    } else {
+      throw { code: '_', message: 'Esta cidade não existe', statusCode: 400 };
+    }
   },
 
-  create: async (attributes: City): Promise<City | Error> => {
+  createOneCity: async (attributes: City): Promise<City | Error> => {
     const { short_name } = (await prisma.province.findUnique({ where: { id: attributes.province_id } })) as Province;
     const geocode = await GeocodingAPI.getDataForCity(short_name, attributes.name);
     if (typeof geocode === 'object') {
@@ -39,11 +44,11 @@ const citiesServices = {
       });
       return city;
     } else {
-      return new Error(`Invalid City: (${geocode})`);
+      throw { code: '_', message: 'Informe uma cidade válida!', statusCode: 422 };
     }
   },
 
-  update: async ({ id, attributes }: { id: number; attributes: IUpdateCity }): Promise<City> => {
+  updateOneCity: async ({ id, attributes }: { id: number; attributes: IUpdateCity }): Promise<City> => {
     const city = await prisma.city.update({
       where: { id },
       data: attributes,
@@ -58,15 +63,23 @@ const citiesServices = {
       const res = await imageUpload({ to, file: data.file, filename, id });
       return res;
     } else {
-      return CustomError('_', 'Insira uma cidade válida!', 400);
+      throw { code: '_', message: 'Insira uma cidade válida!', statusCode: 422 };
     }
   },
 
-  delete: async ({ id }: { id: number }): Promise<City> => {
-    const city = await prisma.city.delete({
-      where: { id },
-    });
-    return city;
+  deleteOneCity: async ({ id }: { id: number }) => {
+    const city = await prisma.city.findUnique({ where: { id } });
+    if (city) {
+      return await prisma.city
+        .delete({
+          where: { id },
+        })
+        .then(() => {
+          return { message: 'Cidade excluída com sucesso!' };
+        });
+    } else {
+      throw { code: '_', message: 'Cidade não encontrada!', statusCode: 400 };
+    }
   },
 };
 

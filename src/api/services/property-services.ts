@@ -129,56 +129,6 @@ const propertyServices = {
     return CustomError('_', 'Endereço inválido! Por favor, verifique as informações fornecidas!', 400);
   },
 
-  filter: async ({
-    pagination,
-    description,
-    address,
-  }: {
-    pagination: IPagination;
-    description: IDescriptionFilter;
-    address: IAddressFilter;
-  }) => {
-    const properties = await prisma.property.findMany({
-      skip: pagination.skip,
-      take: pagination.per_page_number,
-      include: {
-        address: true,
-        description: {
-          include: {
-            type: true,
-          },
-        },
-        manager: true,
-      },
-      where: {
-        city_id: { equals: address.city_id },
-        community_id: { equals: address.community_id },
-        address: {
-          street: { contains: address.street },
-        },
-        description: {
-          price: { lte: description.price_max, gte: description.price_min },
-          badrooms: { equals: description.badrooms },
-          bathrooms: { equals: description.bathrooms },
-          furnished: { equals: description.furnished },
-          pets_cats: { equals: description.pets_cats },
-          pets_dogs: { equals: description.pets_dogs },
-          smoking: { equals: description.smoking },
-          type: {
-            id: { equals: description.type },
-          },
-        },
-      },
-      orderBy: {
-        description: {
-          price: description.order == 'price_max' ? 'desc' : 'asc',
-        },
-      },
-    });
-    const count = properties.length;
-    return { count, page: pagination.page_number, per_page: pagination.per_page_number, properties };
-  },
-
   updateOneProperty: async (id: number, attributes: IPropertyUpdate) => {
     const property = await prisma.property.findUnique({ where: { id } });
     if (property && property.id) {
@@ -244,6 +194,56 @@ const propertyServices = {
     } else {
       return CustomError('_', 'Insira uma propriedade válida!', 400);
     }
+  },
+
+  filter: async ({
+    pagination,
+    description,
+    address,
+  }: {
+    pagination: IPagination;
+    description: IDescriptionFilter;
+    address: IAddressFilter;
+  }) => {
+    const properties = await prisma.property.findMany({
+      skip: pagination.skip,
+      take: pagination.per_page_number,
+      include: {
+        address: true,
+        description: {
+          include: {
+            type: true,
+          },
+        },
+        manager: true,
+      },
+      where: {
+        city_id: { equals: address.city_id },
+        community_id: { equals: address.community_id },
+        address: {
+          street: { contains: address.street },
+        },
+        description: {
+          price: { lte: description.price_max, gte: description.price_min },
+          badrooms: { equals: description.badrooms },
+          bathrooms: { equals: description.bathrooms },
+          furnished: { equals: description.furnished },
+          pets_cats: { equals: description.pets_cats },
+          pets_dogs: { equals: description.pets_dogs },
+          smoking: { equals: description.smoking },
+          type: {
+            id: { equals: description.type },
+          },
+        },
+      },
+      orderBy: {
+        description: {
+          price: description.order == 'price_max' ? 'desc' : 'asc',
+        },
+      },
+    });
+    const count = properties.length;
+    return { count, page: pagination.page_number, per_page: pagination.per_page_number, properties };
   },
 
   deleteOneProperty: async (id: number) => {
