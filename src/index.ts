@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import Fastify, { FastifyRequest } from 'fastify';
+import Fastify from 'fastify';
 import JWT from '@fastify/jwt';
 import fastifyMultipart from '@fastify/multipart';
 import { cityRoutes } from './api/routes/city-router.js';
@@ -27,4 +27,4 @@ fastify.register(propertyRoutes);
 fastify.register(userRouter);
 
 // Subsystems
-fastify.register(privateSystem, { prefix: '/private' });
+fastify.register(privateSystem, { prefix: '/a' });

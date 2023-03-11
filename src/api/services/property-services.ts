@@ -1,7 +1,7 @@
 import { prisma } from '../config/prisma-connect.js';
 import { City, Community, Property, Province } from '@prisma/client';
-import { PaginationParameters } from '../types/pagination-parameters.js';
-import { PropertyWithAddressAndDescription, IPropertyUpdate } from '../types/create-property.js';
+import { PaginationParameters } from '../interfaces/pagination-parameters.js';
+import { PropertyWithAddressAndDescription, IPropertyUpdate } from '../interfaces/create-property.js';
 import { ValidateAddressAPI } from '../maps/validate-address-api.js';
 import { _address, _description, _manager } from '../helpers/query-properties.js';
 import { IPagination } from '../interfaces/pagination.js';

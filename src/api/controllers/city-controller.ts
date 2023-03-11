@@ -4,7 +4,7 @@ import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
 import { ICustomError } from '../interfaces/custom-error';
 import { citiesServices } from '../services/city-services';
-import { PaginationParameters } from '../types/pagination-parameters';
+import { PaginationParameters } from '../interfaces/pagination-parameters';
 
 const cityController = {
   index: async (req: FastifyRequest, res: FastifyReply) => {
@@ -39,6 +39,13 @@ const cityController = {
   },
 
   create: async (req: FastifyRequest, res: FastifyReply) => {
+    const { role } = req.user as { role: string };
+    if (role !== 'Admin')
+      throw {
+        code: '_',
+        message: 'É necessário acesso de adminsitrador para acessar este recurso!',
+        statusCode: 401,
+      };
     const attributes = req.body as City;
     try {
       const city = await citiesServices.createOneCity(attributes);
@@ -54,6 +61,13 @@ const cityController = {
   },
 
   update: async (req: FastifyRequest, res: FastifyReply) => {
+    const { role } = req.user as { role: string };
+    if (role !== 'Admin')
+      throw {
+        code: '_',
+        message: 'É necessário acesso de adminsitrador para acessar este recurso!',
+        statusCode: 401,
+      };
     const params = req.params as { id: string };
     const id = Number(params.id);
     const attributes = req.body as City;
@@ -72,6 +86,13 @@ const cityController = {
   },
 
   uploadCoverImage: async (req: FastifyRequest, res: FastifyReply) => {
+    const { role } = req.user as { role: string };
+    if (role !== 'Admin')
+      throw {
+        code: '_',
+        message: 'É necessário acesso de adminsitrador para acessar este recurso!',
+        statusCode: 401,
+      };
     const data = await req.file();
     const { id } = req.params as { id: string };
     if (!data?.filename) throw { code: '_', message: 'É necessário incluir um arquivo para realizar o upload!', statusCode: 422 };
@@ -90,6 +111,13 @@ const cityController = {
   },
 
   delete: async (req: FastifyRequest, res: FastifyReply) => {
+    const { role } = req.user as { role: string };
+    if (role !== 'Admin')
+      throw {
+        code: '_',
+        message: 'É necessário acesso de adminsitrador para acessar este recurso!',
+        statusCode: 401,
+      };
     const params = req.params as { id: string };
     const id = Number(params.id);
     try {

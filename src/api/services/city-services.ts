@@ -1,6 +1,6 @@
 import { prisma } from '../config/prisma-connect.js';
 import { City, Province } from '@prisma/client';
-import { PaginationParameters } from '../types/pagination-parameters.js';
+import { PaginationParameters } from '../interfaces/pagination-parameters.js';
 import { GeocodingAPI } from '../maps/geocode-api.js';
 import { IUpdateCity } from '../interfaces/update-city.js';
 import { MultipartFile } from '@fastify/multipart';

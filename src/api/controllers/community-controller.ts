@@ -24,6 +24,13 @@ const communityController = {
   },
 
   create: async (req: FastifyRequest, res: FastifyReply) => {
+    const { role } = req.user as { role: string };
+    if (role !== 'Admin')
+      throw {
+        code: '_',
+        message: 'É necessário acesso de adminsitrador para acessar este recurso!',
+        statusCode: 401,
+      };
     const attributes = req.body as Community;
     try {
       const community = await communityServices.createOneCommunity(attributes);
@@ -39,6 +46,13 @@ const communityController = {
   },
 
   update: async (req: FastifyRequest, res: FastifyReply) => {
+    const { role } = req.user as { role: string };
+    if (role !== 'Admin')
+      throw {
+        code: '_',
+        message: 'É necessário acesso de adminsitrador para acessar este recurso!',
+        statusCode: 401,
+      };
     const params = req.params as { id: string };
     const id = Number(params.id);
     const attributes = req.body as IUpdateCommunity;
@@ -56,6 +70,13 @@ const communityController = {
   },
 
   uploadCoverImage: async (req: FastifyRequest, res: FastifyReply) => {
+    const { role } = req.user as { role: string };
+    if (role !== 'Admin')
+      throw {
+        code: '_',
+        message: 'É necessário acesso de adminsitrador para acessar este recurso!',
+        statusCode: 401,
+      };
     const data = await req.file();
     const { id } = req.params as { id: string };
     if (!data?.filename) return CustomError('_', 'É necessário incluir um arquivo para realizar o upload!', 406);
@@ -74,6 +95,13 @@ const communityController = {
   },
 
   delete: async (req: FastifyRequest, res: FastifyReply) => {
+    const { role } = req.user as { role: string };
+    if (role !== 'Admin')
+      throw {
+        code: '_',
+        message: 'É necessário acesso de adminsitrador para acessar este recurso!',
+        statusCode: 401,
+      };
     const params = req.params as { id: string };
     const id = Number(params.id);
     try {

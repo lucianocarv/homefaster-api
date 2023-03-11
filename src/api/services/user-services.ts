@@ -7,14 +7,19 @@ import { IJWTPayload } from '../interfaces/jwt-payload';
 
 const userServices = {
   registerOneUser: async (data: User) => {
-    const password = await bcrypt.hash(data.password, 10);
-    const user = await prisma.user.create({
-      data: {
-        ...data,
-        password,
-      },
-    });
-    return user;
+    const emailExists = await prisma.user.findUnique({ where: { email: data.email } });
+    if (!emailExists) {
+      const password = await bcrypt.hash(data.password, 10);
+      const user = await prisma.user.create({
+        data: {
+          ...data,
+          password,
+        },
+      });
+      return user;
+    } else {
+      throw { code: '_', message: 'Este email já está sendo usado!', statusCode: 422 };
+    }
   },
 
   login: async (data: IUserLogin) => {
@@ -26,9 +31,11 @@ const userServices = {
         const payload = { id, first_name, last_name, email, role } as IJWTPayload;
         const token = await jwtService.createToken(payload);
         return { payload, token };
+      } else {
+        throw { code: '_', message: 'Senha ou email incorretos!', statusCode: 401 };
       }
     } else {
-      return 'Usuario nao cadastrado!';
+      throw { code: '_', message: 'Cadastre-se para fazer login!', statusCode: 422 };
     }
   },
 

@@ -5,7 +5,7 @@ import { ICustomError } from '../interfaces/custom-error';
 import { IAddressFilter } from '../interfaces/search-address';
 import { IDescriptionFilter } from '../interfaces/search-filter';
 import { propertyServices } from '../services/property-services';
-import { PropertyWithAddressAndDescription } from '../types/create-property';
+import { PropertyWithAddressAndDescription } from '../interfaces/create-property';
 
 const propertyController = {
   index: async (req: FastifyRequest, res: FastifyReply) => {
@@ -41,6 +41,13 @@ const propertyController = {
   },
 
   create: async (req: FastifyRequest, res: FastifyReply) => {
+    const { role } = req.user as { role: string };
+    if (role == 'User')
+      throw {
+        code: '_',
+        message: 'É necessário acesso de adminsitrador ou gerenciador de propriedades para listar uma propriedade!',
+        statusCode: 401,
+      };
     const attibutes = req.body as PropertyWithAddressAndDescription;
     try {
       const property = await propertyServices.createOneProperty(attibutes);
@@ -56,6 +63,13 @@ const propertyController = {
   },
 
   update: async (req: FastifyRequest, res: FastifyReply) => {
+    const { role } = req.user as { role: string };
+    if (role == 'User')
+      throw {
+        code: '_',
+        message: 'É necessário acesso de adminsitrador ou gerenciador de propriedades para listar uma propriedade!',
+        statusCode: 401,
+      };
     const { id } = req.params as { id: string };
     const attributes = req.body as PropertyWithAddressAndDescription;
     console.log(attributes);
@@ -94,6 +108,13 @@ const propertyController = {
   },
 
   uploadThumbImage: async (req: FastifyRequest, res: FastifyReply) => {
+    const { role } = req.user as { role: string };
+    if (role == 'User')
+      throw {
+        code: '_',
+        message: 'É necessário acesso de adminsitrador ou gerenciador de propriedades para listar uma propriedade!',
+        statusCode: 401,
+      };
     const data = await req.file();
     const { id } = req.params as { id: string };
     if (!data?.filename) return CustomError('_', 'É necessário incluir um arquivo para realizar o upload!', 406);
@@ -112,6 +133,13 @@ const propertyController = {
   },
 
   delete: async (req: FastifyRequest, res: FastifyReply) => {
+    const { role } = req.user as { role: string };
+    if (role == 'User')
+      throw {
+        code: '_',
+        message: 'É necessário acesso de adminsitrador ou gerenciador de propriedades para listar uma propriedade!',
+        statusCode: 401,
+      };
     const { id } = req.params as { id: string };
     try {
       const property = await propertyServices.deleteOneProperty(Number(id));

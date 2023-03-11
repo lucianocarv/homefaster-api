@@ -6,7 +6,7 @@ import { IUpdateCommunity } from '../interfaces/update-community.js';
 import { IValidationAddressReply } from '../interfaces/validation-address-reply.js';
 import { ValidateAddressAPI } from '../maps/validate-address-api.js';
 import { imageUpload } from '../storage/upload-image.js';
-import { PaginationParameters } from '../types/pagination-parameters';
+import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { UploadImageTo } from '../types/upload-image-to.js';
 
 const communityServices = {

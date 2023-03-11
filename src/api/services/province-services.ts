@@ -1,6 +1,6 @@
 import { prisma } from '../config/prisma-connect.js';
 import { Province } from '@prisma/client';
-import { PaginationParameters } from '../types/pagination-parameters.js';
+import { PaginationParameters } from '../interfaces/pagination-parameters.js';
 import { IUpdateProperty } from '../interfaces/update-property.js';
 import { UploadImageTo } from '../types/upload-image-to.js';
 import { imageUpload } from '../storage/upload-image.js';

@@ -3,14 +3,20 @@ import middie from '@fastify/middie';
 import { jwtService } from '../api/services/jwt-services';
 import { userServices } from '../api/services/user-services';
 import { favoritesRouter } from '../api/routes/favorites-router';
-import { imagesUpload } from '../api/routes/private/images-upload-router';
-import fastifyMultipart from '@fastify/multipart';
+import { cityRoutesAuth } from '../api/routes/city-router-auth';
+import { CustomError } from '../api/helpers/custom-error';
+import { provinceRoutesAuth } from '../api/routes/province-router-auth';
+import { communityRoutesAuth } from '../api/routes/community-router-auth';
+import { propertyRoutesAuth } from '../api/routes/property-router-auth';
 
 export async function privateSystem(fastify: FastifyInstance) {
   fastify.register(middie, { hook: 'onRequest' });
   // Routes
   fastify.register(favoritesRouter);
-  fastify.register(imagesUpload);
+  fastify.register(provinceRoutesAuth);
+  fastify.register(cityRoutesAuth);
+  fastify.register(communityRoutesAuth);
+  fastify.register(propertyRoutesAuth);
 
   fastify.addHook('onRequest', async (req: FastifyRequest, res: FastifyReply) => {
     const token = req.headers.authorization;
@@ -21,16 +27,14 @@ export async function privateSystem(fastify: FastifyInstance) {
         if (userExists) {
           req.user = decoded;
         } else {
-          res.status(401);
-          return res.send('O usuario nao existe');
+          return res.send(CustomError('_', 'Usuário não encontrado!', 401));
         }
       } else {
-        res.status(401);
-        return res.send('Token Invalido');
+        return res.send(CustomError('_', 'Token inválido!', 401));
       }
     } else {
       res.status(401);
-      return res.send('Token inexistente');
+      return res.send(CustomError('_', 'Faça login para acessar estes recursos!', 401));
     }
   });
 }
