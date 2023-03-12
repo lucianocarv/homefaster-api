@@ -3,7 +3,7 @@ import { IJWTPayload } from '../interfaces/jwt-payload';
 
 const jwtService = {
   createToken: async (payload: IJWTPayload) => {
-    const token = fastify.jwt.sign(payload);
+    const token = fastify.jwt.sign(payload, { expiresIn: '1d' });
     return token;
   },
 

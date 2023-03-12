@@ -1,5 +1,5 @@
 import { prisma } from '../config/prisma-connect.js';
-import { City, Province } from '@prisma/client';
+import { City } from '@prisma/client';
 import { PaginationParameters } from '../interfaces/pagination-parameters.js';
 import { GeocodingAPI } from '../maps/geocode-api.js';
 import { IUpdateCity } from '../interfaces/update-city.js';
@@ -9,19 +9,22 @@ import { imageUpload } from '../storage/upload-image.js';
 
 const citiesServices = {
   getAllCities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
-    const cities = await prisma.city.findMany({
-      skip,
-      take: per_page_number,
-      include: {
-        province: {
-          select: {
-            name: true,
+    const [cities, count] = await Promise.all([
+      prisma.city.findMany({
+        skip,
+        take: per_page_number,
+        include: {
+          province: {
+            select: {
+              name: true,
+            },
           },
         },
-      },
-    });
-    const count = cities.length;
-    return { count, page: page_number, per_page: per_page_number, cities };
+      }),
+      prisma.city.count(),
+    ]);
+    const pages = Math.ceil(count / per_page_number);
+    return { count, page: page_number, per_page: per_page_number, pages, cities };
   },
 
   getOneCity: async (id: number) => {
@@ -35,12 +38,19 @@ const citiesServices = {
   },
 
   createOneCity: async (attributes: City): Promise<City | Error> => {
-    const { short_name } = (await prisma.province.findUnique({ where: { id: attributes.province_id } })) as Province;
-    const geocode = await GeocodingAPI.getDataForCity(short_name, attributes.name);
-    if (typeof geocode === 'object') {
-      const { latitude, longitude, place_id } = geocode;
+    const province = await prisma.province.findUnique({ where: { id: attributes.province_id } });
+    if (!province) throw { code: '_', message: 'Província inválida!', statusCode: 422 };
+
+    const geocodingData = await GeocodingAPI.getDataForCity(province.short_name, attributes.name);
+
+    if (typeof geocodingData === 'object') {
+      const { name, latitude, longitude, place_id } = geocodingData;
+      const cityExists = await prisma.city.findUnique({
+        where: { province_id_place_id: { province_id: province.id, place_id } },
+      });
+      if (cityExists) throw { code: '_', message: 'Esta cidade já está cadastrada!', statusCode: 422 };
       const city = await prisma.city.create({
-        data: { ...attributes, latitude, longitude, place_id },
+        data: { name, latitude, longitude, place_id, province_id: attributes.province_id },
       });
       return city;
     } else {

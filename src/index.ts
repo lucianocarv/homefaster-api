@@ -8,16 +8,13 @@ import { communityRoutes } from './api/routes/community-router.js';
 import { propertyRoutes } from './api/routes/property-router.js';
 import { provinceRoutes } from './api/routes/province-router.js';
 import { userRouter } from './api/routes/user-router.js';
-import { privateSystem } from './subsystems/private.js';
-
-export const apiUrl = process.env.GMAPS_VALIDATE_ADDRESS_API_URL;
-export const apiKey = process.env.GMAPS_VALIDATE_ADDRESS_API_KEY;
-const jwtSecret = process.env.JWT_SECRET;
+import { authenticatedSystem } from './subsystems/authenticated.js';
+import { env_jwtSecret } from './environment.js';
 
 export const fastify = Fastify({ logger: true, bodyLimit: 1024 * 1024 * 10, keepAliveTimeout: 20 });
 
 fastify.register(JWT, {
-  secret: jwtSecret!,
+  secret: env_jwtSecret!,
 });
 fastify.register(fastifyMultipart);
 fastify.register(provinceRoutes);
@@ -27,4 +24,4 @@ fastify.register(propertyRoutes);
 fastify.register(userRouter);
 
 // Subsystems
-fastify.register(privateSystem, { prefix: '/a' });
+fastify.register(authenticatedSystem, { prefix: '/a' });

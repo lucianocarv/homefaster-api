@@ -34,7 +34,7 @@ model City {
   created_at  DateTime    @default(now()) @db.Timestamp()
   updated_at  DateTime    @updatedAt @db.Timestamp()
 
-  @@unique([name, province_id])
+  @@unique([province_id, place_id])
   @@map("cities")
 }
 
@@ -210,7 +210,7 @@ model User {
   avatar_url String
   email      String      @unique
   password   String
-  phone      String
+  phone      String?
   managing   Manager?    @relation(fields: [manager_id], references: [id], onUpdate: Cascade)
   manager_id Int?
   role       Role

@@ -8,8 +8,9 @@ import { CustomError } from '../api/helpers/custom-error';
 import { provinceRoutesAuth } from '../api/routes/province-router-auth';
 import { communityRoutesAuth } from '../api/routes/community-router-auth';
 import { propertyRoutesAuth } from '../api/routes/property-router-auth';
+import { userRouterAuth } from '../api/routes/user-router-auth';
 
-export async function privateSystem(fastify: FastifyInstance) {
+export async function authenticatedSystem(fastify: FastifyInstance) {
   fastify.register(middie, { hook: 'onRequest' });
   // Routes
   fastify.register(favoritesRouter);
@@ -17,6 +18,7 @@ export async function privateSystem(fastify: FastifyInstance) {
   fastify.register(cityRoutesAuth);
   fastify.register(communityRoutesAuth);
   fastify.register(propertyRoutesAuth);
+  fastify.register(userRouterAuth);
 
   fastify.addHook('onRequest', async (req: FastifyRequest, res: FastifyReply) => {
     const token = req.headers.authorization;

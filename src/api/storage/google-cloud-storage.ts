@@ -1,9 +1,12 @@
 import { Storage } from '@google-cloud/storage';
 import path from 'path';
+import { env_storageClientEmail, env_storagePrivateKeyAccess } from '../../environment';
 
 const storage = new Storage({
-  keyFilename: path.join('keys/cloud-storage-upload.json'),
-  projectId: process.env.CLOUD_PROJECT_ID,
+  credentials: {
+    client_email: env_storageClientEmail,
+    private_key: env_storagePrivateKeyAccess,
+  },
 });
 
 export { storage };

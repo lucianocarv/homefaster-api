@@ -1,9 +1,7 @@
 import axios from 'axios';
 import { FastifyError } from 'fastify';
 import { IValidationAddressReply } from '../interfaces/validation-address-reply';
-
-const API_URL = process.env.GMAPS_VALIDATE_ADDRESS_API_URL;
-const API_KEY = process.env.GMAPS_API_KEY;
+import { env_gmapsApiKey, env_gmapsApiUrl } from '../../environment';
 
 interface IProps {
   province: string;
@@ -28,7 +26,7 @@ export class ValidateAddressAPI {
       },
     };
     try {
-      const res = await axios.post(`${API_URL}?key=${API_KEY}`, body);
+      const res = await axios.post(`${env_gmapsApiUrl}?key=${env_gmapsApiKey}`, body);
       const data = await res.data;
       const postal_code = data.result.address.postalAddress.postalCode;
       const formatted_address = data.result.address.formattedAddress;
@@ -61,7 +59,7 @@ export class ValidateAddressAPI {
     const body = {
       address: { administrativeArea: province, locality: city, addressLines: [`${community}`] },
     };
-    const res = await axios.post(`${API_URL}?key=${API_KEY}`, body);
+    const res = await axios.post(`${env_gmapsApiUrl}?key=${env_gmapsApiKey}`, body);
     const data = await res.data;
     const formatted_address = data.result.address.formattedAddress;
     const addressComponents = data.result.address.addressComponents as Array<{ confirmationLevel: string }>;
@@ -78,6 +76,6 @@ export class ValidateAddressAPI {
         formatted_address,
       };
     }
-    return 'Invalid Community';
+    throw { code: '_', message: 'Comunidade inválida!', statusCode: 422 };
   }
 }

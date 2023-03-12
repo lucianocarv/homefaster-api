@@ -1,5 +1,5 @@
 import { MultipartFile } from '@fastify/multipart';
-import { City, Community } from '@prisma/client';
+import { Community } from '@prisma/client';
 import { prisma } from '../config/prisma-connect.js';
 import { CustomError } from '../helpers/custom-error.js';
 import { IUpdateCommunity } from '../interfaces/update-community.js';

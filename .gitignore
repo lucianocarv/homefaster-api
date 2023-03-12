@@ -1,8 +1,12 @@
-node_modules
 # Keep environment variables out of version control
+# Env
 .env
+.prd.env
+# Dirs
+node_modules
 dist
 logs
 keys
 images
+# Yarn
 yarn-error.log

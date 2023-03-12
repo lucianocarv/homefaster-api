@@ -13,6 +13,23 @@ const userServices = {
       const user = await prisma.user.create({
         data: {
           ...data,
+          role: 'User',
+          password,
+        },
+      });
+      return user;
+    } else {
+      throw { code: '_', message: 'Este email já está sendo usado!', statusCode: 422 };
+    }
+  },
+
+  registerOneUserAuth: async (data: User) => {
+    const emailExists = await prisma.user.findUnique({ where: { email: data.email } });
+    if (!emailExists) {
+      const password = await bcrypt.hash(data.password, 10);
+      const user = await prisma.user.create({
+        data: {
+          ...data,
           password,
         },
       });

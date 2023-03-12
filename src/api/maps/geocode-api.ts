@@ -1,26 +1,21 @@
 import axios from 'axios';
-
-const API_URL = process.env.GMAPS_GEOCODE_API_URL;
-const API_KEY = process.env.GMAPS_API_KEY;
-
-export interface IReplyOfGeocodeAPI {
-  latitude: number;
-  longitude: number;
-  place_id: string;
-}
+import { env_gmapsApiKey, env_gmapsApiUrl } from '../../environment';
+import { IGeocodingAPIReply } from '../interfaces/geocoding-reply';
 
 export class GeocodingAPI {
-  static async getDataForCity(province_short_name: string, city: string): Promise<IReplyOfGeocodeAPI | string> {
+  static async getDataForCity(province_short_name: string, city: string): Promise<IGeocodingAPIReply | string> {
     const address = `${city}&components=administrative_area:${province_short_name}|country:CA`;
-    const res = await axios.get(`${API_URL}?address=${address}&key=${API_KEY}`);
+    const res = await axios.get(`${env_gmapsApiUrl}?address=${address}&key=${env_gmapsApiKey}`);
     const data = res.data;
     if (data.results.length == 0) return 'A cidade inserida pertence à outra província ou é inválida!';
     const formatted_address = data.results[0].formatted_address;
+    const name = data.results[0].address_components[0].long_name;
     const { lat: latitude, lng: longitude } = data.results[0].geometry.location;
     const place_id = data.results[0].place_id;
     if (formatted_address.split(',').length == 3) {
-      return { latitude, longitude, place_id };
+      console.log(name);
+      return { name, latitude, longitude, place_id };
     }
-    return 'A cidade inserida pertence à outra província ou o endereço é inválido!';
+    throw { code: '_', message: `Não existe uma cidade em ${province_short_name} com o nome de ${city}!`, statusCode: 422 };
   }
 }
