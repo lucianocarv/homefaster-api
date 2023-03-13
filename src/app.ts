@@ -2,10 +2,12 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { fastify } from './index.js';
 
+const port = Number(process.env.PORT!);
+const host = process.env.HOST!;
+
 const app = async () => {
-  const port = 50021;
   try {
-    await fastify.listen({ port });
+    await fastify.listen({ port, host });
     console.log(`App running at port ${port}`);
   } catch (error) {
     fastify.log.error(error);

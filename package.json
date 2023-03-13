@@ -2,6 +2,8 @@
   "scripts": {
     "server": "nodemon --trace-warnings dist/src/app.js",
     "dev": "concurrently \"tsc -w\" \"yarn server\"",
+    "start": "node src/app.js",
+    "build": "tsc",
     "seed": "node dist/src/api/database/seeders/index.js"
   },
   "dependencies": {
@@ -11,7 +13,6 @@
     "@fastify/middie": "^8.1.0",
     "@fastify/multipart": "^7.4.1",
     "@google-cloud/storage": "^6.9.4",
-    "@prisma/client": "^4.9.0",
     "axios": "^1.3.2",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
@@ -19,6 +20,7 @@
     "ps": "^1.0.0"
   },
   "devDependencies": {
+    "@prisma/client": "^4.9.0",
     "@types/bcrypt": "^5.0.0",
     "@types/node": "^18.11.18",
     "concurrently": "^7.6.0",
