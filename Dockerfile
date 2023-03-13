@@ -10,3 +10,28 @@ EXPOSE 3000
 EXPOSE 50021
 ENTRYPOINT npm start
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
