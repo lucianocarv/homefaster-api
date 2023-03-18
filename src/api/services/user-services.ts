@@ -136,6 +136,83 @@ const userServices = {
       return { message: 'Informações atualizadas com sucesso!' };
     }
   },
+
+  updateUserAsAdmin: async (id: number, role: Role) => {
+    const user = await prisma.user.update({
+      where: { id },
+      data: {
+        role: role,
+      },
+      select: {
+        id: true,
+        first_name: true,
+        last_name: true,
+        avatar_url: true,
+        email: true,
+        phone: true,
+        role: true,
+      },
+    });
+    if (user) {
+      return user;
+    }
+  },
+
+  updatePassword: async (id: number, attributes: { current_password: string; new_password: string }) => {
+    const user = await prisma.user.findUnique({ where: { id } });
+    if (user) {
+      const checkPassword = await bcrypt.compare(attributes.current_password, user.password);
+      if (checkPassword) {
+        const newPasswordHash = await bcrypt.hash(attributes.new_password, 10);
+        const equal = await bcrypt.compare(attributes.current_password, newPasswordHash);
+        if (!equal) {
+          if (newPasswordHash) {
+            await prisma.user.update({
+              where: { id },
+              data: { password: newPasswordHash },
+            });
+            return { message: 'Senha atualizada com sucesso!' };
+          } else {
+            throw { code: '_', message: 'Falha ao criar senha!', statusCode: 400 };
+          }
+        } else {
+          throw { code: '_', message: 'A nova senha não pode ser igual a atual!', statusCode: 400 };
+        }
+      } else {
+        throw { code: '_', message: 'A senha atual informada não confere!', statusCode: 400 };
+      }
+    } else {
+      throw { code: '_', message: 'Não foi possível encontrar o usuário!', statusCode: 422 };
+    }
+  },
+
+  updatePasswordAsAdmin: async (attributes: { email: string; new_password: string }) => {
+    const user = await prisma.user.findUnique({ where: { email: attributes.email } });
+    if (user) {
+      const newPasswordHash = await bcrypt.hash(attributes.new_password, 10);
+      if (newPasswordHash) {
+        await prisma.user.update({
+          where: { email: attributes.email },
+          data: { password: newPasswordHash },
+        });
+        return { message: 'Senha atualizada com sucesso!' };
+      } else {
+        throw { code: '_', message: 'Falha ao atualizar senha!', statusCode: 400 };
+      }
+    } else {
+      throw { code: '_', message: 'Não foi possível encontrar o usuário!', statusCode: 422 };
+    }
+  },
+
+  deleteOneUser: async (id: number) => {
+    const userExists = await prisma.user.findUnique({ where: { id } });
+    if (userExists) {
+      await prisma.user.delete({ where: { id } });
+      return { message: 'Usuário excluído com sucesso!' };
+    } else {
+      throw { code: '_', message: 'Não foi possível encontrar o usuário!', statusCode: 422 };
+    }
+  },
 };
 
 export { userServices };

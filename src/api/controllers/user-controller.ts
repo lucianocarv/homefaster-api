@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
@@ -75,6 +75,60 @@ const userController = {
     }
   },
 
+  updateAsAdmin: async (req: FastifyRequest, res: FastifyReply) => {
+    const admin = req.user as User;
+    if (admin.role !== 'Admin') throw { code: '_', message: 'Acesso negado!', statusCode: 401 };
+    const { id } = req.params as { id: string };
+    const { role } = req.body as { role: Role };
+    if (!['Admin', 'Manager', 'User'].includes(role))
+      throw { code: '_', message: 'Atribuição de função inválida!', statusCode: 422 };
+    try {
+      const user = await userServices.updateUserAsAdmin(Number(id), role);
+      return res.send(user);
+    } catch (error) {
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
+    }
+  },
+
+  updatePassword: async (req: FastifyRequest, res: FastifyReply) => {
+    const user = req.user as User;
+    const attributes = req.body as { current_password: string; new_password: string };
+    try {
+      const result = await userServices.updatePassword(user.id, attributes);
+      return res.send(result);
+    } catch (error) {
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
+    }
+  },
+
+  updatePasswordAsAdmin: async (req: FastifyRequest, res: FastifyReply) => {
+    const admin = req.user as User;
+    if (admin.role !== 'Admin')
+      throw { code: '_', message: 'Você não ter permissão para acessar este recurso!', statusCode: 401 };
+    const attributes = req.body as { email: string; new_password: string };
+    try {
+      const result = await userServices.updatePasswordAsAdmin(attributes);
+      return res.send(result);
+    } catch (error) {
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
+    }
+  },
+
   user: async (req: FastifyRequest, res: FastifyReply) => {
     const { id } = req.params as { id: string };
     try {
@@ -97,6 +151,24 @@ const userController = {
     try {
       const users = await userServices.findAllUsers({ page_number, per_page_number, skip }, filter);
       return res.send(users);
+    } catch (error) {
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
+    }
+  },
+
+  deleteUser: async (req: FastifyRequest, res: FastifyReply) => {
+    const admin = req.user as User;
+    if (admin.role !== 'Admin')
+      throw { code: '_', message: 'Você não ter permissão para acessar este recurso!', statusCode: 401 };
+    const { id } = req.params as { id: string };
+    try {
+      const result = await userServices.deleteOneUser(Number(id));
+      return res.send(result);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
