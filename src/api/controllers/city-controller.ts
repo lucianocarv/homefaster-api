@@ -1,18 +1,25 @@
 import { City } from '@prisma/client';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
 import { ICustomError } from '../interfaces/custom-error';
 import { citiesServices } from '../services/city-services';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
+import {
+  ERR_MISSING_ATTRIBUTE,
+  ERR_MISSING_ATTRIBUTES,
+  ERR_MISSING_FILE,
+  ERR_MISSING_ID,
+  ERR_PERMISSION_DENIED,
+} from '../errors';
 
 const cityController = {
-  index: async (req: FastifyRequest, res: FastifyReply) => {
+  getAllCities: async (req: FastifyRequest, res: FastifyReply): Promise<City[] | FastifyError | undefined> => {
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page) as PaginationParameters;
     try {
       const cities = await citiesServices.getAllCities({ page_number, per_page_number, skip });
-      res.send(cities);
+      return res.send(cities);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
@@ -23,11 +30,11 @@ const cityController = {
     }
   },
 
-  city: async (req: FastifyRequest, res: FastifyReply) => {
+  getOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<City | FastifyError | undefined> => {
     const { id } = req.params as { id: string };
     try {
       const city = await citiesServices.getOneCity(Number(id));
-      return city;
+      return res.send(city);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
@@ -38,44 +45,36 @@ const cityController = {
     }
   },
 
-  create: async (req: FastifyRequest, res: FastifyReply) => {
+  createOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<City | FastifyError | undefined> => {
     const { role } = req.user as { role: string };
-    if (role !== 'Admin')
-      throw {
-        code: '_',
-        message: 'É necessário acesso de adminsitrador para acessar este recurso!',
-        statusCode: 401,
-      };
+    if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const attributes = req.body as City;
-    console.log('F(OI ATEASDOFOA');
+    if (!attributes.name) throw ERR_MISSING_ATTRIBUTE('name', 'cidade');
+    if (!attributes.province_id) throw ERR_MISSING_ATTRIBUTE('province_id', 'cidade');
     try {
       const city = await citiesServices.createOneCity(attributes);
-      res.send(city);
+      return res.status(201).send(city);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
+        return res.send(err);
       } else {
         return res.send(error);
       }
     }
   },
 
-  update: async (req: FastifyRequest, res: FastifyReply) => {
+  updateOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<City | FastifyError | undefined> => {
     const { role } = req.user as { role: string };
-    if (role !== 'Admin')
-      throw {
-        code: '_',
-        message: 'É necessário acesso de adminsitrador para acessar este recurso!',
-        statusCode: 401,
-      };
+    if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const params = req.params as { id: string };
     const id = Number(params.id);
     const attributes = req.body as City;
+    if (!id) throw ERR_MISSING_ID('cidade', 'atualizada');
+    if (!attributes) throw ERR_MISSING_ATTRIBUTES;
     try {
-      if (!attributes) throw { code: '_', message: 'Insira pelo menos um atributo a ser atualizado!', statusCode: 422 };
       const city = await citiesServices.updateOneCity({ id, attributes });
-      return res.send(city);
+      return res.status(202).send(city);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
@@ -86,21 +85,16 @@ const cityController = {
     }
   },
 
-  uploadCoverImage: async (req: FastifyRequest, res: FastifyReply) => {
+  uploadCoverImageForOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<Object> => {
     const { role } = req.user as { role: string };
-    if (role !== 'Admin')
-      throw {
-        code: '_',
-        message: 'É necessário acesso de adminsitrador para acessar este recurso!',
-        statusCode: 401,
-      };
+    if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const data = await req.file();
     const { id } = req.params as { id: string };
-    if (!data?.filename) throw { code: '_', message: 'É necessário incluir um arquivo para realizar o upload!', statusCode: 422 };
-    if (!id) throw { code: '_', message: 'É necessário informar uma propriedade!', statusCode: 422 };
+    if (!data?.filename) throw ERR_MISSING_FILE;
+    if (!id) throw ERR_MISSING_ID('cidade', 'atualizada');
     try {
       const uploaded = await citiesServices.uploadCoverImage(data, 'cities', Number(id));
-      return res.send(uploaded);
+      return res.status(202).send(uploaded);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
@@ -111,19 +105,15 @@ const cityController = {
     }
   },
 
-  delete: async (req: FastifyRequest, res: FastifyReply) => {
+  delete: async (req: FastifyRequest, res: FastifyReply): Promise<Object> => {
     const { role } = req.user as { role: string };
-    if (role !== 'Admin')
-      throw {
-        code: '_',
-        message: 'É necessário acesso de adminsitrador para acessar este recurso!',
-        statusCode: 401,
-      };
+    if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const params = req.params as { id: string };
     const id = Number(params.id);
+    if (!id) throw ERR_MISSING_ID('cidade', 'excluída');
     try {
       const city = await citiesServices.deleteOneCity({ id });
-      return res.send(city);
+      return res.status(202).send(city);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
