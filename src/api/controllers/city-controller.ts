@@ -47,6 +47,7 @@ const cityController = {
         statusCode: 401,
       };
     const attributes = req.body as City;
+    console.log('F(OI ATEASDOFOA');
     try {
       const city = await citiesServices.createOneCity(attributes);
       res.send(city);

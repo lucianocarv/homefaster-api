@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { env_gmapsApiKey, env_gmapsApiUrl } from '../../environment';
+import { env_gmapsApiKey, env_gmapsGeocodeApiUrl } from '../../environment';
 import { IGeocodingAPIReply } from '../interfaces/geocoding-reply';
 
 export class GeocodingAPI {
   static async getDataForCity(province_short_name: string, city: string): Promise<IGeocodingAPIReply | string> {
     const address = `${city}&components=administrative_area:${province_short_name}|country:CA`;
-    const res = await axios.get(`${env_gmapsApiUrl}?address=${address}&key=${env_gmapsApiKey}`);
+    const res = await axios.get(`${env_gmapsGeocodeApiUrl}?address=${address}&key=${env_gmapsApiKey}`);
     const data = res.data;
     if (data.results.length == 0) return 'A cidade inserida pertence à outra província ou é inválida!';
     const formatted_address = data.results[0].formatted_address;

@@ -44,6 +44,7 @@ const citiesServices = {
     const geocodingData = await GeocodingAPI.getDataForCity(province.short_name, attributes.name);
 
     if (typeof geocodingData === 'object') {
+      console.log(geocodingData);
       const { name, latitude, longitude, place_id } = geocodingData;
       const cityExists = await prisma.city.findUnique({
         where: { province_id_place_id: { province_id: province.id, place_id } },

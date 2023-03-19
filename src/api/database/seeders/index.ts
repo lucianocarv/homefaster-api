@@ -1,3 +1,4 @@
 import './utilities.js';
 import './features.js';
-import './manager.js';
+import './users.js';
+import './types.js';

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { FastifyError } from 'fastify';
 import { IValidationAddressReply } from '../interfaces/validation-address-reply';
-import { env_gmapsApiKey, env_gmapsApiUrl } from '../../environment';
+import { env_gmapsApiKey, env_gmapsValidateAddressApiUrl } from '../../environment';
 
 interface IProps {
   province: string;
@@ -26,7 +26,7 @@ export class ValidateAddressAPI {
       },
     };
     try {
-      const res = await axios.post(`${env_gmapsApiUrl}?key=${env_gmapsApiKey}`, body);
+      const res = await axios.post(`${env_gmapsValidateAddressApiUrl}?key=${env_gmapsApiKey}`, body);
       const data = await res.data;
       const postal_code = data.result.address.postalAddress.postalCode;
       const formatted_address = data.result.address.formattedAddress;
@@ -59,7 +59,7 @@ export class ValidateAddressAPI {
     const body = {
       address: { administrativeArea: province, locality: city, addressLines: [`${community}`] },
     };
-    const res = await axios.post(`${env_gmapsApiUrl}?key=${env_gmapsApiKey}`, body);
+    const res = await axios.post(`${env_gmapsValidateAddressApiUrl}?key=${env_gmapsApiKey}`, body);
     const data = await res.data;
     const formatted_address = data.result.address.formattedAddress;
     const addressComponents = data.result.address.addressComponents as Array<{ confirmationLevel: string }>;

@@ -8,7 +8,7 @@ const host = process.env.HOST!;
 const app = async () => {
   try {
     await fastify.listen({ port, host });
-    console.log(`App running at port ${port}`);
+    console.log(`App running at http://localhost:${port}`);
   } catch (error) {
     fastify.log.error(error);
     process.exit(1);

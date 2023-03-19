@@ -23,7 +23,6 @@ const propertyServices = {
         include: {
           address: { select: _address },
           description: { select: _description },
-          manager: { select: _manager },
         },
       }),
       prisma.property.count(),
@@ -38,7 +37,6 @@ const propertyServices = {
       include: {
         address: true,
         description: true,
-        manager: true,
       },
     });
 
@@ -58,7 +56,7 @@ const propertyServices = {
     return { ...property, features, utilities };
   },
 
-  createOneProperty: async (attributes: PropertyWithAddressAndDescription): Promise<Property | FastifyError> => {
+  createOneProperty: async (attributes: PropertyWithAddressAndDescription, user_id: number): Promise<Property | FastifyError> => {
     const { property, description, address } = attributes;
     const { community_id } = attributes.property;
     const { name: community, city_id } = (await prisma.community.findUnique({ where: { id: community_id } })) as Community;
@@ -76,6 +74,7 @@ const propertyServices = {
       const { id } = await prisma.property.create({
         data: {
           ...property,
+          user_id,
           city_id,
           address: {
             create: {
@@ -120,7 +119,6 @@ const propertyServices = {
           include: {
             address: true,
             description: true,
-            manager: true,
           },
         }!
       );
@@ -217,7 +215,6 @@ const propertyServices = {
               type: true,
             },
           },
-          manager: true,
         },
         where: {
           city_id: { equals: address.city_id },

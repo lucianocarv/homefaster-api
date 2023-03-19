@@ -1,4 +1,4 @@
-import { Address, Description, Manager } from '@prisma/client';
+import { Address, Description } from '@prisma/client';
 
 export interface IFullProperty {
   id: number;
@@ -9,7 +9,6 @@ export interface IFullProperty {
   city_id: number;
   address: Address;
   description: Description;
-  manager: Manager;
   features: string[];
   utilities: string[];
 }

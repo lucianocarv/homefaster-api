@@ -62,13 +62,13 @@ model Property {
   community_id Int
   description  Description?
   address      Address?
-  manager      Manager      @relation(fields: [manager_id], references: [id], onUpdate: Cascade)
-  manager_id   Int
-  created_at   DateTime     @default(now()) @db.Timestamp()
-  updated_at   DateTime     @updatedAt @db.Timestamp()
   city         City         @relation(fields: [city_id], references: [id], onUpdate: Cascade)
   city_id      Int
   favorites    Favorites[]
+  created_at   DateTime     @default(now()) @db.Timestamp()
+  updated_at   DateTime     @updatedAt @db.Timestamp()
+  user         User?        @relation(fields: [user_id], references: [id], onUpdate: Cascade)
+  user_id      Int?
 
   @@map("properties")
 }
@@ -182,25 +182,9 @@ model Type {
   @@map("p_types")
 }
 
-model Manager {
-  id          Int        @id @default(autoincrement())
-  name        String     @db.VarChar(255)
-  website     String     @db.VarChar(255)
-  phone       String     @db.VarChar(255)
-  email       String     @db.VarChar(255)
-  img_logo    String?    @db.VarChar(255)
-  img_profile String?    @db.VarChar(255)
-  properties  Property[]
-  created_at  DateTime   @default(now()) @db.Timestamp()
-  updated_at  DateTime   @updatedAt @db.Timestamp()
-  user        User[]
-
-  @@map("p_managers")
-}
-
 enum Role {
   User
-  Manager
+  Owner
   Admin
 }
 
@@ -212,10 +196,9 @@ model User {
   email      String      @unique
   password   String
   phone      String?
-  managing   Manager?    @relation(fields: [manager_id], references: [id], onUpdate: Cascade)
-  manager_id Int?
   role       Role
   favorites  Favorites[]
+  properties Property[]
 
   @@map("users")
 }

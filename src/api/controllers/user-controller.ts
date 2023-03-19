@@ -29,7 +29,7 @@ const userController = {
     const data = req.body as User;
     if (!['User', 'Admin', 'Manager'].includes(data.role))
       throw { code: '_', message: 'Insira uma função válida para o usuário!', statusCode: 422 };
-    if ((data.role == 'Admin' && user.role == 'Manager') || user.role == 'User')
+    if ((data.role == 'Admin' || user.role == 'Owner') && user.role == 'User')
       throw { code: '_', message: 'Você não tem permissão para criar este tipo de usuário!', statusCode: 401 };
     try {
       const user = await userServices.registerOneUserAuth(data);

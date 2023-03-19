@@ -41,16 +41,16 @@ const propertyController = {
   },
 
   create: async (req: FastifyRequest, res: FastifyReply) => {
-    const { role } = req.user as { role: string };
-    if (role == 'User')
+    const user = req.user as { id: number; role: string };
+    if (user.role == 'User')
       throw {
         code: '_',
-        message: 'É necessário acesso de adminsitrador ou gerenciador de propriedades para listar uma propriedade!',
+        message: 'É necessário acesso de adminsitrador ou proprietário para listar uma propriedade!',
         statusCode: 401,
       };
     const attibutes = req.body as PropertyWithAddressAndDescription;
     try {
-      const property = await propertyServices.createOneProperty(attibutes);
+      const property = await propertyServices.createOneProperty(attibutes, user.id);
       return res.send(property);
     } catch (error) {
       const err = error as ICustomError;

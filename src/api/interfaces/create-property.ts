@@ -1,7 +1,6 @@
 export interface PropertyWithAddressAndDescription {
   property: {
     community_id: number;
-    manager_id: number;
   };
   address: {
     number: number;

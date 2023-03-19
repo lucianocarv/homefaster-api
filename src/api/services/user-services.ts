@@ -99,7 +99,6 @@ const userServices = {
           email: true,
           phone: true,
           role: true,
-          manager_id: true,
         },
       }),
       prisma.user.count({
