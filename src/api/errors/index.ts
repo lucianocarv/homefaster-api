@@ -1,18 +1,40 @@
 import { CustomError } from '../helpers/custom-error';
 
-// Messages
+//@Messages
+// Messages / Global
 const PERMISSION_DENIED = 'Você não tem permissão para acessar este recurso!';
 const NEED_LOGIN = 'Faça login para acessar estes recursos!';
-// Missing DATA
+// Messages / Missing Data
 const MISSING_ATTRIBUTES_ALL = 'Insira pelo menos um atributo a ser atualizado!';
 const MISSING_FILE = 'Insira uma arquivo para fazer upload!';
+// Messages / Province
+const PROVINCE_ALREADY_EXISTS = 'Esta província já está cadastrada!';
+const PROVINCE_INVALID = 'A província informada é inválida!';
+// Messages / City
+const CITY_ALREADY_EXISTS = 'Esta cidade já está cadastrada!';
+const CITY_INVALID = 'A cidade informada é inválida!';
+// Messages / Community
+const COMMUNITY_ALREADY_EXISTS = 'Esta comunidade já está cadastrada!';
+const COMMUNITY_INVALID = 'A comunidade informada é inválida!';
+// Messages / Users
+const USERS_INVALID_ROLE = 'Função do usuário inválida!';
+const USERS_USER_CREATE_PERMISSION_DENIED = 'Você não tem permissão para criar este tipo de usuário!';
 
-// Static Messages
+//@Static Error Messages
 export const ERR_NEED_LOGIN = CustomError('_', NEED_LOGIN, 401);
 export const ERR_PERMISSION_DENIED = CustomError('_', PERMISSION_DENIED, 401);
-export const ERR_MISSING_ATTRIBUTES = CustomError('_', MISSING_ATTRIBUTES_ALL, 400);
+// Static Error Messages / Attributes
+export const ERR_MISSING_UPDATE_ATTRIBUTES = CustomError('_', MISSING_ATTRIBUTES_ALL, 400);
 export const ERR_MISSING_FILE = CustomError('_', MISSING_FILE, 400);
+// Static Error Messages / Province / 400 Codes
+// Static Error Messages / City / 400 Codes
+// Static Error Messages / Community / 400 Codes
+export const ERR_COMMUNITY_ALREADY_EXISTS = CustomError('_', COMMUNITY_ALREADY_EXISTS, 400);
+export const ERR_COMMUNITY_INVALID = CustomError('_', COMMUNITY_INVALID, 400);
+// Static Error Messages / Users
+export const ERR_USERS_INVALID_ROLE = CustomError('_', USERS_INVALID_ROLE, 400);
+export const ERR_USERS_USER_CREATE_PERMISSION_DENIED = CustomError('_', USERS_USER_CREATE_PERMISSION_DENIED, 400);
 
 // Dinamic Messages
 export const ERR_MISSING_ID = (text: string, verb: string) => CustomError('_', `Insira um(a) ${text} que será ${verb}!`, 400);
-export const ERR_MISSING_ATTRIBUTE = (attr: string, to: string) => CustomError('_', `Insira o(a) ${attr} da(o) ${to}`, 400);
+export const ERR_MISSING_ATTRIBUTE = (attr: string) => CustomError('_', `Informe o atributo '${attr}'`, 400);

@@ -1,5 +1,5 @@
 import { Role, User } from '@prisma/client';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
 import { ICustomError } from '../interfaces/custom-error';
@@ -7,13 +7,14 @@ import { IUserLogin } from '../interfaces/login-user';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { IUsersFilter } from '../interfaces/users-filter';
 import { userServices } from '../services/user-services';
+import { ERR_PERMISSION_DENIED, ERR_USERS_INVALID_ROLE, ERR_USERS_USER_CREATE_PERMISSION_DENIED } from '../errors';
 
 const userController = {
-  register: async (req: FastifyRequest, res: FastifyReply) => {
+  register: async (req: FastifyRequest, res: FastifyReply): Promise<User | FastifyError> => {
     const data = req.body as User;
     try {
       const user = await userServices.registerOneUser(data);
-      return res.send(user);
+      return res.status(201).send(user);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
@@ -24,16 +25,15 @@ const userController = {
     }
   },
 
-  registerAuth: async (req: FastifyRequest, res: FastifyReply) => {
+  registerAuth: async (req: FastifyRequest, res: FastifyReply): Promise<User | FastifyError> => {
     const user = req.user as User;
+    if (!user) throw ERR_PERMISSION_DENIED;
     const data = req.body as User;
-    if (!['User', 'Admin', 'Manager'].includes(data.role))
-      throw { code: '_', message: 'Insira uma função válida para o usuário!', statusCode: 422 };
-    if ((data.role == 'Admin' || user.role == 'Owner') && user.role == 'User')
-      throw { code: '_', message: 'Você não tem permissão para criar este tipo de usuário!', statusCode: 401 };
+    if (!['User', 'Admin', 'Manager'].includes(data.role)) throw ERR_USERS_INVALID_ROLE;
+    if ((data.role == 'Admin' || user.role == 'Owner') && user.role == 'User') throw ERR_USERS_USER_CREATE_PERMISSION_DENIED;
     try {
       const user = await userServices.registerOneUserAuth(data);
-      return res.send(user);
+      return res.status(201).send(user);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
@@ -44,11 +44,11 @@ const userController = {
     }
   },
 
-  login: async (req: FastifyRequest, res: FastifyReply) => {
+  login: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
     const data = req.body as IUserLogin;
     try {
       const user = await userServices.login(data);
-      return res.send(user);
+      return res.status(202).send(user);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
@@ -59,12 +59,13 @@ const userController = {
     }
   },
 
-  update: async (req: FastifyRequest, res: FastifyReply) => {
+  updateOneUser: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
     const attributes = req.body as User;
     const user = req.user as User;
+    if (!user) throw ERR_PERMISSION_DENIED;
     try {
       const userUpdated = await userServices.updateOneUser(user.id, attributes);
-      return res.send(userUpdated);
+      return res.status(202).send(userUpdated);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
@@ -75,16 +76,15 @@ const userController = {
     }
   },
 
-  updateAsAdmin: async (req: FastifyRequest, res: FastifyReply) => {
+  updateUserAsAdmin: async (req: FastifyRequest, res: FastifyReply): Promise<User | FastifyError> => {
     const admin = req.user as User;
-    if (admin.role !== 'Admin') throw { code: '_', message: 'Acesso negado!', statusCode: 401 };
+    if (admin.role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const { id } = req.params as { id: string };
     const { role } = req.body as { role: Role };
-    if (!['Admin', 'Manager', 'User'].includes(role))
-      throw { code: '_', message: 'Atribuição de função inválida!', statusCode: 422 };
+    if (!['Admin', 'Manager', 'User'].includes(role)) throw ERR_USERS_INVALID_ROLE;
     try {
       const user = await userServices.updateUserAsAdmin(Number(id), role);
-      return res.send(user);
+      return res.status(202).send(user);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
@@ -95,12 +95,13 @@ const userController = {
     }
   },
 
-  updatePassword: async (req: FastifyRequest, res: FastifyReply) => {
+  updatePassword: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
     const user = req.user as User;
+    if (!user) throw ERR_PERMISSION_DENIED;
     const attributes = req.body as { current_password: string; new_password: string };
     try {
       const result = await userServices.updatePassword(user.id, attributes);
-      return res.send(result);
+      return res.status(202).send(result);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
@@ -111,14 +112,13 @@ const userController = {
     }
   },
 
-  updatePasswordAsAdmin: async (req: FastifyRequest, res: FastifyReply) => {
+  updatePasswordAsAdmin: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
     const admin = req.user as User;
-    if (admin.role !== 'Admin')
-      throw { code: '_', message: 'Você não ter permissão para acessar este recurso!', statusCode: 401 };
+    if (admin.role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const attributes = req.body as { email: string; new_password: string };
     try {
       const result = await userServices.updatePasswordAsAdmin(attributes);
-      return res.send(result);
+      return res.status(202).send(result);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {
@@ -129,7 +129,7 @@ const userController = {
     }
   },
 
-  user: async (req: FastifyRequest, res: FastifyReply) => {
+  getOneUser: async (req: FastifyRequest, res: FastifyReply): Promise<User | FastifyError> => {
     const { id } = req.params as { id: string };
     try {
       const user = await userServices.findUserById(Number(id));
@@ -143,7 +143,7 @@ const userController = {
       }
     }
   },
-  users: async (req: FastifyRequest, res: FastifyReply) => {
+  getAllUsers: async (req: FastifyRequest, res: FastifyReply) => {
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page) as PaginationParameters;
     const body = req.body as { filter: IUsersFilter };
@@ -161,14 +161,13 @@ const userController = {
     }
   },
 
-  deleteUser: async (req: FastifyRequest, res: FastifyReply) => {
+  deleteOneUser: async (req: FastifyRequest, res: FastifyReply) => {
     const admin = req.user as User;
-    if (admin.role !== 'Admin')
-      throw { code: '_', message: 'Você não ter permissão para acessar este recurso!', statusCode: 401 };
+    if (admin.role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const { id } = req.params as { id: string };
     try {
       const result = await userServices.deleteOneUser(Number(id));
-      return res.send(result);
+      return res.status(202).send(result);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {

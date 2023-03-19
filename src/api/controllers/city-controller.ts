@@ -7,14 +7,14 @@ import { citiesServices } from '../services/city-services';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import {
   ERR_MISSING_ATTRIBUTE,
-  ERR_MISSING_ATTRIBUTES,
+  ERR_MISSING_UPDATE_ATTRIBUTES,
   ERR_MISSING_FILE,
   ERR_MISSING_ID,
   ERR_PERMISSION_DENIED,
 } from '../errors';
 
 const cityController = {
-  getAllCities: async (req: FastifyRequest, res: FastifyReply): Promise<City[] | FastifyError | undefined> => {
+  getAllCities: async (req: FastifyRequest, res: FastifyReply): Promise<City[] | FastifyError> => {
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page) as PaginationParameters;
     try {
@@ -30,7 +30,7 @@ const cityController = {
     }
   },
 
-  getOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<City | FastifyError | undefined> => {
+  getOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<City | FastifyError> => {
     const { id } = req.params as { id: string };
     try {
       const city = await citiesServices.getOneCity(Number(id));
@@ -45,12 +45,12 @@ const cityController = {
     }
   },
 
-  createOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<City | FastifyError | undefined> => {
+  createOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<City | FastifyError> => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const attributes = req.body as City;
-    if (!attributes.name) throw ERR_MISSING_ATTRIBUTE('name', 'cidade');
-    if (!attributes.province_id) throw ERR_MISSING_ATTRIBUTE('province_id', 'cidade');
+    if (!attributes.name) throw ERR_MISSING_ATTRIBUTE('name');
+    if (!attributes.province_id) throw ERR_MISSING_ATTRIBUTE('province_id');
     try {
       const city = await citiesServices.createOneCity(attributes);
       return res.status(201).send(city);
@@ -64,14 +64,14 @@ const cityController = {
     }
   },
 
-  updateOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<City | FastifyError | undefined> => {
+  updateOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<City | FastifyError> => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const params = req.params as { id: string };
     const id = Number(params.id);
     const attributes = req.body as City;
     if (!id) throw ERR_MISSING_ID('cidade', 'atualizada');
-    if (!attributes) throw ERR_MISSING_ATTRIBUTES;
+    if (!attributes) throw ERR_MISSING_UPDATE_ATTRIBUTES;
     try {
       const city = await citiesServices.updateOneCity({ id, attributes });
       return res.status(202).send(city);
@@ -85,7 +85,7 @@ const cityController = {
     }
   },
 
-  uploadCoverImageForOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<Object> => {
+  uploadCoverImageForOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<{ message: string } | FastifyError> => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const data = await req.file();
@@ -105,7 +105,7 @@ const cityController = {
     }
   },
 
-  delete: async (req: FastifyRequest, res: FastifyReply): Promise<Object> => {
+  delete: async (req: FastifyRequest, res: FastifyReply): Promise<{ message: string } | FastifyError> => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const params = req.params as { id: string };

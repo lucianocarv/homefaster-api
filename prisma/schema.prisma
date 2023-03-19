@@ -64,7 +64,7 @@ model Property {
   address      Address?
   city         City         @relation(fields: [city_id], references: [id], onUpdate: Cascade)
   city_id      Int
-  favorites    Favorites[]
+  favorites    Favorite[]
   created_at   DateTime     @default(now()) @db.Timestamp()
   updated_at   DateTime     @updatedAt @db.Timestamp()
   user         User?        @relation(fields: [user_id], references: [id], onUpdate: Cascade)
@@ -189,21 +189,21 @@ enum Role {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  first_name String      @db.VarChar(255)
-  last_name  String      @db.VarChar(255)
+  id         Int        @id @default(autoincrement())
+  first_name String     @db.VarChar(255)
+  last_name  String     @db.VarChar(255)
   avatar_url String
-  email      String      @unique
+  email      String     @unique
   password   String
   phone      String?
   role       Role
-  favorites  Favorites[]
+  favorites  Favorite[]
   properties Property[]
 
   @@map("users")
 }
 
-model Favorites {
+model Favorite {
   id          Int      @id @default(autoincrement())
   user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id     Int

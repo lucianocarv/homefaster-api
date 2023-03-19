@@ -11,6 +11,7 @@ const app = async () => {
     console.log(`App running at http://localhost:${port}`);
   } catch (error) {
     fastify.log.error(error);
+    fastify.close();
     process.exit(1);
   }
 };

@@ -8,6 +8,7 @@ import { ValidateAddressAPI } from '../maps/validate-address-api.js';
 import { imageUpload } from '../storage/upload-image.js';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { UploadImageTo } from '../types/upload-image-to.js';
+import { ERR_COMMUNITY_ALREADY_EXISTS } from '../errors/index.js';
 
 const communityServices = {
   getAllCommunities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
@@ -45,6 +46,8 @@ const communityServices = {
 
     if (typeof validateAddres === 'object') {
       const { latitude, longitude, global_code, formatted_address } = validateAddres;
+      const communityExists = await prisma.community.findUnique({ where: { global_code } });
+      if (communityExists) throw ERR_COMMUNITY_ALREADY_EXISTS;
       const community = await prisma.community.create({
         data: { ...attributes, latitude, longitude, global_code, formatted_address },
       });
