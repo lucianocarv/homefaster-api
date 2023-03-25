@@ -9,6 +9,9 @@ import { imageUpload } from '../storage/upload-image.js';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { UploadImageTo } from '../types/upload-image-to.js';
 import { ERR_COMMUNITY_ALREADY_EXISTS } from '../errors/index.js';
+import storageServices from './storage-services.js';
+import { getFileName } from '../helpers/get-filename.js';
+import { env_storageBaseUrl } from '../../environment.js';
 
 const communityServices = {
   getAllCommunities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
@@ -65,14 +68,22 @@ const communityServices = {
     return community;
   },
 
-  uploadCoverImage: async (data: MultipartFile, to: UploadImageTo, id: number) => {
+  uploadCoverImage: async (data: MultipartFile, id: number) => {
     const filename = data.filename.replace(/\b(\s)\b/g, '-');
-    const property = await prisma.community.findUnique({ where: { id: Number(id) } });
-    if (property) {
-      const res = await imageUpload({ to, file: data.file, filename, id });
-      return res;
-    } else {
-      return CustomError('_', 'Insira uma propriedade válida!', 400);
+    const community = await prisma.community.findUnique({ where: { id } });
+    if (community) {
+      if (community) {
+        if (community.img_cover) {
+          const filePath = await getFileName(community.img_cover);
+          storageServices.deleteFileInStorage(filePath);
+        }
+        const response = await storageServices.thumbImageUpload({ to: 'communities', file: data.file, filename, id });
+        const newImageUrl = `${env_storageBaseUrl}/communities/${id}/${filename}`;
+        await prisma.community.update({ where: { id }, data: { img_cover: newImageUrl } });
+        return response;
+      } else {
+        return CustomError('_', 'Insira uma propriedade válida!', 400);
+      }
     }
   },
 

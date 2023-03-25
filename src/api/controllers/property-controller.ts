@@ -106,7 +106,7 @@ const propertyController = {
     if (!data?.file) throw ERR_MISSING_FILE;
     if (!id) throw ERR_MISSING_ATTRIBUTE('property_id');
     try {
-      const result = await propertyServices.uploadThumbImage(data, 'properties', Number(id));
+      const result = await propertyServices.uploadThumbImage(data, Number(id));
       return res.status(202).send(result);
     } catch (error) {
       const err = error as ICustomError;

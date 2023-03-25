@@ -71,7 +71,7 @@ const communityController = {
     if (!data?.filename) throw ERR_MISSING_FILE;
     if (!id) ERR_MISSING_ATTRIBUTE('community_id');
     try {
-      const result = await communityServices.uploadCoverImage(data, 'communities', Number(id));
+      const result = await communityServices.uploadCoverImage(data, Number(id));
       return res.send(result);
     } catch (error) {
       const err = error as ICustomError;

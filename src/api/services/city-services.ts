@@ -7,6 +7,9 @@ import { MultipartFile } from '@fastify/multipart';
 import { UploadImageTo } from '../types/upload-image-to.js';
 import { imageUpload } from '../storage/upload-image.js';
 import { ERR_CITY_ALREADY_EXISTS, ERR_CITY_NOT_FOUND, ERR_INVALID_CITY } from '../errors/index.js';
+import storageServices from './storage-services.js';
+import { env_storageBaseUrl } from '../../environment.js';
+import { getFileName } from '../helpers/get-filename.js';
 
 const citiesServices = {
   getAllCities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
@@ -68,12 +71,18 @@ const citiesServices = {
     return city;
   },
 
-  uploadCoverImage: async (data: MultipartFile, to: UploadImageTo, id: number) => {
+  uploadCoverImage: async (data: MultipartFile, id: number) => {
     const filename = data.filename.replace(/\b(\s)\b/g, '-');
-    const property = await prisma.city.findUnique({ where: { id: Number(id) } });
-    if (property) {
-      const res = await imageUpload({ to, file: data.file, filename, id });
-      return res;
+    const city = await prisma.city.findUnique({ where: { id } });
+    if (city) {
+      if (city.img_cover) {
+        const filePath = await getFileName(city.img_cover);
+        storageServices.deleteFileInStorage(filePath);
+      }
+      const response = await storageServices.thumbImageUpload({ to: 'cities', file: data.file, filename, id });
+      const newImageUrl = `${env_storageBaseUrl}/cities/${id}/${filename}`;
+      await prisma.city.update({ where: { id }, data: { img_cover: newImageUrl } });
+      return response;
     } else {
       throw ERR_INVALID_CITY;
     }

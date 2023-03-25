@@ -13,6 +13,9 @@ import { UploadImageTo } from '../types/upload-image-to.js';
 import { CustomError } from '../helpers/custom-error.js';
 import { IValidationAddressReply } from '../interfaces/validation-address-reply.js';
 import { FastifyError } from 'fastify';
+import { getFileName } from '../helpers/get-filename.js';
+import storageServices from './storage-services.js';
+import { env_storageBaseUrl } from '../../environment.js';
 
 const propertyServices = {
   getAllProperties: async ({ page_number, per_page_number, skip }: PaginationParameters) => {
@@ -184,12 +187,19 @@ const propertyServices = {
     }
   },
 
-  uploadThumbImage: async (data: MultipartFile, to: UploadImageTo, id: number) => {
+  uploadThumbImage: async (data: MultipartFile, id: number) => {
     const filename = data.filename.replace(/\b(\s)\b/g, '-');
-    const property = await prisma.property.findUnique({ where: { id: Number(id) } });
-    if (property) {
-      const res = await imageUpload({ to, file: data.file, filename, id });
-      return res;
+    const property = await prisma.property.findUnique({ where: { id } });
+    const description = await prisma.description.findUnique({ where: { property_id: property?.id } });
+    if (description) {
+      if (description.thumb) {
+        const filePath = await getFileName(description.thumb);
+        storageServices.deleteFileInStorage(filePath);
+      }
+      const response = await storageServices.thumbImageUpload({ to: 'properties', file: data.file, filename, id });
+      const newImageUrl = `${env_storageBaseUrl}/properties/${id}/${filename}`;
+      await prisma.description.update({ where: { id: description.id }, data: { thumb: newImageUrl } });
+      return response;
     } else {
       return CustomError('_', 'Insira uma propriedade válida!', 400);
     }

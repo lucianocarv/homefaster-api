@@ -6,7 +6,7 @@ import { jwtService } from './jwt-services';
 import { IUserPayload } from '../interfaces/jwt-payload';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { IUsersFilter } from '../interfaces/users-filter';
-import appMail from '../mail';
+import mailServices from './mail-services';
 
 const userServices = {
   registerOneUser: async (data: User) => {
@@ -21,28 +21,29 @@ const userServices = {
         },
       });
       if (user) {
-        // create token to confirm account
-        console.log('Enviando email...');
-        const payload = {
-          id: user.id,
-          email: user.email,
-        };
-        console.log(payload);
-        const token = await jwtService.createTokenToConfirmAccount(payload);
-        // Send email to confirm account
-        console.log(token);
-        const res = await appMail.sendMailToConfirmAccount(user.first_name, user.email, token);
-        if (res.accepted) {
-          return {
-            message: 'Usuário criado com sucesso! Verifique seu email para confirmar a conta!',
-          };
-        }
-        console.log(res);
+        await userServices.sendMailToConfirmAccount(user);
       } else {
         throw 'Não foi possível criar o usuário';
       }
     } else {
       throw { code: '_', message: 'Este email já está sendo usado!', statusCode: 422 };
+    }
+  },
+
+  sendMailToConfirmAccount: async (user: User) => {
+    // create token to confirm account
+    const payload = {
+      id: user.id,
+      email: user.email,
+    };
+    console.log(payload);
+    const token = await jwtService.createTokenToConfirmAccount(payload);
+    // Send email to confirm account
+    const res = await mailServices.sendMailToConfirmAccount(user.first_name, user.email, token);
+    if (res.accepted) {
+      return {
+        message: 'Verifique seu email para confirmar a conta!',
+      };
     }
   },
 
@@ -79,18 +80,22 @@ const userServices = {
     }
   },
 
-  confirmAccount: async (token: string) => {
+  verifyAccount: async (token: string, email: string) => {
     const decoded = await jwtService.verifyToken(token);
-    console.log('DECODE', decoded);
     if (decoded) {
       const user = await prisma.user.findUnique({
         where: {
           email: decoded.email,
         },
       });
-      if (user) {
-        console.log('Email verificado com sucesso!');
-        return { message: 'Email verificado com sucesso!' };
+      if (user?.email == email) {
+        await prisma.user.update({
+          where: { email: user.email },
+          data: {
+            account_confirmed: true,
+          },
+        });
+        return { message: 'Conta verificada com sucesso!' };
       }
     }
   },
@@ -136,6 +141,7 @@ const userServices = {
           email: true,
           phone: true,
           role: true,
+          account_confirmed: true,
         },
       }),
       prisma.user.count({
@@ -207,6 +213,7 @@ const userServices = {
               where: { id },
               data: { password: newPasswordHash },
             });
+            mailServices.sendMailInformePasswordChange(user.first_name, user.email);
             return { message: 'Senha atualizada com sucesso!' };
           } else {
             throw { code: '_', message: 'Falha ao criar senha!', statusCode: 400 };

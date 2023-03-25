@@ -93,7 +93,7 @@ const cityController = {
     if (!data?.filename) throw ERR_MISSING_FILE;
     if (!id) throw ERR_MISSING_ID('cidade', 'atualizada');
     try {
-      const uploaded = await citiesServices.uploadCoverImage(data, 'cities', Number(id));
+      const uploaded = await citiesServices.uploadCoverImage(data, Number(id));
       return res.status(202).send(uploaded);
     } catch (error) {
       const err = error as ICustomError;

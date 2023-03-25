@@ -83,7 +83,7 @@ const provinceController = {
     const { id } = req.params as { id: string };
     if (!data?.filename) throw ERR_MISSING_FILE;
     try {
-      const upload = await provinceServices.uploadImgCover(data, 'provinces', Number(id));
+      const upload = await provinceServices.uploadImgCover(data, Number(id));
       return res.status(202).send(upload);
     } catch (error) {
       const err = error as ICustomError;

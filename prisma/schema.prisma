@@ -189,16 +189,17 @@ enum Role {
 }
 
 model User {
-  id         Int        @id @default(autoincrement())
-  first_name String     @db.VarChar(255)
-  last_name  String     @db.VarChar(255)
-  avatar_url String
-  email      String     @unique
-  password   String
-  phone      String?
-  role       Role
-  favorites  Favorite[]
-  properties Property[]
+  id                Int        @id @default(autoincrement())
+  first_name        String     @db.VarChar(255)
+  last_name         String     @db.VarChar(255)
+  avatar_url        String
+  email             String     @unique
+  password          String
+  phone             String?
+  role              Role
+  account_confirmed Boolean    @default(false)
+  favorites         Favorite[]
+  properties        Property[]
 
   @@map("users")
 }

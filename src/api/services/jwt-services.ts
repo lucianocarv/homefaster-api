@@ -14,7 +14,7 @@ const jwtService = {
   },
 
   createTokenToConfirmAccount: async (payload: IConfirmAccountPayload) => {
-    const token = fastify.jwt.sign(payload, { expiresIn: '1m' });
+    const token = fastify.jwt.sign(payload, { expiresIn: '3m' });
     return token;
   },
 };

@@ -6,6 +6,9 @@ import { UploadImageTo } from '../types/upload-image-to.js';
 import { imageUpload } from '../storage/upload-image.js';
 import { MultipartFile } from '@fastify/multipart';
 import { ERR_PROVINCE_NOT_FOUND } from '../errors/index.js';
+import storageServices from './storage-services.js';
+import { getFileName } from '../helpers/get-filename';
+import { env_bucketName, env_storageBaseUrl } from '../../environment.js';
 
 const provinceServices = {
   getAllProvinces: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
@@ -49,12 +52,18 @@ const provinceServices = {
     return province;
   },
 
-  uploadImgCover: async (data: MultipartFile, to: UploadImageTo, id: number) => {
+  uploadImgCover: async (data: MultipartFile, id: number) => {
     const filename = data.filename.replace(/\b(\s)\b/g, '-');
     const province = await prisma.province.findUnique({ where: { id: Number(id) } });
     if (province) {
-      const res = await imageUpload({ to, file: data.file, filename, id });
-      return res;
+      if (province.img_cover) {
+        const filePath = await getFileName(province.img_cover);
+        storageServices.deleteFileInStorage(filePath);
+      }
+      const response = await storageServices.thumbImageUpload({ to: 'provinces', file: data.file, filename, id });
+      const newImageUrl = `${env_storageBaseUrl}/provinces/${id}/${filename}`;
+      await prisma.province.update({ where: { id }, data: { img_cover: newImageUrl } });
+      return response;
     } else {
       throw ERR_PROVINCE_NOT_FOUND;
     }

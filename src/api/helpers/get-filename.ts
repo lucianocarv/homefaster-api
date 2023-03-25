@@ -1,7 +1,5 @@
-const getFileName = async (url: string) => {
+export const getFileName = async (url: string) => {
   const splited = url.split('/');
-  const filename = splited[splited.length - 1];
-  return filename;
+  const path = splited.slice(4).join('/');
+  return path;
 };
-
-export { getFileName };

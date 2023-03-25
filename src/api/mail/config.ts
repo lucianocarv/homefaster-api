@@ -27,6 +27,5 @@ const transportOptions: TransportOptions = {
 
 export function mailer() {
   const transporter = nodemailer.createTransport(transportOptions);
-  console.log(transportOptions);
   return transporter;
 }
