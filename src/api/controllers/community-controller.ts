@@ -83,7 +83,7 @@ const communityController = {
     }
   },
 
-  delete: async (req: FastifyRequest, res: FastifyReply) => {
+  deleteOneCommunity: async (req: FastifyRequest, res: FastifyReply) => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const params = req.params as { id: string };

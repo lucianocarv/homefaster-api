@@ -5,7 +5,7 @@ async function cityRoutesAuth(fastify: FastifyInstance) {
   fastify.post('/cities', cityController.createOneCity);
   fastify.post('/cities/image/upload/:id', cityController.uploadCoverImageForOneCity);
   fastify.put('/cities/:id', cityController.updateOneCity);
-  fastify.delete('/cities/:id', cityController.delete);
+  fastify.delete('/cities/:id', cityController.deleteOneCity);
 }
 
 export { cityRoutesAuth };

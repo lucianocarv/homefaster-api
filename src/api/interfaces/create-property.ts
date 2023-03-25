@@ -1,4 +1,4 @@
-export interface PropertyWithAddressAndDescription {
+export interface ICreateProperty {
   property: {
     community_id: number;
   };

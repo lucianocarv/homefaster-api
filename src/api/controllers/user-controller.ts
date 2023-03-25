@@ -3,7 +3,7 @@ import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
 import { ICustomError } from '../interfaces/custom-error';
-import { IUserLogin } from '../interfaces/login-user';
+import { ILoginUser } from '../interfaces/login-user';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { IUsersFilter } from '../interfaces/users-filter';
 import { userServices } from '../services/user-services';
@@ -45,10 +45,25 @@ const userController = {
   },
 
   login: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
-    const data = req.body as IUserLogin;
+    const data = req.body as ILoginUser;
     try {
       const user = await userServices.login(data);
       return res.status(202).send(user);
+    } catch (error) {
+      const err = error as ICustomError;
+      if (err.code) {
+        return res.send(CustomError(err.code, err.message, err.statusCode));
+      } else {
+        return res.send(error);
+      }
+    }
+  },
+
+  confirmAccount: async (req: FastifyRequest, res: FastifyReply) => {
+    const { token } = req.body as { token: string };
+    try {
+      const response = await userServices.confirmAccount(token);
+      res.send(response);
     } catch (error) {
       const err = error as ICustomError;
       if (err.code) {

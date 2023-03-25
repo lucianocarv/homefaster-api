@@ -1,11 +1,12 @@
 import { Role, User } from '@prisma/client';
 import { prisma } from '../config/prisma-connect';
 import bcrypt from 'bcrypt';
-import { IUserLogin } from '../interfaces/login-user';
+import { ILoginUser } from '../interfaces/login-user';
 import { jwtService } from './jwt-services';
-import { IJWTPayload } from '../interfaces/jwt-payload';
+import { IUserPayload } from '../interfaces/jwt-payload';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { IUsersFilter } from '../interfaces/users-filter';
+import appMail from '../mail';
 
 const userServices = {
   registerOneUser: async (data: User) => {
@@ -19,7 +20,27 @@ const userServices = {
           password,
         },
       });
-      return user;
+      if (user) {
+        // create token to confirm account
+        console.log('Enviando email...');
+        const payload = {
+          id: user.id,
+          email: user.email,
+        };
+        console.log(payload);
+        const token = await jwtService.createTokenToConfirmAccount(payload);
+        // Send email to confirm account
+        console.log(token);
+        const res = await appMail.sendMailToConfirmAccount(user.first_name, user.email, token);
+        if (res.accepted) {
+          return {
+            message: 'Usuário criado com sucesso! Verifique seu email para confirmar a conta!',
+          };
+        }
+        console.log(res);
+      } else {
+        throw 'Não foi possível criar o usuário';
+      }
     } else {
       throw { code: '_', message: 'Este email já está sendo usado!', statusCode: 422 };
     }
@@ -41,13 +62,13 @@ const userServices = {
     }
   },
 
-  login: async (data: IUserLogin) => {
+  login: async (data: ILoginUser) => {
     const user = await userServices.findOneUser(data.email);
     if (user) {
       const validatePassword = await bcrypt.compare(data.password, user.password);
       if (validatePassword) {
         const { id, first_name, last_name, email, role } = user;
-        const payload = { id, first_name, last_name, email, role } as IJWTPayload;
+        const payload = { id, first_name, last_name, email, role } as IUserPayload;
         const token = await jwtService.createToken(payload);
         return { payload, token };
       } else {
@@ -55,6 +76,22 @@ const userServices = {
       }
     } else {
       throw { code: '_', message: 'Cadastre-se para fazer login!', statusCode: 422 };
+    }
+  },
+
+  confirmAccount: async (token: string) => {
+    const decoded = await jwtService.verifyToken(token);
+    console.log('DECODE', decoded);
+    if (decoded) {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: decoded.email,
+        },
+      });
+      if (user) {
+        console.log('Email verificado com sucesso!');
+        return { message: 'Email verificado com sucesso!' };
+      }
     }
   },
 

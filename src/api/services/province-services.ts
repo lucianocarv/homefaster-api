@@ -5,6 +5,7 @@ import { IUpdateProperty } from '../interfaces/update-property.js';
 import { UploadImageTo } from '../types/upload-image-to.js';
 import { imageUpload } from '../storage/upload-image.js';
 import { MultipartFile } from '@fastify/multipart';
+import { ERR_PROVINCE_NOT_FOUND } from '../errors/index.js';
 
 const provinceServices = {
   getAllProvinces: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
@@ -55,7 +56,7 @@ const provinceServices = {
       const res = await imageUpload({ to, file: data.file, filename, id });
       return res;
     } else {
-      return { message: 'A provincia informada não existe!' };
+      throw ERR_PROVINCE_NOT_FOUND;
     }
   },
 };

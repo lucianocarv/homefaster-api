@@ -5,7 +5,7 @@ import { ICustomError } from '../interfaces/custom-error';
 import { IAddressFilter } from '../interfaces/search-address';
 import { IDescriptionFilter } from '../interfaces/search-filter';
 import { propertyServices } from '../services/property-services';
-import { PropertyWithAddressAndDescription } from '../interfaces/create-property';
+import { ICreateProperty } from '../interfaces/create-property';
 import { Property } from '@prisma/client';
 import { ERR_MISSING_ATTRIBUTE, ERR_MISSING_FILE, ERR_PERMISSION_DENIED } from '../errors';
 
@@ -45,7 +45,7 @@ const propertyController = {
   createOneProperty: async (req: FastifyRequest, res: FastifyReply): Promise<Property | FastifyError> => {
     const user = req.user as { id: number; role: string };
     if (user.role == 'User') throw ERR_PERMISSION_DENIED;
-    const attibutes = req.body as PropertyWithAddressAndDescription;
+    const attibutes = req.body as ICreateProperty;
     try {
       const property = await propertyServices.createOneProperty(attibutes, user.id);
       return res.status(201).send(property);
@@ -63,7 +63,7 @@ const propertyController = {
     const { role } = req.user as { role: string };
     if (role == 'User') throw ERR_PERMISSION_DENIED;
     const { id } = req.params as { id: string };
-    const attributes = req.body as PropertyWithAddressAndDescription;
+    const attributes = req.body as ICreateProperty;
     try {
       const property = await propertyServices.updateOneProperty(Number(id), attributes);
       return res.status(202).send(property);

@@ -3,12 +3,12 @@ import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import { ERR_MISSING_ATTRIBUTE, ERR_PERMISSION_DENIED } from '../errors';
 import { CustomError } from '../helpers/custom-error';
 import { ICustomError } from '../interfaces/custom-error';
-import { IJWTPayload } from '../interfaces/jwt-payload';
+import { IUserPayload } from '../interfaces/jwt-payload';
 import { favoritesService } from '../services/favorites-services';
 
 const favoritesController = {
   getAllFavorites: async (req: FastifyRequest, res: FastifyReply): Promise<Favorite[] | FastifyError> => {
-    const { id: user_id } = req.user as IJWTPayload;
+    const { id: user_id } = req.user as IUserPayload;
     if (!user_id) throw ERR_PERMISSION_DENIED;
     try {
       const favorites = await favoritesService.getAllFavorites(user_id);
@@ -24,7 +24,7 @@ const favoritesController = {
   },
 
   addOneFavorite: async (req: FastifyRequest, res: FastifyReply): Promise<Favorite | FastifyError> => {
-    const { id: user_id } = req.user as IJWTPayload;
+    const { id: user_id } = req.user as IUserPayload;
     const { property_id } = req.body as { property_id: number };
     if (!user_id) throw ERR_PERMISSION_DENIED;
     try {
@@ -41,7 +41,7 @@ const favoritesController = {
   },
 
   removeOneFavorite: async (req: FastifyRequest, res: FastifyReply): Promise<Favorite | FastifyError> => {
-    const { id: user_id } = req.user as IJWTPayload;
+    const { id: user_id } = req.user as IUserPayload;
     const { id } = req.body as { id: number };
     if (!user_id) throw ERR_PERMISSION_DENIED;
     try {

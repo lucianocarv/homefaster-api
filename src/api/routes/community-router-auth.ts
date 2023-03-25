@@ -5,7 +5,7 @@ async function communityRoutesAuth(fastify: FastifyInstance) {
   fastify.post('/communities', communityController.createOneCommunity);
   fastify.post('/communities/image/upload/:id', communityController.uploadCoverImage);
   fastify.put('/communities/:id', communityController.update);
-  fastify.delete('/communities/:id', communityController.delete);
+  fastify.delete('/communities/:id', communityController.deleteOneCommunity);
 }
 
 export { communityRoutesAuth };

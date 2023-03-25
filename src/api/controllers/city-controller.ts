@@ -105,7 +105,7 @@ const cityController = {
     }
   },
 
-  delete: async (req: FastifyRequest, res: FastifyReply): Promise<{ message: string } | FastifyError> => {
+  deleteOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<{ message: string } | FastifyError> => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const params = req.params as { id: string };

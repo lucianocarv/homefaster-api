@@ -6,6 +6,7 @@ import { IUpdateCity } from '../interfaces/update-city.js';
 import { MultipartFile } from '@fastify/multipart';
 import { UploadImageTo } from '../types/upload-image-to.js';
 import { imageUpload } from '../storage/upload-image.js';
+import { ERR_CITY_ALREADY_EXISTS, ERR_CITY_NOT_FOUND, ERR_INVALID_CITY } from '../errors/index.js';
 
 const citiesServices = {
   getAllCities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
@@ -29,7 +30,6 @@ const citiesServices = {
 
   getOneCity: async (id: number) => {
     const city = await prisma.city.findUnique({ where: { id } });
-
     if (city) {
       return city;
     } else {
@@ -41,21 +41,22 @@ const citiesServices = {
     const province = await prisma.province.findUnique({ where: { id: attributes.province_id } });
     if (!province) throw { code: '_', message: 'Província inválida!', statusCode: 422 };
 
-    const geocodingData = await GeocodingAPI.getDataForCity(province.short_name, attributes.name);
+    const geocode = await GeocodingAPI.getDataForCity(province.short_name, attributes.name);
 
-    if (typeof geocodingData === 'object') {
-      console.log(geocodingData);
-      const { name, latitude, longitude, place_id } = geocodingData;
+    if (typeof geocode === 'object') {
+      const { name, latitude, longitude, place_id } = geocode;
       const cityExists = await prisma.city.findUnique({
         where: { province_id_place_id: { province_id: province.id, place_id } },
       });
-      if (cityExists) throw { code: '_', message: 'Esta cidade já está cadastrada!', statusCode: 422 };
+
+      if (cityExists) throw ERR_CITY_ALREADY_EXISTS;
       const city = await prisma.city.create({
         data: { name, latitude, longitude, place_id, province_id: attributes.province_id },
       });
+
       return city;
     } else {
-      throw { code: '_', message: 'Informe uma cidade válida!', statusCode: 422 };
+      throw ERR_INVALID_CITY;
     }
   },
 
@@ -74,7 +75,7 @@ const citiesServices = {
       const res = await imageUpload({ to, file: data.file, filename, id });
       return res;
     } else {
-      throw { code: '_', message: 'Insira uma cidade válida!', statusCode: 422 };
+      throw ERR_INVALID_CITY;
     }
   },
 
@@ -89,7 +90,7 @@ const citiesServices = {
           return { message: 'Cidade excluída com sucesso!' };
         });
     } else {
-      throw { code: '_', message: 'Cidade não encontrada!', statusCode: 400 };
+      throw ERR_CITY_NOT_FOUND;
     }
   },
 };

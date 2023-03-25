@@ -1,5 +1,4 @@
 import { Storage } from '@google-cloud/storage';
-import path from 'path';
 import { env_storageClientEmail, env_storagePrivateKeyAccess } from '../../environment';
 
 const storage = new Storage({

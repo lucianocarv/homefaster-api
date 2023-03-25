@@ -81,7 +81,7 @@ const provinceController = {
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const data = await req.file();
     const { id } = req.params as { id: string };
-    if (!data?.file) throw ERR_MISSING_FILE;
+    if (!data?.filename) throw ERR_MISSING_FILE;
     try {
       const upload = await provinceServices.uploadImgCover(data, 'provinces', Number(id));
       return res.status(202).send(upload);
@@ -95,7 +95,7 @@ const provinceController = {
     }
   },
 
-  delete: async (req: FastifyRequest, res: FastifyReply): Promise<{ message: string } | FastifyError> => {
+  deleteOneProvince: async (req: FastifyRequest, res: FastifyReply): Promise<{ message: string } | FastifyError> => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const params = req.params as { id: string };
