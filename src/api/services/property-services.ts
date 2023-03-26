@@ -8,8 +8,6 @@ import { IPagination } from '../interfaces/pagination.js';
 import { IAddressFilter } from '../interfaces/search-address.js';
 import { IDescriptionFilter } from '../interfaces/search-filter.js';
 import { MultipartFile } from '@fastify/multipart';
-import { imageUpload } from '../storage/upload-image.js';
-import { UploadImageTo } from '../types/upload-image-to.js';
 import { CustomError } from '../helpers/custom-error.js';
 import { IValidationAddressReply } from '../interfaces/validation-address-reply.js';
 import { FastifyError } from 'fastify';

@@ -1,7 +1,7 @@
 FROM node:18
 WORKDIR /app
 COPY /dist ./
-COPY .prd.env ./.env
+COPY .env ./
 COPY package*.json ./
 RUN npm install --production
 COPY ./node_modules/.prisma ./node_modules/.prisma

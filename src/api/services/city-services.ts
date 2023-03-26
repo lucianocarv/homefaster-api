@@ -4,8 +4,6 @@ import { PaginationParameters } from '../interfaces/pagination-parameters.js';
 import { GeocodingAPI } from '../maps/geocode-api.js';
 import { IUpdateCity } from '../interfaces/update-city.js';
 import { MultipartFile } from '@fastify/multipart';
-import { UploadImageTo } from '../types/upload-image-to.js';
-import { imageUpload } from '../storage/upload-image.js';
 import { ERR_CITY_ALREADY_EXISTS, ERR_CITY_NOT_FOUND, ERR_INVALID_CITY } from '../errors/index.js';
 import storageServices from './storage-services.js';
 import { env_storageBaseUrl } from '../../environment.js';

@@ -5,7 +5,7 @@ const defaultMail = process.env.DEFAULT_MAIL;
 const mailServer = mailer();
 
 const mailServices = {
-  sendMailToConfirmAccount: async (username: string, userMail: string, token: string) => {
+  sendMailVerifyAccount: async (username: string, userMail: string, token: string) => {
     const info = await mailServer
       .sendMail({
         from: `Rentfaster Clone <${defaultMail}>`,

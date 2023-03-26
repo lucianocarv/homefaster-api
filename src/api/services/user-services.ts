@@ -8,6 +8,18 @@ import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { IUsersFilter } from '../interfaces/users-filter';
 import mailServices from './mail-services';
 
+import {
+  ERR_COULD_NOT_FIND_USER,
+  ERR_EMAIL_ALREADY_USED,
+  ERR_EMAIL_OR_PASSWORD_INCORRECT,
+  ERR_FAIL_SET_NEW_PASS,
+  ERR_INCORRECT_CURRENT_PASSWORD,
+  ERR_NEED_REGISTER,
+  ERR_NEW_PASS_DIFF_CURRENT,
+  ERR_VERIFY_ACCOUNT,
+} from '../errors/user-errors';
+import { ERR_LIMITED_PAGES } from '../errors/pagination-erros';
+
 const userServices = {
   registerOneUser: async (data: User) => {
     const emailExists = await prisma.user.findUnique({ where: { email: data.email } });
@@ -21,28 +33,20 @@ const userServices = {
         },
       });
       if (user) {
-        await userServices.sendMailToConfirmAccount(user);
-      } else {
-        throw 'Não foi possível criar o usuário';
+        userServices.sendMailToConfirmAccount(user);
       }
     } else {
-      throw { code: '_', message: 'Este email já está sendo usado!', statusCode: 422 };
+      throw ERR_EMAIL_ALREADY_USED;
     }
   },
 
   sendMailToConfirmAccount: async (user: User) => {
-    // create token to confirm account
-    const payload = {
-      id: user.id,
-      email: user.email,
-    };
-    console.log(payload);
+    const payload = { id: user.id, email: user.email };
     const token = await jwtService.createTokenToConfirmAccount(payload);
-    // Send email to confirm account
-    const res = await mailServices.sendMailToConfirmAccount(user.first_name, user.email, token);
+    const res = await mailServices.sendMailVerifyAccount(user.first_name, user.email, token);
     if (res.accepted) {
       return {
-        message: 'Verifique seu email para confirmar a conta!',
+        message: 'Verifique sua conta através do email enviado por nós!',
       };
     }
   },
@@ -59,7 +63,7 @@ const userServices = {
       });
       return user;
     } else {
-      throw { code: '_', message: 'Este email já está sendo usado!', statusCode: 422 };
+      throw ERR_EMAIL_ALREADY_USED;
     }
   },
 
@@ -73,10 +77,10 @@ const userServices = {
         const token = await jwtService.createToken(payload);
         return { payload, token };
       } else {
-        throw { code: '_', message: 'Senha ou email incorretos!', statusCode: 401 };
+        throw ERR_EMAIL_OR_PASSWORD_INCORRECT;
       }
     } else {
-      throw { code: '_', message: 'Cadastre-se para fazer login!', statusCode: 422 };
+      throw ERR_NEED_REGISTER;
     }
   },
 
@@ -96,13 +100,19 @@ const userServices = {
           },
         });
         return { message: 'Conta verificada com sucesso!' };
+      } else {
+        throw ERR_VERIFY_ACCOUNT;
       }
     }
   },
 
   findOneUser: async (email: string) => {
-    const user = await prisma.user.findFirst({ where: { email } });
-    return user;
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (user) {
+      return user;
+    } else {
+      throw ERR_COULD_NOT_FIND_USER;
+    }
   },
 
   findUserById: async (id: number) => {
@@ -119,7 +129,7 @@ const userServices = {
     if (user) {
       return user;
     } else {
-      throw { code: '_', message: 'Não foi possível encontrar esse usuário!', statusCode: 422 };
+      throw ERR_COULD_NOT_FIND_USER;
     }
   },
 
@@ -153,12 +163,7 @@ const userServices = {
       }),
     ]);
     const pages = Math.ceil(count / pagination.per_page_number);
-    if (pagination.page_number > pages)
-      throw {
-        code: '_',
-        message: `Não existe a página ${pagination.page_number} de um total de ${pages} páginas!`,
-        statusCode: 422,
-      };
+    if (pagination.page_number > pages) throw ERR_LIMITED_PAGES;
     return { count, page: pagination.page_number, per_page: pagination.per_page_number, pages, users };
   },
 
@@ -174,9 +179,7 @@ const userServices = {
       },
     });
 
-    if (user) {
-      return { message: 'Informações atualizadas com sucesso!' };
-    }
+    return user;
   },
 
   updateUserAsAdmin: async (id: number, role: Role) => {
@@ -195,9 +198,7 @@ const userServices = {
         role: true,
       },
     });
-    if (user) {
-      return user;
-    }
+    return user;
   },
 
   updatePassword: async (id: number, attributes: { current_password: string; new_password: string }) => {
@@ -214,18 +215,18 @@ const userServices = {
               data: { password: newPasswordHash },
             });
             mailServices.sendMailInformePasswordChange(user.first_name, user.email);
-            return { message: 'Senha atualizada com sucesso!' };
+            return true;
           } else {
-            throw { code: '_', message: 'Falha ao criar senha!', statusCode: 400 };
+            throw ERR_FAIL_SET_NEW_PASS;
           }
         } else {
-          throw { code: '_', message: 'A nova senha não pode ser igual a atual!', statusCode: 400 };
+          throw ERR_NEW_PASS_DIFF_CURRENT;
         }
       } else {
-        throw { code: '_', message: 'A senha atual informada não confere!', statusCode: 400 };
+        throw ERR_INCORRECT_CURRENT_PASSWORD;
       }
     } else {
-      throw { code: '_', message: 'Não foi possível encontrar o usuário!', statusCode: 422 };
+      throw ERR_COULD_NOT_FIND_USER;
     }
   },
 
@@ -238,12 +239,12 @@ const userServices = {
           where: { email: attributes.email },
           data: { password: newPasswordHash },
         });
-        return { message: 'Senha atualizada com sucesso!' };
+        return true;
       } else {
-        throw { code: '_', message: 'Falha ao atualizar senha!', statusCode: 400 };
+        throw ERR_FAIL_SET_NEW_PASS;
       }
     } else {
-      throw { code: '_', message: 'Não foi possível encontrar o usuário!', statusCode: 422 };
+      throw ERR_COULD_NOT_FIND_USER;
     }
   },
 
@@ -253,7 +254,7 @@ const userServices = {
       await prisma.user.delete({ where: { id } });
       return { message: 'Usuário excluído com sucesso!' };
     } else {
-      throw { code: '_', message: 'Não foi possível encontrar o usuário!', statusCode: 422 };
+      throw ERR_COULD_NOT_FIND_USER;
     }
   },
 };

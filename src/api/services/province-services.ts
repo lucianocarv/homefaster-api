@@ -2,8 +2,6 @@ import { prisma } from '../config/prisma-connect.js';
 import { Province } from '@prisma/client';
 import { PaginationParameters } from '../interfaces/pagination-parameters.js';
 import { IUpdateProperty } from '../interfaces/update-property.js';
-import { UploadImageTo } from '../types/upload-image-to.js';
-import { imageUpload } from '../storage/upload-image.js';
 import { MultipartFile } from '@fastify/multipart';
 import { ERR_PROVINCE_NOT_FOUND } from '../errors/index.js';
 import storageServices from './storage-services.js';
