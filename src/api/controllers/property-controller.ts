@@ -7,7 +7,9 @@ import { IDescriptionFilter } from '../interfaces/search-filter';
 import { propertyServices } from '../services/property-services';
 import { ICreateProperty } from '../interfaces/create-property';
 import { Property } from '@prisma/client';
-import { ERR_MISSING_ATTRIBUTE, ERR_MISSING_FILE, ERR_PERMISSION_DENIED } from '../errors';
+import { ERR_MISSING_ATTRIBUTE } from '../errors';
+import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
+import { ERR_MISSING_FILE } from '../errors/upload-file-errors';
 
 const propertyController = {
   getAllProperties: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {

@@ -1,6 +1,6 @@
 import { Favorite } from '@prisma/client';
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
-import { ERR_MISSING_ATTRIBUTE, ERR_PERMISSION_DENIED } from '../errors';
+import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
 import { CustomError } from '../helpers/custom-error';
 import { ICustomError } from '../interfaces/custom-error';
 import { IUserPayload } from '../interfaces/jwt-payload';

@@ -1,4 +1,4 @@
-import { mailer } from '../mail/config';
+import { mailer } from '../email/config';
 
 const baseURL = process.env.BASE_URL!;
 const defaultMail = process.env.DEFAULT_MAIL;

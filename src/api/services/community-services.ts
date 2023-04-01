@@ -6,10 +6,10 @@ import { IUpdateCommunity } from '../interfaces/update-community.js';
 import { IValidationAddressReply } from '../interfaces/validation-address-reply.js';
 import { ValidateAddressAPI } from '../maps/validate-address-api.js';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
-import { ERR_COMMUNITY_ALREADY_EXISTS } from '../errors/index.js';
 import storageServices from './storage-services.js';
 import { getFileName } from '../helpers/get-filename.js';
 import { env_storageBaseUrl } from '../../environment.js';
+import { ERR_COMMUNITY_ALREADY_EXISTS } from '../errors/community-errors.js';
 
 const communityServices = {
   getAllCommunities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {

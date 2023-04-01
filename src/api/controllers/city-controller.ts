@@ -5,13 +5,9 @@ import { getPagination } from '../helpers/get-pagination';
 import { ICustomError } from '../interfaces/custom-error';
 import { citiesServices } from '../services/city-services';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
-import {
-  ERR_MISSING_ATTRIBUTE,
-  ERR_MISSING_UPDATE_ATTRIBUTES,
-  ERR_MISSING_FILE,
-  ERR_MISSING_ID,
-  ERR_PERMISSION_DENIED,
-} from '../errors';
+import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
+import { ERR_MISSING_ATTRIBUTE, ERR_MISSING_ID } from '../errors';
+import { ERR_MISSING_FILE, ERR_MISSING_UPDATE_ATTRIBUTES } from '../errors/upload-file-errors';
 
 const cityController = {
   getAllCities: async (req: FastifyRequest, res: FastifyReply): Promise<City[] | FastifyError> => {

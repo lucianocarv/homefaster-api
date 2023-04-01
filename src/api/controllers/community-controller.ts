@@ -1,6 +1,8 @@
 import { Community } from '@prisma/client';
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
-import { ERR_MISSING_ATTRIBUTE, ERR_MISSING_FILE, ERR_MISSING_UPDATE_ATTRIBUTES, ERR_PERMISSION_DENIED } from '../errors';
+import { ERR_MISSING_ATTRIBUTE } from '../errors';
+import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
+import { ERR_MISSING_FILE, ERR_MISSING_UPDATE_ATTRIBUTES } from '../errors/upload-file-errors';
 import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
 import { ICustomError } from '../interfaces/custom-error';

@@ -7,7 +7,8 @@ import { ILoginUser } from '../interfaces/login-user';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { IUsersFilter } from '../interfaces/users-filter';
 import { userServices } from '../services/user-services';
-import { ERR_PERMISSION_DENIED, ERR_USERS_INVALID_ROLE, ERR_USERS_USER_CREATE_PERMISSION_DENIED } from '../errors';
+import { ERR_USERS_INVALID_ROLE, ERR_USERS_USER_CREATE_PERMISSION_DENIED } from '../errors/user-errors';
+import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
 
 const userController = {
   register: async (req: FastifyRequest, res: FastifyReply): Promise<User | FastifyError> => {

@@ -5,7 +5,8 @@ import { getPagination } from '../helpers/get-pagination.js';
 import { ICustomError } from '../interfaces/custom-error.js';
 import { provinceServices } from '../services/province-services.js';
 import { PaginationParameters } from '../interfaces/pagination-parameters.js';
-import { ERR_MISSING_FILE, ERR_MISSING_UPDATE_ATTRIBUTES, ERR_PERMISSION_DENIED } from '../errors/index.js';
+import { ERR_PERMISSION_DENIED } from '../errors/permission-erros.js';
+import { ERR_MISSING_FILE, ERR_MISSING_UPDATE_ATTRIBUTES } from '../errors/upload-file-errors.js';
 
 const provinceController = {
   getAllProvinces: async (req: FastifyRequest, res: FastifyReply): Promise<Province[] | FastifyError> => {

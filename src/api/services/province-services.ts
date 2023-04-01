@@ -3,10 +3,10 @@ import { Province } from '@prisma/client';
 import { PaginationParameters } from '../interfaces/pagination-parameters.js';
 import { IUpdateProperty } from '../interfaces/update-property.js';
 import { MultipartFile } from '@fastify/multipart';
-import { ERR_PROVINCE_NOT_FOUND } from '../errors/index.js';
+import { ERR_PROVINCE_NOT_FOUND } from '../errors/province-errors';
 import storageServices from './storage-services.js';
 import { getFileName } from '../helpers/get-filename';
-import { env_bucketName, env_storageBaseUrl } from '../../environment.js';
+import { env_storageBaseUrl } from '../../environment.js';
 
 const provinceServices = {
   getAllProvinces: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {

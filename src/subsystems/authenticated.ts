@@ -9,7 +9,7 @@ import { provinceRoutesAuth } from '../api/routes/province-router-auth';
 import { communityRoutesAuth } from '../api/routes/community-router-auth';
 import { propertyRoutesAuth } from '../api/routes/property-router-auth';
 import { userRouterAuth } from '../api/routes/user-router-auth';
-import { ERR_NEED_LOGIN } from '../api/errors';
+import { ERR_NEED_LOGIN } from '../api/errors/permission-erros';
 
 export async function authenticatedSystem(fastify: FastifyInstance) {
   fastify.register(middie, { hook: 'onRequest' });
