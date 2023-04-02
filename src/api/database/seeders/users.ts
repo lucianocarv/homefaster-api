@@ -14,14 +14,6 @@ const seed = async () => {
           password: passwordHash,
           role: 'Admin',
         },
-        {
-          first_name: 'Max',
-          last_name: 'Andrews',
-          email: 'max@gmail.com',
-          avatar_url: 'null',
-          password: passwordHash,
-          role: 'Owner',
-        },
       ],
     }),
   ]);

@@ -3,7 +3,7 @@ import { Province } from '@prisma/client';
 import { PaginationParameters } from '../interfaces/pagination-parameters.js';
 import { IUpdateProperty } from '../interfaces/update-property.js';
 import { MultipartFile } from '@fastify/multipart';
-import { ERR_PROVINCE_NOT_FOUND } from '../errors/province-errors';
+import { ERR_PROVINCE_ALREADY_EXISTS, ERR_PROVINCE_NOT_FOUND } from '../errors/province-errors';
 import storageServices from './storage-services.js';
 import { getFileName } from '../helpers/get-filename';
 import { env_storageBaseUrl } from '../../environment.js';
@@ -27,10 +27,22 @@ const provinceServices = {
   },
 
   createOneProvince: async (attributes: Province): Promise<Province> => {
-    const province = await prisma.province.create({
-      data: attributes,
-    });
-    return province;
+    const [provinceExistsShortName, provinceExistsName] = await Promise.all([
+      prisma.province.findUnique({
+        where: { short_name: attributes.short_name },
+      }),
+      prisma.province.findUnique({
+        where: { name: attributes.name },
+      }),
+    ]);
+    if (!provinceExistsName && !provinceExistsShortName) {
+      const province = await prisma.province.create({
+        data: attributes,
+      });
+      return province;
+    } else {
+      throw ERR_PROVINCE_ALREADY_EXISTS;
+    }
   },
 
   updateOneProvince: async ({ id, attibutes }: { id: number; attibutes: IUpdateProperty }): Promise<Province> => {

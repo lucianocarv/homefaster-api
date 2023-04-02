@@ -2,6 +2,7 @@
 # Env
 .env
 .production.env
+.homolog.env
 # Dirs
 node_modules
 dist
@@ -10,3 +11,6 @@ keys
 images
 # Yarn
 yarn-error.log
+
+# others
+app-info.txt

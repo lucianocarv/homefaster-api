@@ -1,3 +1,4 @@
+import { readFile, readFileSync } from 'fs';
 import { mailer } from '../email/config';
 
 const baseURL = process.env.BASE_URL!;
@@ -8,9 +9,9 @@ const mailServices = {
   sendMailVerifyAccount: async (username: string, userMail: string, token: string) => {
     const info = await mailServer
       .sendMail({
-        from: `Rentfaster Clone <${defaultMail}>`,
+        from: `Homefaster <${defaultMail}>`,
         to: userMail,
-        subject: 'Confirme sua conta no Rentfaster Clone!',
+        subject: 'Confirme sua conta no Homefaster!',
         html: `
         <strong><em>ATENÇAO: Está é apenas uma aplicação de testes, não sendo utilizada para fins produtivos e/ou lucrativos!</em></strong>
         <h3>Olá ${username}, confirme sua conta:</h3>
