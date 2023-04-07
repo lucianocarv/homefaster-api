@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "server": "nodemon --trace-warnings dist/src/app.js",
+    "server": "nodemon --trace-warnings build/src/server.js",
     "dev": "concurrently \"tsc -w\" \"yarn server\"",
     "test": "vitest",
-    "start": "node src/app.js",
+    "start": "node src/server.js",
     "build": "tsc",
     "seed": "node dist/src/api/database/seeders/index.js"
   },

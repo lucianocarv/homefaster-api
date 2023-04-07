@@ -1,4 +1,4 @@
-import { fastify } from '../../index';
+import { fastify } from '../../app';
 import { IConfirmAccountPayload } from '../interfaces/confirm-account-payload';
 import { IUserPayload } from '../interfaces/jwt-payload';
 

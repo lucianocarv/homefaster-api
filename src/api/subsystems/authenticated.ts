@@ -1,15 +1,15 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import middie from '@fastify/middie';
-import { jwtService } from '../api/services/jwt-services';
-import { userServices } from '../api/services/user-services';
-import { favoritesRouter } from '../api/routes/favorites-router';
-import { cityRoutesAuth } from '../api/routes/city-router-auth';
-import { CustomError } from '../api/helpers/custom-error';
-import { provinceRoutesAuth } from '../api/routes/province-router-auth';
-import { communityRoutesAuth } from '../api/routes/community-router-auth';
-import { propertyRoutesAuth } from '../api/routes/property-router-auth';
-import { userRouterAuth } from '../api/routes/user-router-auth';
-import { ERR_NEED_LOGIN } from '../api/errors/permission-erros';
+import { jwtService } from '../../api/services/jwt-services';
+import { userServices } from '../../api/services/user-services';
+import { favoritesRouter } from '../../api/routes/favorites-router';
+import { cityRoutesAuth } from '../../api/routes/city-router-auth';
+import { CustomError } from '../../api/helpers/custom-error';
+import { provinceRoutesAuth } from '../../api/routes/province-router-auth';
+import { communityRoutesAuth } from '../../api/routes/community-router-auth';
+import { propertyRoutesAuth } from '../../api/routes/property-router-auth';
+import { userRouterAuth } from '../../api/routes/user-router-auth';
+import { ERR_NEED_LOGIN } from '../../api/errors/permission-erros';
 
 export async function authenticatedSystem(fastify: FastifyInstance) {
   fastify.register(middie, { hook: 'onRequest' });

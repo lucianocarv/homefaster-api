@@ -6,6 +6,7 @@
 # Dirs
 node_modules
 dist
+build
 logs
 keys
 images

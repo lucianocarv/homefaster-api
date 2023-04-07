@@ -30,7 +30,7 @@ const mailServices = {
   sendMailInformePasswordChange: async (username: string, email: string) => {
     const res = await mailServer
       .sendMail({
-        from: `Rentfaster Clone <${defaultMail}>`,
+        from: `Homefaster <${defaultMail}>`,
         to: email,
         subject: 'ATENÇÃO: Alteração de Senha!',
         html: `
