@@ -53,7 +53,7 @@ const propertyServices = {
         include: { utility: true },
       }),
     ]);
-    const [features, utilities] = [f.map((feature) => feature.feature.name), u.map((utility) => utility.utility.name)];
+    const [features, utilities] = [f.map((feature) => feature.feature), u.map((utility) => utility.utility.name)];
     return { ...property, features, utilities };
   },
 
@@ -72,6 +72,8 @@ const propertyServices = {
 
     if (validateAddress?.formatted_address) {
       const { postal_code, latitude, longitude, global_code, place_id, formatted_address } = validateAddress;
+      const propertyExists = await propertyServices.findPropertyByGlobalCode(global_code);
+      if (propertyExists) throw 'A Propriedade já está cadastrada!';
       const { id } = await prisma.property.create({
         data: {
           ...property,
@@ -129,6 +131,11 @@ const propertyServices = {
     return CustomError('_', 'Endereço inválido! Por favor, verifique as informações fornecidas!', 400);
   },
 
+  findPropertyByGlobalCode: async (global_code: string) => {
+    const property = await prisma.address.findUnique({ where: { global_code } });
+    return property;
+  },
+
   updateOneProperty: async (id: number, attributes: IPropertyUpdate) => {
     const property = await prisma.property.findUnique({ where: { id } });
     if (property && property.id) {
@@ -166,6 +173,7 @@ const propertyServices = {
                 throw CustomError('_', 'Feature incorreta não pode ser atualizada!', 400);
               });
           }
+
           if (attributes.utilities && attributes.utilities.length >= 1) {
             await prisma.utilitiesOnDescriptions.deleteMany({ where: { description_id: description!.id } });
             await prisma

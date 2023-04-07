@@ -11,6 +11,7 @@ import { propertyRoutesAuth } from '../../api/routes/property-router-auth';
 import { userRouterAuth } from '../../api/routes/user-router-auth';
 import { ERR_NEED_LOGIN } from '../../api/errors/permission-erros';
 import { featureRoutesAuth } from '../routes/feature-router-auth';
+import { utilitiesRoutesAuth } from '../routes/utilities-router-auth';
 
 export async function authenticatedSystem(fastify: FastifyInstance) {
   fastify.register(middie, { hook: 'onRequest' });
@@ -22,6 +23,7 @@ export async function authenticatedSystem(fastify: FastifyInstance) {
   fastify.register(propertyRoutesAuth);
   fastify.register(userRouterAuth);
   fastify.register(featureRoutesAuth);
+  fastify.register(utilitiesRoutesAuth);
 
   fastify.addHook('onRequest', async (req: FastifyRequest, res: FastifyReply) => {
     const token = req.headers.authorization;
