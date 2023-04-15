@@ -121,7 +121,6 @@ const userServices = {
       select: {
         first_name: true,
         last_name: true,
-        avatar_url: true,
         phone: true,
         role: true,
       },
@@ -147,7 +146,6 @@ const userServices = {
           id: true,
           first_name: true,
           last_name: true,
-          avatar_url: true,
           email: true,
           phone: true,
           role: true,
@@ -192,7 +190,6 @@ const userServices = {
         id: true,
         first_name: true,
         last_name: true,
-        avatar_url: true,
         email: true,
         phone: true,
         role: true,

@@ -4,10 +4,9 @@ import { CompleteFavorite, RelatedFavoriteModel, CompleteProperty, RelatedProper
 
 export const UserModel = z.object({
   id: z.number().int(),
-  first_name: z.string(),
-  last_name: z.string(),
-  avatar_url: z.string(),
-  email: z.string(),
+  first_name: z.string().min(2, { message: "O nome precisar ter 2 ou mais caracteres!" }),
+  last_name: z.string().min(2, { message: "O sobrenome precisa ter 2 ou mais caracteres!" }),
+  email: z.string().email({ message: "O email precisa ser do tipo email@email.com" }),
   password: z.string(),
   phone: z.string().nullish(),
   role: z.nativeEnum(Role),

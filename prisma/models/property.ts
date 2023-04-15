@@ -7,7 +7,7 @@ export const PropertyModel = z.object({
   city_id: z.number().int(),
   created_at: z.date(),
   updated_at: z.date(),
-  user_id: z.number().int().nullish(),
+  user_id: z.number().int(),
 })
 
 export interface CompleteProperty extends z.infer<typeof PropertyModel> {
@@ -16,7 +16,7 @@ export interface CompleteProperty extends z.infer<typeof PropertyModel> {
   address?: CompleteAddress | null
   city: CompleteCity
   favorites: CompleteFavorite[]
-  user?: CompleteUser | null
+  listed_by: CompleteUser
 }
 
 /**
@@ -30,5 +30,5 @@ export const RelatedPropertyModel: z.ZodSchema<CompleteProperty> = z.lazy(() => 
   address: RelatedAddressModel.nullish(),
   city: RelatedCityModel,
   favorites: RelatedFavoriteModel.array(),
-  user: RelatedUserModel.nullish(),
+  listed_by: RelatedUserModel,
 }))

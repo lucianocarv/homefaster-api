@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import { fastify } from './app.js';
+import { z } from 'zod';
 
 const port = Number(process.env.PORT!);
 const host = process.env.HOST!;

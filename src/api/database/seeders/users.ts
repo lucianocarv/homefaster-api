@@ -10,7 +10,6 @@ const seed = async () => {
           first_name: 'Luciano',
           last_name: 'Carvalho',
           email: 'lucianocarv13@gmail.com',
-          avatar_url: 'null',
           password: passwordHash,
           role: 'Admin',
         },

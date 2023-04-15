@@ -26,6 +26,7 @@ model Province {
   name       String   @unique @db.VarChar(32)
   /// @zod.length(2, {message: "A abreviação deve ter apenas 2 caracteres!"})
   short_name String   @unique @db.VarChar(2)
+  /// @zod.url()
   img_cover  String?  @db.VarChar(255)
   cities     City[]
   created_at DateTime @default(now()) @db.Timestamp()
@@ -35,7 +36,6 @@ model Province {
 }
 
 model City {
-  /// @zod.optional()
   id          Int         @id @default(autoincrement())
   /// @zod.max(32, {message: "O nome da cidade não pode ter mais de 32 caracteres!"})
   /// @zod.min(3, {message: "O nome da cidade deve ter pelo menos 3 caracteres!"})
@@ -43,6 +43,7 @@ model City {
   latitude    Float
   longitude   Float
   place_id    String      @unique @db.VarChar(255)
+  /// @zod.url()
   img_cover   String?     @db.VarChar(255)
   province    Province    @relation(fields: [province_id], references: [id], onUpdate: Cascade)
   province_id Int
@@ -57,18 +58,22 @@ model City {
 
 model Community {
   id                Int        @id @default(autoincrement())
-  name              String     @db.VarChar(64)
+  /// @zod.max(32, {message: "O nome da comunidade não pode ter mais de 32 caracteres!"})
+  /// @zod.min(3, {message: "O nome da comunidade deve ter pelo menos 3 caracteres!"})
+  name              String     @db.VarChar(32)
   global_code       String     @unique @db.VarChar(255)
   formatted_address String     @db.VarChar(255)
   latitude          Float
   longitude         Float
+  /// @zod.url({message: "A imagem de fundo precisa referenciar um endereço url!"})
   img_cover         String?    @db.VarChar(255)
-  city              City       @relation(fields: [city_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  city              City       @relation(fields: [city_id], references: [id], onUpdate: Cascade)
   city_id           Int
   properties        Property[]
   created_at        DateTime   @default(now()) @db.Timestamp()
   updated_at        DateTime   @updatedAt @db.Timestamp()
 
+  @@unique([name, city_id])
   @@map("communities")
 }
 
@@ -83,16 +88,18 @@ model Property {
   favorites    Favorite[]
   created_at   DateTime     @default(now()) @db.Timestamp()
   updated_at   DateTime     @updatedAt @db.Timestamp()
-  user         User?        @relation(fields: [user_id], references: [id], onUpdate: Cascade)
-  user_id      Int?
+  listed_by    User         @relation(fields: [user_id], references: [id], onUpdate: Cascade)
+  user_id      Int
 
   @@map("properties")
 }
 
 model Address {
   id                Int      @id @default(autoincrement())
+  /// @zod.positive({message: "O número da propriedade precisar ser positivo!"})
   number            Int
   street            String   @db.VarChar(255)
+  /// @zod.max(16)
   postal_code       String?  @db.VarChar(16)
   global_code       String   @unique @db.VarChar(255)
   place_id          String   @unique @db.VarChar(255)
@@ -114,12 +121,17 @@ model Address {
 model Description {
   id            Int                       @id @default(autoincrement())
   title         String                    @db.VarChar(255)
+  /// @zod.url({message: "A imagem de fundo precisa referenciar um endereço url!"})
   thumb         String
+  /// @zod.positive({message: "O valor do aluguel precisa ser positivo!"})
   price         Float                     @db.Real
+  /// @zod.min(1, {message:"A quantidade de banheiros precisar ser igual ou maior que 1"})
   bathrooms     Int
+  /// @zod.min(1, {message:"A quantidade de quartos precisar ser igual ou maior que 1"})
   badrooms      Int
   furnished     Boolean
-  rented        Boolean?                  @default(false)
+  rented        Boolean                   @default(false)
+  /// @zod.min(1, {message:"A área da propriedade precisar ser igual ou maior que 1"})
   property_area Float                     @db.Real
   pets_cats     Int
   pets_dogs     Int
@@ -139,6 +151,7 @@ model Description {
 
 model Utility {
   id                        Int                       @id @default(autoincrement())
+  /// @zod.min(3, {message:"O nome da utilidade precisar ter pelo menos 3 caracteres!"})
   name                      String                    @unique @db.VarChar(255)
   utilities_on_descriptions UtilitiesOnDescriptions[]
   created_at                DateTime                  @default(now()) @db.Timestamp()
@@ -167,6 +180,7 @@ enum FeatureType {
 
 model Feature {
   id                       Int                      @id @default(autoincrement())
+  /// @zod.min(2, {message: "O nome da feature precisa ter pelo menos 2 caracteres!"})
   name                     String                   @db.VarChar(255)
   type                     FeatureType
   features_on_descriptions FeaturesOnDescriptions[]
@@ -191,6 +205,7 @@ model FeaturesOnDescriptions {
 
 model Type {
   id          Int           @id @default(autoincrement())
+  /// @zod.min(2, {message:"O nome do tipo de propriedade precisar ter no mínimo 2 caracteres!"})
   name        String        @unique @db.VarChar(255)
   Description Description[]
   created_at  DateTime      @default(now()) @db.Timestamp()
@@ -201,15 +216,16 @@ model Type {
 
 enum Role {
   User
-  Owner
   Admin
 }
 
 model User {
   id                Int        @id @default(autoincrement())
+  /// @zod.min(2, {message: "O nome precisar ter 2 ou mais caracteres!"})
   first_name        String     @db.VarChar(255)
+  /// @zod.min(2, {message: "O sobrenome precisa ter 2 ou mais caracteres!"})
   last_name         String     @db.VarChar(255)
-  avatar_url        String
+  /// @zod.email({message: "O email precisa ser do tipo email@email.com"})
   email             String     @unique
   password          String
   phone             String?

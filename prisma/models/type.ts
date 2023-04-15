@@ -3,7 +3,7 @@ import { CompleteDescription, RelatedDescriptionModel } from "./index"
 
 export const TypeModel = z.object({
   id: z.number().int(),
-  name: z.string(),
+  name: z.string().min(2, { message: "O nome do tipo de propriedade precisar ter no mínimo 2 caracteres!" }),
   created_at: z.date(),
   updated_at: z.date(),
 })

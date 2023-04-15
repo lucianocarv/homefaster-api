@@ -4,7 +4,7 @@ import { CompleteFeaturesOnDescriptions, RelatedFeaturesOnDescriptionsModel } fr
 
 export const FeatureModel = z.object({
   id: z.number().int(),
-  name: z.string(),
+  name: z.string().min(2, { message: "O nome da feature precisa ter pelo menos 2 caracteres!" }),
   type: z.nativeEnum(FeatureType),
   created_at: z.date(),
   updated_at: z.date(),

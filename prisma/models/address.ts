@@ -3,9 +3,9 @@ import { CompleteProperty, RelatedPropertyModel } from "./index"
 
 export const AddressModel = z.object({
   id: z.number().int(),
-  number: z.number().int(),
+  number: z.number().int().positive({ message: "O número da propriedade precisar ser positivo!" }),
   street: z.string(),
-  postal_code: z.string().nullish(),
+  postal_code: z.string().max(16).nullish(),
   global_code: z.string(),
   place_id: z.string(),
   formatted_address: z.string(),

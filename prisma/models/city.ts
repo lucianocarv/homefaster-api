@@ -2,12 +2,12 @@ import * as z from "zod"
 import { CompleteProvince, RelatedProvinceModel, CompleteCommunity, RelatedCommunityModel, CompleteProperty, RelatedPropertyModel } from "./index"
 
 export const CityModel = z.object({
-  id: z.number().int().optional(),
+  id: z.number().int(),
   name: z.string().max(32, { message: "O nome da cidade não pode ter mais de 32 caracteres!" }).min(3, { message: "O nome da cidade deve ter pelo menos 3 caracteres!" }),
   latitude: z.number(),
   longitude: z.number(),
   place_id: z.string(),
-  img_cover: z.string().nullish(),
+  img_cover: z.string().url().nullish(),
   province_id: z.number().int(),
   created_at: z.date(),
   updated_at: z.date(),

@@ -31,7 +31,7 @@ const userController = {
     if (!user) throw ERR_PERMISSION_DENIED;
     const data = req.body as User;
     if (!['User', 'Admin', 'Manager'].includes(data.role)) throw ERR_USERS_INVALID_ROLE;
-    if ((data.role == 'Admin' || user.role == 'Owner') && user.role == 'User') throw ERR_USERS_USER_CREATE_PERMISSION_DENIED;
+    if (data.role == 'Admin' && user.role == 'User') throw ERR_USERS_USER_CREATE_PERMISSION_DENIED;
     try {
       const user = await userServices.registerOneUserAuth(data);
       return res.status(201).send(user);

@@ -3,7 +3,7 @@ import { CompleteUtilitiesOnDescriptions, RelatedUtilitiesOnDescriptionsModel } 
 
 export const UtilityModel = z.object({
   id: z.number().int(),
-  name: z.string(),
+  name: z.string().min(3, { message: "O nome da utilidade precisar ter pelo menos 3 caracteres!" }),
   created_at: z.date(),
   updated_at: z.date(),
 })

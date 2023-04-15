@@ -5,7 +5,7 @@ export const ProvinceModel = z.object({
   id: z.number().int(),
   name: z.string().max(32, { message: "O nome da província não pode ter mais de 32 caracteres!" }).min(3, { message: "O nome da província deve ter pelo menos 3 caracteres!" }),
   short_name: z.string().length(2, { message: "A abreviação deve ter apenas 2 caracteres!" }),
-  img_cover: z.string().nullish(),
+  img_cover: z.string().url().nullish(),
   created_at: z.date(),
   updated_at: z.date(),
 })
