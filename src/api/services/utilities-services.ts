@@ -1,3 +1,4 @@
+import { Utility } from '@prisma/client';
 import { prisma } from '../config/prisma-connect';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 
@@ -18,6 +19,20 @@ const utilitiesServices = {
   createOne: async (name: string) => {
     const utility = await prisma.utility.create({ data: { name } });
     return utility;
+  },
+
+  updateOneUtility: async (id: number, utility: Utility) => {
+    const utilityUpdated = await prisma.utility.update({
+      where: { id },
+      data: utility,
+    });
+
+    return utilityUpdated;
+  },
+
+  deleteOne: async (id: number) => {
+    const deleted = await prisma.utility.delete({ where: { id } });
+    return deleted;
   },
 };
 

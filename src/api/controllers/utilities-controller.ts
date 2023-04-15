@@ -4,6 +4,9 @@ import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { utilitiesServices } from '../services/utilities-services';
 import { Utility } from '@prisma/client';
 import { ERR_UTILITY_ALREADY_EXISTS } from '../errors/utility-errors';
+import { UtilityModel } from '../../../prisma/models';
+import { getIssuesZod } from '../helpers/get-issues-zod';
+import { CustomError } from '../helpers/custom-error';
 
 const utilitiesController = {
   getAllUtilities: async (req: FastifyRequest, res: FastifyReply) => {
@@ -26,6 +29,35 @@ const utilitiesController = {
       return res.send(utility);
     } catch (error) {
       return error;
+    }
+  },
+
+  updateOneUtility: async (req: FastifyRequest, res: FastifyReply) => {
+    const { id } = req.params as { id: string };
+    const body = req.body;
+
+    const parse = UtilityModel.pick({ name: true }).safeParse(body);
+
+    if (!parse.success) {
+      const messages = getIssuesZod(parse.error.issues);
+      throw CustomError('_', messages.toString(), 400);
+    }
+    const utility = parse.data as Utility;
+    try {
+      const result = await utilitiesServices.updateOneUtility(Number(id), utility);
+      return res.status(202).send(result);
+    } catch (error) {
+      return res.send(error);
+    }
+  },
+
+  deleteOneUtility: async (req: FastifyRequest, res: FastifyReply) => {
+    const { id } = req.params as { id: string };
+    try {
+      const result = await utilitiesServices.deleteOne(Number(id));
+      return res.status(202).send(result);
+    } catch (error) {
+      return res.send(error);
     }
   },
 };
