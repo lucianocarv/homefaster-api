@@ -13,13 +13,21 @@ import { ERR_COMMUNITY_ALREADY_EXISTS } from '../errors/community-errors.js';
 
 const communityServices = {
   getAllCommunities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
-    const communities = await prisma.community.findMany({
-      take: per_page_number,
-      skip,
-    });
+    const [communities, count] = await Promise.all([
+      prisma.community.findMany({
+        take: per_page_number,
+        skip,
+      }),
+      prisma.community.count(),
+    ]);
+
+    const pages = Math.ceil(count / per_page_number);
+
     return {
+      count,
       page: page_number,
       per_page: per_page_number,
+      pages,
       communities,
     };
   },

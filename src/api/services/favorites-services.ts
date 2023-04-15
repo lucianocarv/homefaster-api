@@ -17,7 +17,9 @@ const favoritesService = {
       })
     );
 
-    return { count, page: page_number, per_page: per_page_number, favorites: properties };
+    const pages = Math.ceil(count / per_page_number);
+
+    return { count, page: page_number, per_page: per_page_number, pages, favorites: properties };
   },
 
   addOneFavorite: async (property_id: number, user_id: number) => {
