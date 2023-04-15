@@ -5,7 +5,7 @@
 ### <h2>:cyclone: Descrição:</h2>
 
 ~<p>Projeto de uma API RESTful que representa um serviço de aluguel de imóveis, e que é baseado no site [Rentfaster](https://www.rentfaster.ca/).<br/>
-O projeto está sendo desenvolvido inteirmento com TypeScript e futuramente será desenvolvido um painel de administração para o back-end</p>~
+O projeto está sendo desenvolvido com TypeScript</p>~
 
 
 #### <h2>:cyclone: Tecnologias usadas:</h2>
