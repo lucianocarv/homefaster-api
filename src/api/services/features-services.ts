@@ -28,8 +28,17 @@ const featureServices = {
     };
   },
 
-  deleteFeature: async (feature: Feature) => {
-    const featureDeleted = await prisma.feature.delete({ where: { id: feature.id } });
+  updateOneFeature: async (id: number, feature: Feature) => {
+    const featureUpdated = await prisma.feature.update({
+      where: { id },
+      data: feature,
+    });
+
+    return featureUpdated;
+  },
+
+  deleteOneFeature: async (id: number) => {
+    const featureDeleted = await prisma.feature.delete({ where: { id } });
     return featureDeleted;
   },
 };

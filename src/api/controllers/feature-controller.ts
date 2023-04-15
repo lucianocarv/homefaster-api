@@ -3,6 +3,9 @@ import { featureServices } from '../services/features-services';
 import { Feature } from '@prisma/client';
 import { ERR_FEATURE_ALREADY_EXISTS, ERR_FEATURE_TYPE_ERROR } from '../errors/feature-errors';
 import { getPagination } from '../helpers/get-pagination';
+import { FeatureModel } from '../../../prisma/models';
+import { getIssuesZod } from '../helpers/get-issues-zod';
+import { CustomError } from '../helpers/custom-error';
 
 const featureController = {
   createOneFeature: async (req: FastifyRequest, res: FastifyReply) => {
@@ -12,7 +15,7 @@ const featureController = {
       const featureExists = await featureServices.findFeature(feature);
       if (!featureExists) {
         const newFeature = await featureServices.createFeature(feature);
-        return newFeature;
+        return res.status(201).send(newFeature);
       } else {
         throw ERR_FEATURE_ALREADY_EXISTS;
       }
@@ -26,9 +29,38 @@ const featureController = {
     const { page_number, per_page_number, skip } = getPagination(page, per_page);
     try {
       const features = await featureServices.findAllFeatures({ page_number, per_page_number, skip });
-      return features;
+      return res.send(features);
     } catch (error) {
       return error;
+    }
+  },
+
+  updateOneFeature: async (req: FastifyRequest, res: FastifyReply) => {
+    const { id } = req.params as { id: string };
+    const body = req.body as Feature;
+
+    const parse = FeatureModel.pick({ name: true, type: true }).partial({ name: true, type: true }).safeParse(body);
+
+    if (!parse.success) {
+      const messages = getIssuesZod(parse.error.issues);
+      throw CustomError('_', messages.toString(), 400);
+    }
+    const feature = parse.data as Feature;
+    try {
+      const result = await featureServices.updateOneFeature(Number(id), feature);
+      return res.send(result);
+    } catch (error) {
+      return res.send(error);
+    }
+  },
+
+  deleteOneFeature: async (req: FastifyRequest, res: FastifyReply) => {
+    const { id } = req.params as { id: string };
+    try {
+      const result = await featureServices.deleteOneFeature(Number(id));
+      return res.status(202).send(result);
+    } catch (error) {
+      return res.send(error);
     }
   },
 };
