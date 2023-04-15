@@ -1,9 +1,7 @@
 import { prisma } from '../config/prisma-connect.js';
-import { City, Community, Property, Province } from '@prisma/client';
+import { City, Community, Feature, Property, Province, Utility } from '@prisma/client';
 import { PaginationParameters } from '../interfaces/pagination-parameters.js';
-import { ICreateProperty, IPropertyUpdate } from '../interfaces/create-property.js';
 import { ValidateAddressAPI } from '../maps/validate-address-api.js';
-import { _address, _description, _manager } from '../helpers/query-properties.js';
 import { IPagination } from '../interfaces/pagination.js';
 import { IAddressFilter } from '../interfaces/search-address.js';
 import { IDescriptionFilter } from '../interfaces/search-filter.js';
@@ -14,6 +12,7 @@ import { FastifyError } from 'fastify';
 import { getFileName } from '../helpers/get-filename.js';
 import storageServices from './storage-services.js';
 import { env_storageBaseUrl } from '../../environment.js';
+import { ICompleteProperty } from '../interfaces/complete-property.js';
 
 const propertyServices = {
   getAllProperties: async ({ page_number, per_page_number, skip }: PaginationParameters) => {
@@ -22,8 +21,8 @@ const propertyServices = {
         take: per_page_number,
         skip,
         include: {
-          address: { select: _address },
-          description: { select: _description },
+          address: true,
+          description: true,
         },
       }),
       prisma.property.count(),
@@ -57,7 +56,7 @@ const propertyServices = {
     return { ...property, features, utilities };
   },
 
-  createOneProperty: async (attributes: ICreateProperty, user_id: number): Promise<Property | FastifyError> => {
+  createOneProperty: async (attributes: any, user_id: number): Promise<Property | FastifyError> => {
     const { property, description, address } = attributes;
     const { community_id } = attributes.property;
     const { name: community, city_id } = (await prisma.community.findUnique({ where: { id: community_id } })) as Community;
@@ -73,7 +72,7 @@ const propertyServices = {
     if (validateAddress?.formatted_address) {
       const { postal_code, latitude, longitude, global_code, place_id, formatted_address } = validateAddress;
       const propertyExists = await propertyServices.findPropertyByGlobalCode(global_code);
-      if (propertyExists) throw 'A Propriedade já está cadastrada!';
+      if (propertyExists) throw CustomError('_', 'A Propriedade já está cadastrada!', 400);
       const { id } = await prisma.property.create({
         data: {
           ...property,
@@ -108,10 +107,10 @@ const propertyServices = {
         if (description) {
           await prisma.$transaction([
             prisma.utilitiesOnDescriptions.createMany({
-              data: attributes.utilities.map((utility) => ({ description_id: description.id, utility_id: utility })),
+              data: attributes.utilities.map((utility: Utility) => ({ description_id: description.id, utility_id: utility })),
             }),
             prisma.featuresOnDescriptions.createMany({
-              data: attributes.features.map((feature) => ({ description_id: description.id, feature_id: feature })),
+              data: attributes.features.map((feature: Feature) => ({ description_id: description.id, feature_id: feature })),
             }),
           ]);
         }
@@ -136,7 +135,7 @@ const propertyServices = {
     return property;
   },
 
-  updateOneProperty: async (id: number, attributes: IPropertyUpdate) => {
+  updateOneProperty: async (id: number, attributes: ICompleteProperty) => {
     const property = await prisma.property.findUnique({ where: { id } });
     if (property && property.id) {
       const description = await prisma.description.findUnique({ where: { property_id: property.id } });
@@ -147,7 +146,7 @@ const propertyServices = {
             description: {
               update: {
                 title: attributes.description.title,
-                thumb: attributes.description.thumb,
+                img_cover: attributes.description.img_cover,
                 badrooms: attributes.description.badrooms,
                 bathrooms: attributes.description.bathrooms,
                 price: attributes.description.price,
@@ -198,13 +197,13 @@ const propertyServices = {
     const property = await prisma.property.findUnique({ where: { id } });
     const description = await prisma.description.findUnique({ where: { property_id: property?.id } });
     if (description) {
-      if (description.thumb) {
-        const filePath = await getFileName(description.thumb);
+      if (description.img_cover) {
+        const filePath = await getFileName(description.img_cover);
         storageServices.deleteFileInStorage(filePath);
       }
       const response = await storageServices.thumbImageUpload({ to: 'properties', file: data.file, filename, id });
       const newImageUrl = `${env_storageBaseUrl}/properties/${id}/${filename}`;
-      await prisma.description.update({ where: { id: description.id }, data: { thumb: newImageUrl } });
+      await prisma.description.update({ where: { id: description.id }, data: { img_cover: newImageUrl } });
       return response;
     } else {
       return CustomError('_', 'Insira uma propriedade válida!', 400);

@@ -6,8 +6,9 @@ import { ERR_MISSING_FILE, ERR_MISSING_UPDATE_ATTRIBUTES } from '../errors/uploa
 import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
 import { ICustomError } from '../interfaces/custom-error';
-import { IUpdateCommunity } from '../interfaces/update-community';
 import { communityServices } from '../services/community-services';
+import { CommunityModel } from '../../../prisma/models';
+import { getIssuesZod } from '../helpers/get-issues-zod';
 
 const communityController = {
   getAllCommunities: async (req: FastifyRequest, res: FastifyReply): Promise<Community[] | FastifyError> => {
@@ -17,51 +18,68 @@ const communityController = {
       const communities = await communityServices.getAllCommunities({ page_number, per_page_number, skip });
       return res.send(communities);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
   createOneCommunity: async (req: FastifyRequest, res: FastifyReply): Promise<Community | FastifyError> => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
-    const attributes = req.body as Community;
-    if (!attributes.name || attributes.name.length < 1) throw ERR_MISSING_ATTRIBUTE('name');
-    if (!attributes.city_id || attributes.city_id == 0) throw ERR_MISSING_ATTRIBUTE('city_id');
+
+    const parse = CommunityModel.partial({
+      id: true,
+      formatted_address: true,
+      global_code: true,
+      img_cover: true,
+      latitude: true,
+      longitude: true,
+      created_at: true,
+      updated_at: true,
+    }).safeParse(req.body);
+
+    if (!parse.success) {
+      const messages = getIssuesZod(parse.error.issues);
+      throw CustomError('_', messages.toString(), 400);
+    }
+
+    const community = parse.data as Community;
+
     try {
-      const community = await communityServices.createOneCommunity(attributes);
-      return res.send(community);
+      const result = await communityServices.createOneCommunity(community);
+      return res.send(result);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
-  update: async (req: FastifyRequest, res: FastifyReply) => {
+  updateOneProvince: async (req: FastifyRequest, res: FastifyReply) => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const params = req.params as { id: string };
     const id = Number(params.id);
-    const attributes = req.body as IUpdateCommunity;
-    if (!attributes) throw ERR_MISSING_UPDATE_ATTRIBUTES;
+
+    const parse = CommunityModel.pick({
+      formatted_address: true,
+      img_cover: true,
+      latitude: true,
+      longitude: true,
+      name: true,
+    })
+      .partial({ formatted_address: true, img_cover: true, latitude: true, longitude: true, name: true })
+      .safeParse(req.body);
+
+    if (!parse.success) {
+      const messages = getIssuesZod(parse.error.issues);
+      throw CustomError('_', messages.toString(), 400);
+    }
+
+    const community = parse.data as Community;
+
     try {
-      const community = await communityServices.updateOneCommunity({ id, attributes });
-      return res.status(202).send(community);
+      const result = await communityServices.updateOneCommunity({ id, attributes: community });
+      return res.status(202).send(result);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -76,12 +94,7 @@ const communityController = {
       const result = await communityServices.uploadCoverImage(data, Number(id));
       return res.send(result);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -95,11 +108,7 @@ const communityController = {
       return res.status(202).send(community);
     } catch (error) {
       const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 };

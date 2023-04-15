@@ -7,7 +7,7 @@ export const CityModel = z.object({
   latitude: z.number(),
   longitude: z.number(),
   place_id: z.string(),
-  img_cover: z.string().url().nullish(),
+  img_cover: z.string().url({ message: "A imagem de fundo precisa referenciar um endereço url!" }).nullish(),
   province_id: z.number().int(),
   created_at: z.date(),
   updated_at: z.date(),

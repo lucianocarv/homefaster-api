@@ -61,7 +61,7 @@ const citiesServices = {
     }
   },
 
-  updateOneCity: async ({ id, attributes }: { id: number; attributes: IUpdateCity }): Promise<City> => {
+  updateOneCity: async ({ id, attributes }: { id: number; attributes: City }): Promise<City> => {
     const city = await prisma.city.update({
       where: { id },
       data: attributes,

@@ -1,13 +1,14 @@
 import { City } from '@prisma/client';
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
-import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
-import { ICustomError } from '../interfaces/custom-error';
 import { citiesServices } from '../services/city-services';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
 import { ERR_MISSING_ATTRIBUTE, ERR_MISSING_ID } from '../errors';
 import { ERR_MISSING_FILE, ERR_MISSING_UPDATE_ATTRIBUTES } from '../errors/upload-file-errors';
+import { CityModel } from '../../../prisma/models';
+import { getIssuesZod } from '../helpers/get-issues-zod';
+import { CustomError } from '../helpers/custom-error';
 
 const cityController = {
   getAllCities: async (req: FastifyRequest, res: FastifyReply): Promise<City[] | FastifyError> => {
@@ -17,12 +18,7 @@ const cityController = {
       const cities = await citiesServices.getAllCities({ page_number, per_page_number, skip });
       return res.send(cities);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -32,31 +28,34 @@ const cityController = {
       const city = await citiesServices.getOneCity(Number(id));
       return res.send(city);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
   createOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<City | FastifyError> => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
-    const attributes = req.body as City;
-    if (!attributes.name) throw ERR_MISSING_ATTRIBUTE('name');
-    if (!attributes.province_id) throw ERR_MISSING_ATTRIBUTE('province_id');
+
+    const parse = CityModel.partial({
+      id: true,
+      img_cover: true,
+      latitude: true,
+      longitude: true,
+      place_id: true,
+      updated_at: true,
+      created_at: true,
+    }).safeParse(req.body);
+
+    if (!parse.success) {
+      const messages = getIssuesZod(parse.error.issues);
+      throw CustomError('_', messages.toString(), 400);
+    }
+    const city = parse.data as City;
     try {
-      const city = await citiesServices.createOneCity(attributes);
-      return res.status(201).send(city);
+      const result = await citiesServices.createOneCity(city);
+      return res.status(201).send(result);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(err);
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -65,19 +64,28 @@ const cityController = {
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const params = req.params as { id: string };
     const id = Number(params.id);
-    const attributes = req.body as City;
-    if (!id) throw ERR_MISSING_ID('cidade', 'atualizada');
-    if (!attributes) throw ERR_MISSING_UPDATE_ATTRIBUTES;
+
+    const parse = CityModel.pick({ name: true, latitude: true, longitude: true, img_cover: true })
+      .partial({
+        name: true,
+        latitude: true,
+        longitude: true,
+        img_cover: true,
+      })
+      .safeParse(req.body);
+
+    if (!parse.success) {
+      const messages = getIssuesZod(parse.error.issues);
+      throw CustomError('_', messages.toString(), 400);
+    }
+
+    const city = parse.data as City;
+
     try {
-      const city = await citiesServices.updateOneCity({ id, attributes });
-      return res.status(202).send(city);
+      const result = await citiesServices.updateOneCity({ id, attributes: city });
+      return res.status(202).send(result);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -92,12 +100,7 @@ const cityController = {
       const uploaded = await citiesServices.uploadCoverImage(data, Number(id));
       return res.status(202).send(uploaded);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -111,12 +114,7 @@ const cityController = {
       const city = await citiesServices.deleteOneCity({ id });
       return res.status(202).send(city);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 };

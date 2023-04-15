@@ -1,25 +1,16 @@
-import * as z from 'zod';
-import {
-  CompleteType,
-  RelatedTypeModel,
-  CompleteUtilitiesOnDescriptions,
-  RelatedUtilitiesOnDescriptionsModel,
-  CompleteFeaturesOnDescriptions,
-  RelatedFeaturesOnDescriptionsModel,
-  CompleteProperty,
-  RelatedPropertyModel,
-} from './index';
+import * as z from "zod"
+import { CompleteType, RelatedTypeModel, CompleteUtilitiesOnDescriptions, RelatedUtilitiesOnDescriptionsModel, CompleteFeaturesOnDescriptions, RelatedFeaturesOnDescriptionsModel, CompleteProperty, RelatedPropertyModel } from "./index"
 
 export const DescriptionModel = z.object({
   id: z.number().int(),
   title: z.string(),
-  thumb: z.string().url({ message: 'A imagem de fundo precisa referenciar um endereço url!' }),
-  price: z.number().positive({ message: 'O valor do aluguel precisa ser positivo!' }),
-  bathrooms: z.number().int().min(1, { message: 'A quantidade de banheiros precisar ser igual ou maior que 1' }),
-  badrooms: z.number().int().min(1, { message: 'A quantidade de quartos precisar ser igual ou maior que 1' }),
+  img_cover: z.string().nullish(),
+  price: z.number().positive({ message: "O valor do aluguel precisa ser positivo!" }),
+  bathrooms: z.number().int().min(1, { message: "A quantidade de banheiros precisar ser igual ou maior que 1" }),
+  badrooms: z.number().int().min(1, { message: "A quantidade de quartos precisar ser igual ou maior que 1" }),
   furnished: z.boolean(),
   rented: z.boolean(),
-  property_area: z.number().min(1, { message: 'A área da propriedade precisar ser igual ou maior que 1' }),
+  property_area: z.number().min(1, { message: "A área da propriedade precisar ser igual ou maior que 1" }),
   pets_cats: z.number().int(),
   pets_dogs: z.number().int(),
   smoking: z.boolean(),
@@ -27,13 +18,13 @@ export const DescriptionModel = z.object({
   created_at: z.date(),
   updated_at: z.date(),
   property_id: z.number().int(),
-});
+})
 
 export interface CompleteDescription extends z.infer<typeof DescriptionModel> {
-  type: CompleteType;
-  utilities: CompleteUtilitiesOnDescriptions[];
-  features: CompleteFeaturesOnDescriptions[];
-  property: CompleteProperty;
+  type: CompleteType
+  utilities: CompleteUtilitiesOnDescriptions[]
+  features: CompleteFeaturesOnDescriptions[]
+  property: CompleteProperty
 }
 
 /**
@@ -41,11 +32,9 @@ export interface CompleteDescription extends z.infer<typeof DescriptionModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedDescriptionModel: z.ZodSchema<CompleteDescription> = z.lazy(() =>
-  DescriptionModel.extend({
-    type: RelatedTypeModel,
-    utilities: RelatedUtilitiesOnDescriptionsModel.array(),
-    features: RelatedFeaturesOnDescriptionsModel.array(),
-    property: RelatedPropertyModel,
-  })
-);
+export const RelatedDescriptionModel: z.ZodSchema<CompleteDescription> = z.lazy(() => DescriptionModel.extend({
+  type: RelatedTypeModel,
+  utilities: RelatedUtilitiesOnDescriptionsModel.array(),
+  features: RelatedFeaturesOnDescriptionsModel.array(),
+  property: RelatedPropertyModel,
+}))

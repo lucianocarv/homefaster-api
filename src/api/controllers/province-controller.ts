@@ -4,7 +4,7 @@ import { getPagination } from '../helpers/get-pagination.js';
 import { provinceServices } from '../services/province-services.js';
 import { PaginationParameters } from '../interfaces/pagination-parameters.js';
 import { ERR_PERMISSION_DENIED } from '../errors/permission-erros.js';
-import { ERR_MISSING_FILE, ERR_MISSING_UPDATE_ATTRIBUTES } from '../errors/upload-file-errors.js';
+import { ERR_MISSING_FILE } from '../errors/upload-file-errors.js';
 import { ProvinceModel } from '../../../prisma/models';
 import { CustomError } from '../helpers/custom-error.js';
 import { getIssuesZod } from '../helpers/get-issues-zod.js';
@@ -31,32 +31,33 @@ const provinceController = {
     }
   },
 
-  createOneProvince: async (req: FastifyRequest, res: FastifyReply): Promise<Province | any> => {
+  createOneProvince: async (req: FastifyRequest, res: FastifyReply): Promise<Province | FastifyError> => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const attributes = req.body as Province;
-    const validate = ProvinceModel.partial({ id: true, img_cover: true, updated_at: true, created_at: true }).safeParse(
-      attributes
-    );
+    const parse = ProvinceModel.partial({ id: true, img_cover: true, updated_at: true, created_at: true }).safeParse(attributes);
 
-    if (!validate.success) {
-      const messages = getIssuesZod(validate.error.issues);
+    if (!parse.success) {
+      const messages = getIssuesZod(parse.error.issues);
       throw CustomError('_', messages.toString(), 400);
     }
+
+    const province = parse.data as Province;
+
     try {
-      const province = await provinceServices.createOneProvince(attributes);
-      return res.status(201).send(province);
+      const result = await provinceServices.createOneProvince(province);
+      return res.status(201).send(result);
     } catch (error) {
-      return error;
+      return res.send(error);
     }
   },
 
-  updateOneProvince: async (req: FastifyRequest, res: FastifyReply): Promise<Province> => {
+  updateOneProvince: async (req: FastifyRequest, res: FastifyReply): Promise<Province | FastifyError> => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const params = req.params as { id: string };
     const id = Number(params.id);
-    const attributes = req.body as Province;
+    const attributes = req.body;
 
     const onlyChange = ProvinceModel.pick({ name: true, short_name: true }).partial({ name: true, short_name: true });
     const parse = onlyChange.safeParse(attributes);
@@ -65,9 +66,11 @@ const provinceController = {
       throw CustomError('_', messages.toString(), 400);
     }
 
+    const province = parse.data as Province;
+
     try {
-      const province = await provinceServices.updateOneProvince({ id, attibutes: attributes });
-      return res.status(202).send(province);
+      const result = await provinceServices.updateOneProvince({ id, attibutes: province });
+      return res.status(202).send(result);
     } catch (error) {
       return res.send(error);
     }

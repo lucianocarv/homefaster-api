@@ -58,7 +58,7 @@ const communityServices = {
     }
   },
 
-  updateOneCommunity: async ({ id, attributes }: { id: number; attributes: IUpdateCommunity }): Promise<Community> => {
+  updateOneCommunity: async ({ id, attributes }: { id: number; attributes: Community }): Promise<Community> => {
     const community = await prisma.community.update({
       where: { id },
       data: attributes,

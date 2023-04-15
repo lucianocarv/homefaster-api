@@ -24,9 +24,9 @@ model Province {
   /// @zod.max(32, {message: "O nome da província não pode ter mais de 32 caracteres!"})
   /// @zod.min(3, {message: "O nome da província deve ter pelo menos 3 caracteres!"})
   name       String   @unique @db.VarChar(32)
-  /// @zod.length(2, {message: "A abreviação deve ter apenas 2 caracteres!"})
+  /// @zod.length(2, {message: "A abreviação deve ter apenas 2 caracteres!"}).toUpperCase()
   short_name String   @unique @db.VarChar(2)
-  /// @zod.url()
+  /// @zod.url({message: "A imagem de fundo precisa referenciar um endereço url!"})
   img_cover  String?  @db.VarChar(255)
   cities     City[]
   created_at DateTime @default(now()) @db.Timestamp()
@@ -43,7 +43,7 @@ model City {
   latitude    Float
   longitude   Float
   place_id    String      @unique @db.VarChar(255)
-  /// @zod.url()
+  /// @zod.url({message: "A imagem de fundo precisa referenciar um endereço url!"})
   img_cover   String?     @db.VarChar(255)
   province    Province    @relation(fields: [province_id], references: [id], onUpdate: Cascade)
   province_id Int
@@ -121,8 +121,7 @@ model Address {
 model Description {
   id            Int                       @id @default(autoincrement())
   title         String                    @db.VarChar(255)
-  /// @zod.url({message: "A imagem de fundo precisa referenciar um endereço url!"})
-  thumb         String
+  img_cover     String?                   @db.VarChar(255)
   /// @zod.positive({message: "O valor do aluguel precisa ser positivo!"})
   price         Float                     @db.Real
   /// @zod.min(1, {message:"A quantidade de banheiros precisar ser igual ou maior que 1"})
