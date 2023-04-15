@@ -2,14 +2,17 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { getPagination } from '../helpers/get-pagination';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { utilitiesServices } from '../services/utilities-services';
-import { Utility } from '@prisma/client';
+import { User, Utility } from '@prisma/client';
 import { ERR_UTILITY_ALREADY_EXISTS } from '../errors/utility-errors';
 import { UtilityModel } from '../../../prisma/models';
 import { getIssuesZod } from '../helpers/get-issues-zod';
 import { CustomError } from '../helpers/custom-error';
+import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
 
 const utilitiesController = {
   getAllUtilities: async (req: FastifyRequest, res: FastifyReply) => {
+    const user = req.user as User;
+    if (user.role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page) as PaginationParameters;
     try {
@@ -21,6 +24,8 @@ const utilitiesController = {
   },
 
   createUtility: async (req: FastifyRequest, res: FastifyReply) => {
+    const user = req.user as User;
+    if (user.role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const { name } = req.body as Utility;
     try {
       const utilityExists = await utilitiesServices.findOne(name);
@@ -33,6 +38,8 @@ const utilitiesController = {
   },
 
   updateOneUtility: async (req: FastifyRequest, res: FastifyReply) => {
+    const user = req.user as User;
+    if (user.role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const { id } = req.params as { id: string };
     const body = req.body;
 
@@ -52,6 +59,8 @@ const utilitiesController = {
   },
 
   deleteOneUtility: async (req: FastifyRequest, res: FastifyReply) => {
+    const user = req.user as User;
+    if (user.role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const { id } = req.params as { id: string };
     try {
       const result = await utilitiesServices.deleteOne(Number(id));
