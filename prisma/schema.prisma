@@ -9,9 +9,22 @@ generator client {
   binaryTargets   = ["native", "debian-openssl-3.0.x", "linux-musl-openssl-3.0.x", "debian-openssl-1.1.x"]
 }
 
+generator zod {
+  provider              = "zod-prisma"
+  output                = "./models" // (default) the directory where generated zod schemas will be saved
+  relationModel         = true // (default) Create and export both plain and related models.
+  modelCase             = "PascalCase" // (default) Output models using pascal case (ex. UserModel, PostModel)
+  modelSuffix           = "Model" // (default) Suffix to apply to your prisma models when naming Zod schemas
+  useDecimalJs          = true // represent the prisma Decimal type using Decimal.js (as Prisma does)
+  prismaJsonNullability = true // (default) uses prisma's scheme for JSON field nullability
+}
+
 model Province {
   id         Int      @id @default(autoincrement())
-  name       String   @unique @db.VarChar(64)
+  /// @zod.max(32, {message: "O nome da província não pode ter mais de 32 caracteres!"})
+  /// @zod.min(3, {message: "O nome da província deve ter pelo menos 3 caracteres!"})
+  name       String   @unique @db.VarChar(32)
+  /// @zod.length(2, {message: "A abreviação deve ter apenas 2 caracteres!"})
   short_name String   @unique @db.VarChar(2)
   img_cover  String?  @db.VarChar(255)
   cities     City[]
@@ -22,8 +35,11 @@ model Province {
 }
 
 model City {
+  /// @zod.optional()
   id          Int         @id @default(autoincrement())
-  name        String      @db.VarChar(64)
+  /// @zod.max(32, {message: "O nome da cidade não pode ter mais de 32 caracteres!"})
+  /// @zod.min(3, {message: "O nome da cidade deve ter pelo menos 3 caracteres!"})
+  name        String      @db.VarChar(32)
   latitude    Float
   longitude   Float
   place_id    String      @unique @db.VarChar(255)

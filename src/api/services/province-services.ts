@@ -10,12 +10,20 @@ import { env_storageBaseUrl } from '../../environment.js';
 
 const provinceServices = {
   getAllProvinces: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
-    const provinces = await prisma.province.findMany({
-      take: per_page_number,
-      skip,
-    });
+    const [provinces, count] = await Promise.all([
+      prisma.province.findMany({
+        take: per_page_number,
+        skip,
+      }),
+      prisma.province.count(),
+    ]);
+
+    const pages = Math.ceil(count / per_page_number);
+
     return {
+      count,
       page: page_number,
+      pages,
       per_page: per_page_number,
       provinces,
     };

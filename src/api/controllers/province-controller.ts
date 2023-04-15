@@ -1,12 +1,13 @@
 import { Province } from '@prisma/client';
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
-import { CustomError } from '../helpers/custom-error.js';
 import { getPagination } from '../helpers/get-pagination.js';
-import { ICustomError } from '../interfaces/custom-error.js';
 import { provinceServices } from '../services/province-services.js';
 import { PaginationParameters } from '../interfaces/pagination-parameters.js';
 import { ERR_PERMISSION_DENIED } from '../errors/permission-erros.js';
 import { ERR_MISSING_FILE, ERR_MISSING_UPDATE_ATTRIBUTES } from '../errors/upload-file-errors.js';
+import { ProvinceModel } from '../../../prisma/models';
+import { CustomError } from '../helpers/custom-error.js';
+import { getIssuesZod } from '../helpers/get-issues-zod.js';
 
 const provinceController = {
   getAllProvinces: async (req: FastifyRequest, res: FastifyReply): Promise<Province[] | FastifyError> => {
@@ -16,12 +17,7 @@ const provinceController = {
       const provinces = await provinceServices.getAllProvinces({ page_number, per_page_number, skip });
       return res.send(provinces);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -31,29 +27,27 @@ const provinceController = {
       const province = await provinceServices.getOneProvince(Number(id));
       return res.send(province);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
-  createOneProvince: async (req: FastifyRequest, res: FastifyReply): Promise<Province | FastifyError> => {
+  createOneProvince: async (req: FastifyRequest, res: FastifyReply): Promise<Province | any> => {
     const { role } = req.user as { role: string };
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const attributes = req.body as Province;
+    const validate = ProvinceModel.partial({ id: true, img_cover: true, updated_at: true, created_at: true }).safeParse(
+      attributes
+    );
+
+    if (!validate.success) {
+      const messages = getIssuesZod(validate.error.issues);
+      throw CustomError('_', messages.toString(), 400);
+    }
     try {
       const province = await provinceServices.createOneProvince(attributes);
       return res.status(201).send(province);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return error;
     }
   },
 
@@ -63,17 +57,19 @@ const provinceController = {
     const params = req.params as { id: string };
     const id = Number(params.id);
     const attributes = req.body as Province;
-    if (!attributes) throw ERR_MISSING_UPDATE_ATTRIBUTES;
+
+    const onlyChange = ProvinceModel.pick({ name: true, short_name: true }).partial({ name: true, short_name: true });
+    const parse = onlyChange.safeParse(attributes);
+    if (!parse.success) {
+      const messages = getIssuesZod(parse.error.issues);
+      throw CustomError('_', messages.toString(), 400);
+    }
+
     try {
       const province = await provinceServices.updateOneProvince({ id, attibutes: attributes });
       return res.status(202).send(province);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -87,12 +83,7 @@ const provinceController = {
       const upload = await provinceServices.uploadImgCover(data, Number(id));
       return res.status(202).send(upload);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -105,12 +96,7 @@ const provinceController = {
       const province = await provinceServices.deleteOneProvince({ id });
       return res.status(202).send(province);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 };

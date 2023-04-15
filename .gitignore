@@ -3,6 +3,7 @@
 .env
 .production.env
 .homolog.env
+.db.env
 # Dirs
 node_modules
 dist
@@ -15,3 +16,4 @@ yarn-error.log
 
 # others
 app-info.txt
+melhorias.txt
