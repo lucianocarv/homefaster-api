@@ -17,4 +17,14 @@ O projeto está sendo desenvolvido inteirmento com TypeScript e futuramente ser�
   <li><code>PostgreSQL</code> é o banco de dados escolhido</li>
 </ul>
 
+#### <h2>:cyclone: Outras bibliotecas importantes do projeto:</h2>
+
+<ul>
+  <li><code>Zod</code></li>
+  <li><code>Axios</code></li>
+  <li><code>Nodemailer</code></li>
+  <li><code>Vitest</code></li>
+  <li><code>@google-cloud/storage</code></li>
+</ul>
+
 ##### Building...
