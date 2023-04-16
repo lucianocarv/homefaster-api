@@ -6,3 +6,5 @@ export const env_bucketName = process.env.CLOUD_BUCKET_NAME!;
 export const env_storageBaseUrl = process.env.CLOUD_STORAGE_BUCKET_BASE_URL;
 export const env_storageClientEmail = process.env.CLOUD_STORAGE_CLIENT_EMAIL;
 export const env_storagePrivateKeyAccess = process.env.CLOUD_STORAGE_CLIENT_PRIVATE_KEY;
+export const env_test_email = process.env.TEST_EMAIL;
+export const env_test_password = process.env.TEST_PASSWORD;

@@ -1,9 +1,8 @@
 # Keep environment variables out of version control
 # Env
-.env
+.env*
 .production.env
 .homolog.env
-.db.env
 # Dirs
 node_modules
 dist
