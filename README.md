@@ -5,7 +5,7 @@
      <a href="https://lucianocarv.tech">https://lucianocarv.tech</a>
     <br/>
     <br/>
-    A API do Homefaster foi desenvolvida com base no site canadense de aluguel de imóveis chamado Rentfaster
+    A API do Homefaster foi desenvolvida com base no site canadense de aluguel de imóveis Rentfaster
   </p>
 </p>
 <br/>
@@ -28,6 +28,17 @@
 ## Descrição
 
 Homefaster API é um projeto pessoal baseado no site canadense Rentfaster e desenvolvida com Node.js. Com ela é possível gerenciar Províncias, Cidades, Comunidades (bairros) e Propriedades utilizando um CRUD construído com o framework Fastify.
+
+## Tecnologias
+
+- [`nodejs`](https://github.com/nodejs/node): Um runtime JavaScript para back-end.
+- [`fastify`](https://github.com/nodejs/node): Um framework nodejs rápido e eficiente.
+- [`prisma`](https://github.com/nodejs/node): Um super ORM (Object-Relational Mapping) para nodejs.
+- [`zod`](https://github.com/nodejs/node): Um super validador de schemas e dados para TypeScript.
+- [`postgresql`](https://github.com/nodejs/node): o banco de dados relacional de código aberto mais avançado do mundo (segundo seu próprio site).
+- [`postgresql`](https://github.com/nodejs/node): Um runtime JavaScript para back-end.
+
+## Instalação
 
 <ul>
   <li><code>TypeScript</code></li>
