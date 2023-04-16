@@ -1,0 +1,26 @@
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - run: echo ${{ vars.CLOUD_BUCKET_NAME }}
+      # - run:
+      # - name: Install Deps
+      #   run: yarn
+
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v2
+
+      # - name: Generate Prisma Client
+      #   run: npx prisma generate
+
+      # - name: Start Tests
+      #   run: yarn test:start
+
+      # - name: Run Prisma Migrations
+      #   run: npx prisma migrate deploy --preview-feature

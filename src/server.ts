@@ -1,7 +1,9 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: '.env.dev' });
 import { fastify } from './app.js';
-import { z } from 'zod';
+
+// Run Redis
+import './api/config/redis-connect.js';
 
 const port = Number(process.env.PORT!);
 const host = process.env.HOST!;
