@@ -11,8 +11,8 @@ jobs:
       - name: Create SSL certificate file
         run: echo "${{ vars.GCP_SQL_KEY }}" | tr -d '\n'  > server-ca.pem
       - run: |
-          vars
-      - run: ll
+          env
+      - run: ls -a
       # - name: Install Deps
       #   run: yarn
       # - name: Start Vitest
