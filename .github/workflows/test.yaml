@@ -9,8 +9,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create SSL certificate file
-        run: node -e "const fs = require('fs'); fs.writeFileSync('server-ca.pem', `${{vars.GCP_SQL_KEY}}`);"
-      - run: ls
+        run: echo ${{vars.GCP_SQL_KEY}}
       # - run:
       # - name: Install Deps
       #   run: yarn
