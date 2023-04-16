@@ -1,6 +1,5 @@
 import { mailer } from '../email/config';
 
-const baseURL = process.env.BASE_URL!;
 const defaultMail = process.env.DEFAULT_MAIL;
 const mailServer = mailer();
 
@@ -338,9 +337,9 @@ const mailServices = {
         </body>
         
         </html>
-      `,
+      `
       })
-      .catch((err) => {
+      .catch(err => {
         throw { err, message: 'Não foi possivel enviar o email' };
       });
     return info;
@@ -655,13 +654,13 @@ const mailServices = {
         </body>
         
         </html>
-      `,
+      `
       })
-      .catch((err) => {
+      .catch(err => {
         throw { err, message: 'Não foi possivel enviar o email' };
       });
     return res;
-  },
+  }
 };
 
 export default mailServices;

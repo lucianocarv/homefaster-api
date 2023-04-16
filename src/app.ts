@@ -14,7 +14,7 @@ import { env_jwtSecret } from './environment.js';
 export const fastify = Fastify({ logger: true, bodyLimit: 1024 * 1024 * 10, keepAliveTimeout: 20 });
 
 fastify.register(JWT, {
-  secret: env_jwtSecret!,
+  secret: env_jwtSecret ? env_jwtSecret : Buffer.byteLength('20').toString()
 });
 fastify.register(fastifyMultipart);
 fastify.register(provinceRoutes);

@@ -2,7 +2,6 @@ import { MultipartFile } from '@fastify/multipart';
 import { Community } from '@prisma/client';
 import { prisma } from '../config/prisma-connect.js';
 import { CustomError } from '../helpers/custom-error.js';
-import { IUpdateCommunity } from '../interfaces/update-community.js';
 import { IValidationAddressReply } from '../interfaces/validation-address-reply.js';
 import { ValidateAddressAPI } from '../maps/validate-address-api.js';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
@@ -12,13 +11,13 @@ import { env_storageBaseUrl } from '../../environment.js';
 import { ERR_COMMUNITY_ALREADY_EXISTS } from '../errors/community-errors.js';
 
 const communityServices = {
-  getAllCommunities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
+  getAllCommunities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<object> => {
     const [communities, count] = await Promise.all([
       prisma.community.findMany({
         take: per_page_number,
-        skip,
+        skip
       }),
-      prisma.community.count(),
+      prisma.community.count()
     ]);
 
     const pages = Math.ceil(count / per_page_number);
@@ -28,7 +27,7 @@ const communityServices = {
       page: page_number,
       per_page: per_page_number,
       pages,
-      communities,
+      communities
     };
   },
 
@@ -42,15 +41,15 @@ const communityServices = {
       where: { id: attributes.city_id },
       select: {
         name: true,
-        province: true,
-      },
+        province: true
+      }
     })) as { name: string; province: { name: string } } | null;
 
     if (!city) return new Error('Cannot find City');
     const validateAddres = (await ValidateAddressAPI.getDataForCommunity({
       province: city.province.name,
       city: city.name,
-      community: attributes.name,
+      community: attributes.name
     })) as IValidationAddressReply;
 
     if (typeof validateAddres === 'object') {
@@ -58,7 +57,7 @@ const communityServices = {
       const communityExists = await prisma.community.findUnique({ where: { global_code } });
       if (communityExists) throw ERR_COMMUNITY_ALREADY_EXISTS;
       const community = await prisma.community.create({
-        data: { ...attributes, latitude, longitude, global_code, formatted_address },
+        data: { ...attributes, latitude, longitude, global_code, formatted_address }
       });
       return community;
     } else {
@@ -69,7 +68,7 @@ const communityServices = {
   updateOneCommunity: async ({ id, attributes }: { id: number; attributes: Community }): Promise<Community> => {
     const community = await prisma.community.update({
       where: { id },
-      data: attributes,
+      data: attributes
     });
     return community;
   },
@@ -95,10 +94,10 @@ const communityServices = {
 
   deleteOneCommunity: async ({ id }: { id: number }): Promise<Community> => {
     const community = await prisma.community.delete({
-      where: { id },
+      where: { id }
     });
     return community;
-  },
+  }
 };
 
 export { communityServices };

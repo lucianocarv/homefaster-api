@@ -1,7 +1,6 @@
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
-import { ICustomError } from '../interfaces/custom-error';
 import { IAddressFilter } from '../interfaces/search-address';
 import { IDescriptionFilter } from '../interfaces/search-filter';
 import { propertyServices } from '../services/property-services';

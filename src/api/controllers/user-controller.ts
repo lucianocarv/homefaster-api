@@ -45,7 +45,7 @@ const userController = {
     }
   },
 
-  login: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
+  login: async (req: FastifyRequest, res: FastifyReply): Promise<object | FastifyError> => {
     const data = req.body as ILoginUser;
     try {
       const user = await userServices.login(data);
@@ -91,7 +91,7 @@ const userController = {
     }
   },
 
-  updateOneUser: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
+  updateOneUser: async (req: FastifyRequest, res: FastifyReply): Promise<object | FastifyError> => {
     const attributes = req.body as User;
     const user = req.user as User;
     if (!user) throw ERR_PERMISSION_DENIED;
@@ -127,7 +127,7 @@ const userController = {
     }
   },
 
-  updatePassword: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
+  updatePassword: async (req: FastifyRequest, res: FastifyReply): Promise<object | FastifyError> => {
     const user = req.user as User;
     if (!user) throw ERR_PERMISSION_DENIED;
     const attributes = req.body as { current_password: string; new_password: string };
@@ -144,7 +144,7 @@ const userController = {
     }
   },
 
-  updatePasswordAsAdmin: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
+  updatePasswordAsAdmin: async (req: FastifyRequest, res: FastifyReply): Promise<object | FastifyError> => {
     const admin = req.user as User;
     if (admin.role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const attributes = req.body as { email: string; new_password: string };
@@ -208,7 +208,7 @@ const userController = {
         return res.send(error);
       }
     }
-  },
+  }
 };
 
 export { userController };

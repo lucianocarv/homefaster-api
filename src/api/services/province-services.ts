@@ -9,13 +9,13 @@ import { getFileName } from '../helpers/get-filename';
 import { env_storageBaseUrl } from '../../environment.js';
 
 const provinceServices = {
-  getAllProvinces: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
+  getAllProvinces: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<object> => {
     const [provinces, count] = await Promise.all([
       prisma.province.findMany({
         take: per_page_number,
-        skip,
+        skip
       }),
-      prisma.province.count(),
+      prisma.province.count()
     ]);
 
     const pages = Math.ceil(count / per_page_number);
@@ -25,7 +25,7 @@ const provinceServices = {
       page: page_number,
       pages,
       per_page: per_page_number,
-      provinces,
+      provinces
     };
   },
 
@@ -37,15 +37,15 @@ const provinceServices = {
   createOneProvince: async (attributes: Province): Promise<Province> => {
     const [provinceExistsShortName, provinceExistsName] = await Promise.all([
       prisma.province.findUnique({
-        where: { short_name: attributes.short_name },
+        where: { short_name: attributes.short_name }
       }),
       prisma.province.findUnique({
-        where: { name: attributes.name },
-      }),
+        where: { name: attributes.name }
+      })
     ]);
     if (!provinceExistsName && !provinceExistsShortName) {
       const province = await prisma.province.create({
-        data: attributes,
+        data: attributes
       });
       return province;
     } else {
@@ -56,16 +56,16 @@ const provinceServices = {
   updateOneProvince: async ({ id, attibutes }: { id: number; attibutes: IUpdateProperty }): Promise<Province> => {
     const province = await prisma.province.update({
       where: {
-        id,
+        id
       },
-      data: attibutes,
+      data: attibutes
     });
     return province;
   },
 
   deleteOneProvince: async ({ id }: { id: number }): Promise<Province> => {
     const province = await prisma.province.delete({
-      where: { id },
+      where: { id }
     });
     return province;
   },
@@ -85,7 +85,7 @@ const provinceServices = {
     } else {
       throw ERR_PROVINCE_NOT_FOUND;
     }
-  },
+  }
 };
 
 export { provinceServices };

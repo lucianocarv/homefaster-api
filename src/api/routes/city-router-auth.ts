@@ -1,4 +1,4 @@
-import { FastifyInstance, RouteOptions } from 'fastify';
+import { FastifyInstance } from 'fastify';
 import { cityController } from '../controllers/city-controller';
 
 async function cityRoutesAuth(fastify: FastifyInstance) {

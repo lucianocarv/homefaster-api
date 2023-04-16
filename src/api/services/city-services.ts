@@ -2,7 +2,6 @@ import { prisma } from '../config/prisma-connect.js';
 import { City } from '@prisma/client';
 import { PaginationParameters } from '../interfaces/pagination-parameters.js';
 import { GeocodingAPI } from '../maps/geocode-api.js';
-import { IUpdateCity } from '../interfaces/update-city.js';
 import { MultipartFile } from '@fastify/multipart';
 import { ERR_CITY_ALREADY_EXISTS, ERR_CITY_NOT_FOUND, ERR_INVALID_CITY } from '../errors/city-errors';
 import storageServices from './storage-services.js';
@@ -10,7 +9,7 @@ import { env_storageBaseUrl } from '../../environment.js';
 import { getFileName } from '../helpers/get-filename.js';
 
 const citiesServices = {
-  getAllCities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<Object> => {
+  getAllCities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<object> => {
     const [cities, count] = await Promise.all([
       prisma.city.findMany({
         skip,
@@ -18,12 +17,12 @@ const citiesServices = {
         include: {
           province: {
             select: {
-              name: true,
-            },
-          },
-        },
+              name: true
+            }
+          }
+        }
       }),
-      prisma.city.count(),
+      prisma.city.count()
     ]);
     const pages = Math.ceil(count / per_page_number);
     return { count, page: page_number, per_page: per_page_number, pages, cities };
@@ -47,12 +46,12 @@ const citiesServices = {
     if (typeof geocode === 'object') {
       const { name, latitude, longitude, place_id } = geocode;
       const cityExists = await prisma.city.findUnique({
-        where: { province_id_place_id: { province_id: province.id, place_id } },
+        where: { province_id_place_id: { province_id: province.id, place_id } }
       });
 
       if (cityExists) throw ERR_CITY_ALREADY_EXISTS;
       const city = await prisma.city.create({
-        data: { name, latitude, longitude, place_id, province_id: attributes.province_id },
+        data: { name, latitude, longitude, place_id, province_id: attributes.province_id }
       });
 
       return city;
@@ -64,7 +63,7 @@ const citiesServices = {
   updateOneCity: async ({ id, attributes }: { id: number; attributes: City }): Promise<City> => {
     const city = await prisma.city.update({
       where: { id },
-      data: attributes,
+      data: attributes
     });
     return city;
   },
@@ -91,7 +90,7 @@ const citiesServices = {
     if (city) {
       return await prisma.city
         .delete({
-          where: { id },
+          where: { id }
         })
         .then(() => {
           return { message: 'Cidade excluída com sucesso!' };
@@ -99,7 +98,7 @@ const citiesServices = {
     } else {
       throw ERR_CITY_NOT_FOUND;
     }
-  },
+  }
 };
 
 export { citiesServices };

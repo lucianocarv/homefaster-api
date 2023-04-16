@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../../../.env.test' });
 
 import { fastify } from '../../app.js';
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import request from 'supertest';
 import { env_test_email, env_test_password } from '../../environment.js';
 
@@ -12,7 +12,7 @@ beforeAll(async () => {
   await fastify.listen();
   const response = await request(fastify.server).post('/users/login').send({
     email: env_test_email,
-    password: env_test_password,
+    password: env_test_password
   });
 
   token = response.body.token;
@@ -32,7 +32,7 @@ describe('City Routes', () => {
   it('Deve criar uma província', async () => {
     const response = await request(fastify.server).post('/a/provinces').set('Authorization', token).send({
       name: 'Alberta',
-      short_name: 'AB',
+      short_name: 'AB'
     });
     province = response.body;
     expect(response.status).toBe(201);
@@ -44,7 +44,7 @@ describe('City Routes', () => {
       .post('/a/cities')
       .send({
         name: 'Grande Prairie',
-        province_id: province.id,
+        province_id: province.id
       })
       .set('Authorization', token);
     city = response.body;
@@ -61,7 +61,7 @@ describe('City Routes', () => {
 
   it('Deve editar informações de uma cidade', async () => {
     const response = await request(fastify.server).put(`/a/cities/${city.id}`).set('Authorization', token).send({
-      name: 'Grande',
+      name: 'Grande'
     });
 
     expect(response.status).toBe(202);

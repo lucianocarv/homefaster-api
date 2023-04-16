@@ -22,22 +22,22 @@ const propertyServices = {
         skip,
         include: {
           address: true,
-          description: true,
-        },
+          description: true
+        }
       }),
-      prisma.property.count(),
+      prisma.property.count()
     ]);
     const pages = Math.ceil(count / per_page_number);
     return { count, page: page_number, per_page: per_page_number, pages, properties };
   },
 
-  getOneProperty: async (id: number): Promise<{} | Error> => {
+  getOneProperty: async (id: number): Promise<object | Error> => {
     const property = await prisma.property.findUnique({
       where: { id },
       include: {
         address: true,
-        description: true,
-      },
+        description: true
+      }
     });
 
     if (!property) return CustomError('_', `O ID ${id} não corresponde a nenhuma propriedade!`, 406);
@@ -45,14 +45,14 @@ const propertyServices = {
     const [f, u] = await Promise.all([
       prisma.featuresOnDescriptions.findMany({
         where: { description_id: property.description?.id },
-        include: { feature: true },
+        include: { feature: true }
       }),
       prisma.utilitiesOnDescriptions.findMany({
         where: { description_id: property.description?.id },
-        include: { utility: true },
-      }),
+        include: { utility: true }
+      })
     ]);
-    const [features, utilities] = [f.map((feature) => feature.feature), u.map((utility) => utility.utility.name)];
+    const [features, utilities] = [f.map(feature => feature.feature), u.map(utility => utility.utility.name)];
     return { ...property, features, utilities };
   },
 
@@ -66,7 +66,7 @@ const propertyServices = {
       province,
       city,
       community,
-      address: `${address.number} ${address.street}`,
+      address: `${address.number} ${address.street}`
     })) as IValidationAddressReply;
 
     if (validateAddress?.formatted_address) {
@@ -82,50 +82,48 @@ const propertyServices = {
             create: {
               ...address,
               formatted_address,
-              postal_code: postal_code!,
+              postal_code: postal_code,
               global_code,
-              place_id: place_id!,
+              place_id: place_id,
               latitude,
               longitude,
               community,
               city,
-              province,
-            },
+              province
+            }
           },
           description: {
             create: {
-              ...description,
-            },
-          },
-        },
+              ...description
+            }
+          }
+        }
       });
 
       if (id) {
         const description = await prisma.description.findFirst({
-          where: { property_id: id },
+          where: { property_id: id }
         });
         if (description) {
           await prisma.$transaction([
             prisma.utilitiesOnDescriptions.createMany({
-              data: attributes.utilities.map((utility: Utility) => ({ description_id: description.id, utility_id: utility })),
+              data: attributes.utilities.map((utility: Utility) => ({ description_id: description.id, utility_id: utility }))
             }),
             prisma.featuresOnDescriptions.createMany({
-              data: attributes.features.map((feature: Feature) => ({ description_id: description.id, feature_id: feature })),
-            }),
+              data: attributes.features.map((feature: Feature) => ({ description_id: description.id, feature_id: feature }))
+            })
           ]);
         }
       }
-      const newProperty = await prisma.property.findUnique(
-        {
-          where: { id: id },
-          include: {
-            address: true,
-            description: true,
-          },
-        }!
-      );
+      const newProperty = await prisma.property.findUnique({
+        where: { id: id },
+        include: {
+          address: true,
+          description: true
+        }
+      });
 
-      return newProperty!;
+      if (newProperty) return newProperty;
     }
     return CustomError('_', 'Endereço inválido! Por favor, verifique as informações fornecidas!', 400);
   },
@@ -139,7 +137,7 @@ const propertyServices = {
     const property = await prisma.property.findUnique({ where: { id } });
     if (property && property.id) {
       const description = await prisma.description.findUnique({ where: { property_id: property.id } });
-      if (description!.id) {
+      if (description?.id) {
         await prisma.property.update({
           where: { id },
           data: {
@@ -154,19 +152,19 @@ const propertyServices = {
                 pets_cats: attributes.description.pets_cats,
                 pets_dogs: attributes.description.pets_dogs,
                 smoking: attributes.description.smoking,
-                property_area: attributes.description.property_area,
-              },
-            },
-          },
+                property_area: attributes.description.property_area
+              }
+            }
+          }
         });
         if (attributes.features || attributes.utilities) {
           if (attributes.features && attributes.features.length >= 1) {
-            await prisma.featuresOnDescriptions.deleteMany({ where: { description_id: description!.id } });
+            await prisma.featuresOnDescriptions.deleteMany({ where: { description_id: description?.id } });
             await prisma
               .$transaction([
                 prisma.featuresOnDescriptions.createMany({
-                  data: attributes.features.map((feature) => ({ feature_id: feature, description_id: description!.id })),
-                }),
+                  data: attributes.features.map(feature => ({ feature_id: feature, description_id: description?.id }))
+                })
               ])
               .catch(() => {
                 throw CustomError('_', 'Feature incorreta não pode ser atualizada!', 400);
@@ -174,12 +172,12 @@ const propertyServices = {
           }
 
           if (attributes.utilities && attributes.utilities.length >= 1) {
-            await prisma.utilitiesOnDescriptions.deleteMany({ where: { description_id: description!.id } });
+            await prisma.utilitiesOnDescriptions.deleteMany({ where: { description_id: description?.id } });
             await prisma
               .$transaction([
                 prisma.utilitiesOnDescriptions.createMany({
-                  data: attributes.utilities.map((utility) => ({ utility_id: utility, description_id: description!.id })),
-                }),
+                  data: attributes.utilities.map(utility => ({ utility_id: utility, description_id: description?.id }))
+                })
               ])
               .catch(() => {
                 throw CustomError('_', 'Utilidade incorreta não pode ser atualizada', 400);
@@ -213,7 +211,7 @@ const propertyServices = {
   filter: async ({
     pagination,
     description,
-    address,
+    address
   }: {
     pagination: IPagination;
     description: IDescriptionFilter;
@@ -227,15 +225,15 @@ const propertyServices = {
           address: true,
           description: {
             include: {
-              type: true,
-            },
-          },
+              type: true
+            }
+          }
         },
         where: {
           city_id: { equals: address.city_id },
           community_id: { equals: address.community_id },
           address: {
-            street: { contains: address.street },
+            street: { contains: address.street }
           },
           description: {
             price: { lte: description.price_max, gte: description.price_min },
@@ -246,22 +244,22 @@ const propertyServices = {
             pets_dogs: { equals: description.pets_dogs },
             smoking: { equals: description.smoking },
             type: {
-              id: { equals: description.type },
-            },
-          },
+              id: { equals: description.type }
+            }
+          }
         },
         orderBy: {
           description: {
-            price: description.order == 'price_max' ? 'desc' : 'asc',
-          },
-        },
+            price: description.order == 'price_max' ? 'desc' : 'asc'
+          }
+        }
       }),
       prisma.property.count({
         where: {
           city_id: { equals: address.city_id },
           community_id: { equals: address.community_id },
           address: {
-            street: { contains: address.street },
+            street: { contains: address.street }
           },
           description: {
             price: { lte: description.price_max, gte: description.price_min },
@@ -272,11 +270,11 @@ const propertyServices = {
             pets_dogs: { equals: description.pets_dogs },
             smoking: { equals: description.smoking },
             type: {
-              id: { equals: description.type },
-            },
-          },
-        },
-      }),
+              id: { equals: description.type }
+            }
+          }
+        }
+      })
     ]);
     const pages = Math.ceil(count / pagination.per_page_number);
     return { count, page: pagination.page_number, per_page: pagination.per_page_number, pages, properties };
@@ -290,7 +288,7 @@ const propertyServices = {
     } else {
       throw { code: '_', message: 'Não foi possível excluir a propriedade!', statusCode: 400 };
     }
-  },
+  }
 };
 
 export { propertyServices };

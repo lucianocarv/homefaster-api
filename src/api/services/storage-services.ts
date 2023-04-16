@@ -6,6 +6,7 @@ import { env_bucketName } from '../../environment';
 
 const storageServices = {
   thumbImageUpload: async ({ to, file, filename, id }: IUploadImage) => {
+    if (!env_bucketName) throw new Error('É necessário informar um bucket!');
     const buffer = await streamToBuffer(file);
     const bucket = storage.bucket(env_bucketName);
     const bucketFile = bucket.file(`${to}/${id}/${filename}`);
@@ -18,9 +19,10 @@ const storageServices = {
   },
 
   deleteFileInStorage: async (path: string) => {
+    if (!env_bucketName) throw new Error('É necessário informar um bucket!');
     const res = await storage.bucket(env_bucketName).file(path).delete({ ignoreNotFound: true });
     return res;
-  },
+  }
 };
 
 export default storageServices;

@@ -1,4 +1,4 @@
-import { FastifyInstance, RouteOptions } from 'fastify';
+import { FastifyInstance } from 'fastify';
 import { communityController } from '../controllers/community-controller';
 
 async function communityRoutesAuth(fastify: FastifyInstance) {
