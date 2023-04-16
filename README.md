@@ -31,30 +31,14 @@ Homefaster API é um projeto pessoal baseado no site canadense Rentfaster e dese
 
 ## Tecnologias
 
-- [`nodejs`](https://github.com/nodejs/node): Um runtime JavaScript para back-end.
-- [`typescript`](https://github.com/nodejs/node): Um superset JavaScript fortemente tipado.
-- [`fastify`](https://github.com/nodejs/node): Um framework nodejs rápido e eficiente.
-- [`prisma`](https://github.com/nodejs/node): Um super ORM (Object-Relational Mapping) para nodejs.
-- [`zod`](https://github.com/nodejs/node): Um super validador de schemas e dados para TypeScript.
+- [`nodejs`](https://github.com/nodejs/node): runtime JavaScript para back-end.
+- [`typescript`](https://github.com/nodejs/node): superset JavaScript fortemente tipado.
+- [`fastify`](https://github.com/nodejs/node): um framework nodejs rápido e eficiente.
+- [`prisma`](https://github.com/nodejs/node): um super ORM (Object-Relational Mapping) para nodejs.
+- [`zod`](https://github.com/nodejs/node): validador de schemas para TypeScript.
 - [`postgresql`](https://github.com/nodejs/node): o banco de dados relacional de código aberto mais avançado do mundo (segundo seu próprio site).
 
 ## Instalação
 
-<ul>
-  <li><code>TypeScript</code></li>
-  <li><code>Fastify</code> é framework para gerenciar as requisições HTTP</li>
-  <li><code>Prisma</code> é a ORM do projeto</li>
-  <li><code>PostgreSQL</code> é o banco de dados escolhido</li>
-</ul>
-
-#### <h2>:cyclone: Outras bibliotecas importantes do projeto:</h2>
-
-<ul>
-  <li><code>Zod</code></li>
-  <li><code>Axios</code></li>
-  <li><code>Nodemailer</code></li>
-  <li><code>Vitest</code></li>
-  <li><code>@google-cloud/storage</code></li>
-</ul>
 
 ##### Building...
