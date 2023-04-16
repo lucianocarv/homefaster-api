@@ -32,11 +32,11 @@ Homefaster API é um projeto pessoal baseado no site canadense Rentfaster e dese
 ## Tecnologias
 
 - [`nodejs`](https://github.com/nodejs/node): Um runtime JavaScript para back-end.
+- [`typescript`](https://github.com/nodejs/node): Um superset JavaScript fortemente tipado.
 - [`fastify`](https://github.com/nodejs/node): Um framework nodejs rápido e eficiente.
 - [`prisma`](https://github.com/nodejs/node): Um super ORM (Object-Relational Mapping) para nodejs.
 - [`zod`](https://github.com/nodejs/node): Um super validador de schemas e dados para TypeScript.
 - [`postgresql`](https://github.com/nodejs/node): o banco de dados relacional de código aberto mais avançado do mundo (segundo seu próprio site).
-- [`postgresql`](https://github.com/nodejs/node): Um runtime JavaScript para back-end.
 
 ## Instalação
 
