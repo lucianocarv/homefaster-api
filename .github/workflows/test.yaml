@@ -31,7 +31,7 @@ jobs:
       - run: echo "PORT=${{vars.PORT}}" >> .env.test
       - run: ls -a
 
-      - name: Install Deps
+      - name: Install Dependencies
         run: yarn
 
       - name: Start Vitest
