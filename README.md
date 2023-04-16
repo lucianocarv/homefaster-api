@@ -1,17 +1,20 @@
 <p align="center">
-  <img src="homefaster-logo.png" width="200px" align="center" alt="Homefaster logo" />
-  <h1 align="center">Homefaster API</h1>
+  <img src="homefaster-logo-github.png" width="300px" align="center" alt="Homefaster logo" />
+  <h1 align="center">Uma Api Node.js</h1>
   <p align="center">
      <a href="https://lucianocarv.tech">https://lucianocarv.tech</a>
     <br/>
-    API escrita em Node.js com TypeScript
+    <br/>
+    A API do Homefaster foi desenvolvida com base no site canadense de aluguel de imóveis chamado Rentfaster
   </p>
 </p>
 <br/>
 <p align="center">
 <a href="https://www.linkedin.com/in/lucianocarv/" rel="nofollow"><img src="https://img.shields.io/badge/created%20by-@lucianocarv-4BBAAB.svg" alt="Created by Luciano Carvalho"></a>
 <a href="" rel="nofollow"><img src="https://img.shields.io/badge/version-v0.1-blue" alt="Version"></a>
-
+<a href="" rel="nofollow"><img src="https://img.shields.io/badge/type-personal%20project-green" alt="Type"></a>
+<a href="" rel="nofollow"><img src="https://img.shields.io/badge/env-only%20dev-orange" alt="Env"></a>
+  
 </p>
 
 <br/>
