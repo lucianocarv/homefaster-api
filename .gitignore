@@ -16,3 +16,6 @@ yarn-error.log
 # others
 app-info.txt
 melhorias.txt
+
+# Test
+coverage

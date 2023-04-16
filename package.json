@@ -10,7 +10,7 @@
     "test:start": "yarn test:reset && dotenv -e .env.test -- vitest",
     "test:migrate": "dotenv -e .env.test -- yarn prisma migrate deploy",
     "test:reset": "yarn test:migrate-reset && dotenv -e .env.test -- yarn seed && yarn test:migrate",
-    "test:migrate-reset": "dotenv -e .env.test -- yarn prisma migrate reset",
+    "test:migrate-reset": "dotenv -e .env.test -- yarn prisma migrate reset -f",
     "test:seed": "dotenv -e .env.test -- yarn seed"
   },
   "dependencies": {

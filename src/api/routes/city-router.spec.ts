@@ -48,7 +48,6 @@ describe('City Routes', () => {
       })
       .set('Authorization', token);
     city = response.body;
-    console.log(response);
     expect(response.status).toBe(201);
     expect(response.body.name).toBe('Grande Prairie');
     expect(response.body.province_id).toBe(province.id);
