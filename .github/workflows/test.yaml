@@ -8,7 +8,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - run: echo ${{vars.GCP_SQL_KEY}} > text.txt
+      - name: Create SSL certificate file
+        run: node -e "const fs = require('fs'); fs.writeFileSync('server-ca.pem', process.env.GCP_SQL_KEY);"
       - run: ls
       # - run:
       # - name: Install Deps
