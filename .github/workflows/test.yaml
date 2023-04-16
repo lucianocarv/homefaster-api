@@ -10,15 +10,32 @@ jobs:
 
       - name: Create SSL certificate file
         run: echo "${{ vars.GCP_SQL_KEY }}" | tr -d '\n'  > server-ca.pem
-      - run: |
-          env
+      - run: echo "BASE_URL=${{vars.BASE_URL}}" >> .env.test
+      - run: echo "BCRYPT_SALT=${{vars.BCRYPT_SALT}}" >> .env.test
+      - run: echo "CLOUD_BUCKET_NAME=${{vars.CLOUD_BUCKET_NAME}}" >> .env.test
+      - run: echo "CLOUD_PROJECT_ID=${{vars.CLOUD_PROJECT_ID}}" >> .env.test
+      - run: echo "CLOUD_STORAGE_BUCKET_BASE_URL=${{vars.CLOUD_STORAGE_BUCKET_BASE_URL}}" >> .env.test
+      - run: echo "CLOUD_STORAGE_CLIENT_EMAIL=${{vars.CLOUD_STORAGE_CLIENT_EMAIL}}" >> .env.test
+      - run: echo "CLOUD_STORAGE_CLIENT_PRIVATE_KEY=${{vars.CLOUD_STORAGE_CLIENT_PRIVATE_KEY}}" >> .env.test
+      - run: echo "DATABASE_URL=${{vars.DATABASE_URL}}" >> .env.test
+      - run: echo "DEFAULT_MAIL=${{vars.DEFAULT_MAIL}}" >> .env.test
+      - run: echo "GMAPS_API_KEY=${{vars.GMAPS_API_KEY}}" >> .env.test
+      - run: echo "GMAPS_GEOCODE_API_URL=${{vars.GMAPS_GEOCODE_API_URL}}" >> .env.test
+      - run: echo "GMAPS_VALIDATE_ADDRESS_API_URL=${{vars.GMAPS_VALIDATE_ADDRESS_API_URL}}" >> .env.test
+      - run: echo "HOST=${{vars.HOST}}" >> .env.test
+      - run: echo "JWT_SECRET=${{vars.JWT_SECRET}}" >> .env.test
+      - run: echo "MAIL_HOST_PORT=${{vars.MAIL_HOST_PORT}}" >> .env.test
+      - run: echo "MAIL_HOST_SMTP=${{vars.MAIL_HOST_SMTP}}" >> .env.test
+      - run: echo "MAIL_PASS=${{vars.MAIL_PASS}}" >> .env.test
+      - run: echo "MAIL_USER=${{vars.MAIL_USER}}" >> .env.test
+      - run: echo "PORT=${{vars.PORT}}" >> .env.test
       - run: ls -a
-      # - name: Install Deps
-      #   run: yarn
-      # - name: Start Vitest
-      #   run: yarn test:start
-      # - name: Install Deps
-      #   run: yarn
+
+      - name: Install Deps
+        run: yarn
+
+      - name: Start Vitest
+        run: yarn test:start
 
       # - name: Setup Node.js
       #   uses: actions/setup-node@v2
