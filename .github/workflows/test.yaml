@@ -7,15 +7,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-<<<<<<< HEAD
-      - run: echo ${{ vars.GCP_SQL_KEY }} > server-ca.pem
-=======
-      - run: touch server-ca.pem
-      - run: | 
-          echo ${{ vars.GCP_SQL_KEY }} > server-ca.pem
-      - run: ls
->>>>>>> 85ad035b196c4d339b81fe23001065e169a54e77
       # - run:
       # - name: Install Deps
       #   run: yarn
