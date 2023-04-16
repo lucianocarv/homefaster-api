@@ -8,7 +8,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - run: echo ${{ vars.GCP_SQL_KEY }} >> server-ca.pem
+      - run: touch server-ca.pem
+      - run: echo ${{ vars.GCP_SQL_KEY }} > server-ca.pem
       - run: ls
       # - run:
       # - name: Install Deps
