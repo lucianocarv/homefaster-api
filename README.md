@@ -1,12 +1,21 @@
+<p align="center">
+  <img src="https://drive.google.com/file/d/1zwDSnhnQE_SdYBwHiOrCqFDrbs_LJfX6/view?usp=sharing" width="200px" align="center" alt="Homefaster logo" />
+  <h1 align="center">Homefaster API</h1>
+  <p align="center">
+     <a href="https://lucianocarv.tech">https://lucianocarv.tech</a>
+    <br/>
+    API escrita em Node.js com TypeScript
+  </p>
+</p>
+<br/>
+<p align="center">
+<a href="https://www.linkedin.com/in/lucianocarv/" rel="nofollow"><img src="https://img.shields.io/badge/created%20by-@lucianocarv-4BBAAB.svg" alt="Created by Luciano Carvalho"></a>
+<a href="" rel="nofollow"><img src="https://img.shields.io/badge/version-v0.1-blue" alt="Version"></a>
 
-### <h1 align="center">Homefaster API</h1>
+</p>
 
-
-### <h2>:cyclone: Descrição:</h2>
-
-~<p>Projeto de uma API RESTful que representa um serviço de aluguel de imóveis, e que é baseado no site [Rentfaster](https://www.rentfaster.ca/).<br/>
-O projeto está sendo desenvolvido com TypeScript</p>~
-
+<br/>
+<br/>
 
 #### <h2>:cyclone: Tecnologias usadas:</h2>
 
