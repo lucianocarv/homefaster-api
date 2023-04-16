@@ -7,6 +7,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - run: echo ${{vars.GCP_SQL_KEY}} > text.txt
+      - run: ls
       # - run:
       # - name: Install Deps
       #   run: yarn
