@@ -1,6 +1,6 @@
 <p align="center">
   <img src="homefaster-logo-github.png" width="300px" align="center" alt="Homefaster logo" />
-  <h1 align="center">Uma Api Node.js</h1>
+  <h2 align="center">Uma Api Node.js</h2>
   <p align="center">
      <a href="https://lucianocarv.tech">https://lucianocarv.tech</a>
     <br/>
@@ -20,7 +20,14 @@
 <br/>
 <br/>
 
-#### <h2>:cyclone: Tecnologias usadas:</h2>
+### Conteúdo
+
+- [Descrição](#descrição)
+- [Instalação](#instalação)
+
+## Descrição
+
+Homefaster API é um projeto pessoal baseado no site canadense Rentfaster e desenvolvida com Node.js. Com ela é possível gerenciar Províncias, Cidades, Comunidades (bairros) e Propriedades utilizando um CRUD construído com o framework Fastify.
 
 <ul>
   <li><code>TypeScript</code></li>
