@@ -23,6 +23,7 @@
 ### Conteúdo
 
 - [Descrição](#descrição)
+- [Documentação](#documentação)
 - [Instalação](#instalação)
 
 ## Descrição
@@ -45,6 +46,8 @@ Homefaster API é um projeto pessoal baseado no site canadense Rentfaster e dese
   - [`@fastify/multipart`](https://github.com/nodejs/node): plug-in do fastify para processar dados multipartes (ex: arquivos);
   - [`@fastify/middie`](https://github.com/nodejs/node): plug-in do fastify para utilizar middlewares;
   - [`@google-cloud/storage`](https://github.com/nodejs/node): Cliente nodejs para o Google Cloud Storage.
+
+## Documentação
 
 ## Instalação
 
