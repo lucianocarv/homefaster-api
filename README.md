@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://drive.google.com/file/d/1zwDSnhnQE_SdYBwHiOrCqFDrbs_LJfX6/view?usp=sharing" width="200px" align="center" alt="Homefaster logo" />
+  <img src="homefaster-logo.png" width="200px" align="center" alt="Homefaster logo" />
   <h1 align="center">Homefaster API</h1>
   <p align="center">
      <a href="https://lucianocarv.tech">https://lucianocarv.tech</a>
