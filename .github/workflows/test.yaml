@@ -9,7 +9,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create SSL certificate file
-        run: echo ${{vars.GCP_SQL_KEY}}
+        run: echo -n ${{vars.GCP_SQL_KEY}} > server-ca.pem
       # - run:
       # - name: Install Deps
       #   run: yarn
