@@ -32,11 +32,18 @@ Homefaster API é um projeto pessoal baseado no site canadense Rentfaster e dese
 ## Tecnologias
 
 - [`nodejs`](https://github.com/nodejs/node): runtime JavaScript para back-end.
-- [`typescript`](https://github.com/nodejs/node): superset JavaScript fortemente tipado.
-- [`fastify`](https://github.com/nodejs/node): um framework nodejs rápido e eficiente.
-- [`prisma`](https://github.com/nodejs/node): um super ORM (Object-Relational Mapping) para nodejs.
-- [`zod`](https://github.com/nodejs/node): validador de schemas para TypeScript.
-- [`postgresql`](https://github.com/nodejs/node): o banco de dados relacional de código aberto mais avançado do mundo (segundo seu próprio site).
+- [`typescript`](https://github.com/microsoft/TypeScript): superset JavaScript fortemente tipado.
+- [`fastify`](https://github.com/fastify/fastify): um framework nodejs rápido e eficiente.
+- [`prisma`](https://github.com/prisma/prisma): um super ORM (Object-Relational Mapping) para nodejs.
+- [`zod`](https://github.com/colinhacks/zod): validador de schemas para TypeScript.
+- [`postgresql`](https://github.com/postgres/postgres): o banco de dados relacional de código aberto mais avançado do mundo (segundo seu próprio site).
+- Outras libs usadas:
+  - [`axios`](https://github.com/axios/axios): o banco de dados relacional de código aberto mais avançado do mundo (segundo seu próprio site).
+  - [`nodemailer`](https://github.com/nodemailer/nodemailer): o banco de dados relacional de código aberto mais avançado do mundo (segu
+  - [`@fastify/jwt`](https://github.com/fastify/fastify-jwt): o banco de dados relacional de código aberto mais avançado do mundo (s
+  - [`@fastify/multipart`](https://github.com/nodejs/node): o banco de dados relacional de código aberto mais avançado do mundo
+  - [`@fastify/middie`](https://github.com/nodejs/node): o banco de dados relacional de código aberto mais avançado do mundo
+  - [`@google-cloud/storage`](https://github.com/nodejs/node): o banco de dados relacional de código aberto mais avançado do mundo
 
 ## Instalação
 
