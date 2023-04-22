@@ -9,10 +9,18 @@ import { IUsersFilter } from '../interfaces/users-filter';
 import { userServices } from '../services/user-services';
 import { ERR_USERS_INVALID_ROLE, ERR_USERS_USER_CREATE_PERMISSION_DENIED } from '../errors/user-errors';
 import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
+import { UserModel } from '../../../prisma/models';
+import { getIssuesZod } from '../helpers/get-issues-zod';
 
 const userController = {
   register: async (req: FastifyRequest, res: FastifyReply): Promise<User | FastifyError> => {
+    const parse = UserModel.partial({ account_confirmed: true, id: true, phone: true, role: true }).safeParse(req.body);
+    if (!parse.success) {
+      const messages = getIssuesZod(parse.error.issues);
+      throw CustomError('_', messages.toString(), 400);
+    }
     const data = req.body as User;
+
     try {
       const user = await userServices.registerOneUser(data);
       return res.status(201).send(user);

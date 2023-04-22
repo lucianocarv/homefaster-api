@@ -1,44 +1,34 @@
-import dotenv from 'dotenv';
-dotenv.config({ path: '../../../.env.test' });
-
 import { fastify } from '../../app.js';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import request from 'supertest';
-import { env_test_email, env_test_password } from '../../environment.js';
+import { setupTestsEnd, setupTestsStart } from '../config/setup-tests.js';
+import { City, Province } from '@prisma/client';
 
 let token: string;
 
 beforeAll(async () => {
-  await fastify.listen();
-  const response = await request(fastify.server).post('/users/login').send({
-    email: env_test_email,
-    password: env_test_password
-  });
-
-  token = response.body.token;
+  const { authorization } = await setupTestsStart();
+  token = authorization;
 });
 
 afterAll(async () => {
-  await fastify.close();
+  await setupTestsEnd();
 });
 
 describe('City Routes', () => {
-  it('Deve retornar as cidades', async () => {
-    const response = await request(fastify.server).get('/cities');
-    expect(response.status).toBe(200);
-  });
+  let province: Province;
+  let city: City;
 
-  let province: any;
   it('Deve criar uma província', async () => {
     const response = await request(fastify.server).post('/a/provinces').set('Authorization', token).send({
       name: 'Alberta',
       short_name: 'AB'
     });
     province = response.body;
+    console.log(response);
     expect(response.status).toBe(201);
   });
 
-  let city: any;
   it('Deve criar uma cidade', async () => {
     const response = await request(fastify.server)
       .post('/a/cities')
@@ -51,6 +41,36 @@ describe('City Routes', () => {
     expect(response.status).toBe(201);
     expect(response.body.name).toBe('Grande Prairie');
     expect(response.body.province_id).toBe(province.id);
+  });
+
+  it('Não deve criar uma cidade igual', async () => {
+    const response = await request(fastify.server)
+      .post('/a/cities')
+      .send({
+        name: 'Grande Prairie',
+        province_id: province.id
+      })
+      .set('Authorization', token);
+    console.log(response.body);
+    expect(response.status).toBe(400);
+  });
+
+  it('Não deve criar uma cidade sem token de autorização', async () => {
+    const response = await request(fastify.server).post('/a/cities').send({
+      name: 'Grande Prairie',
+      province_id: province.id
+    });
+
+    expect(response.status).toBe(401);
+  });
+
+  it('Deve retornar várias cidades', async () => {
+    const response = await request(fastify.server).get('/cities');
+    expect(response.status).toBe(200);
+    expect(response.body.cities).toBeInstanceOf(Array);
+    expect(response.body.page).toBeTypeOf('number');
+    expect(response.body.per_page).toBeTypeOf('number');
+    expect(response.body.cities.length).toBeGreaterThanOrEqual(1);
   });
 
   it('Deve retornar apenas uma cidade', async () => {

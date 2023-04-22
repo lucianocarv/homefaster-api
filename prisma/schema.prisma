@@ -226,6 +226,8 @@ model User {
   last_name         String     @db.VarChar(255)
   /// @zod.email({message: "O email precisa ser do tipo email@email.com"})
   email             String     @unique
+  /// @zod.min(6, {message: "A senha deve conter no mínimo 6 caracteres"})
+  /// @zod.regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/gm, {message: "A senha deve ter no mínimo: 1 letra maiúscula, 1 letra minúscula e um número."})
   password          String
   phone             String?
   role              Role

@@ -49,7 +49,7 @@ const communityController = {
 
     try {
       const result = await communityServices.createOneCommunity(community);
-      return res.send(result);
+      return res.status(201).send(result);
     } catch (error) {
       return res.send(error);
     }
