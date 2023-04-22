@@ -7,6 +7,7 @@ import { ERR_PROVINCE_ALREADY_EXISTS, ERR_PROVINCE_NOT_FOUND } from '../errors/p
 import storageServices from './storage-services.js';
 import { getFileName } from '../helpers/get-filename';
 import { env_storageBaseUrl } from '../../environment.js';
+import { CustomError } from '../helpers/custom-error.js';
 
 const provinceServices = {
   getAllProvinces: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<object> => {
@@ -31,7 +32,8 @@ const provinceServices = {
 
   getOneProvince: async (id: number) => {
     const province = await prisma.province.findUnique({ where: { id } });
-    return province;
+    if (province) return province;
+    throw CustomError('_', 'Esta província não existe', 400);
   },
 
   createOneProvince: async (attributes: Province): Promise<Province> => {
@@ -54,20 +56,19 @@ const provinceServices = {
   },
 
   updateOneProvince: async ({ id, attibutes }: { id: number; attibutes: IUpdateProperty }): Promise<Province> => {
-    const province = await prisma.province.update({
-      where: {
-        id
-      },
-      data: attibutes
-    });
-    return province;
-  },
+    const provinceExists = await prisma.province.findUnique({ where: { id } });
 
-  deleteOneProvince: async ({ id }: { id: number }): Promise<Province> => {
-    const province = await prisma.province.delete({
-      where: { id }
-    });
-    return province;
+    if (provinceExists) {
+      const province = await prisma.province.update({
+        where: {
+          id
+        },
+        data: attibutes
+      });
+      return province;
+    } else {
+      throw CustomError('_', 'Esta província não existe', 400);
+    }
   },
 
   uploadImgCover: async (data: MultipartFile, id: number) => {
@@ -84,6 +85,18 @@ const provinceServices = {
       return response;
     } else {
       throw ERR_PROVINCE_NOT_FOUND;
+    }
+  },
+
+  deleteOneProvince: async ({ id }: { id: number }): Promise<Province> => {
+    const provinceExists = await prisma.province.findUnique({ where: { id } });
+    if (provinceExists) {
+      const province = await prisma.province.delete({
+        where: { id }
+      });
+      return province;
+    } else {
+      throw CustomError('_', 'Esta província não existe!', 400);
     }
   }
 };

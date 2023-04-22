@@ -7,6 +7,7 @@ import { ERR_CITY_ALREADY_EXISTS, ERR_CITY_NOT_FOUND, ERR_INVALID_CITY } from '.
 import storageServices from './storage-services.js';
 import { env_storageBaseUrl } from '../../environment.js';
 import { getFileName } from '../helpers/get-filename.js';
+import { CustomError } from '../helpers/custom-error.js';
 
 const citiesServices = {
   getAllCities: async ({ page_number, per_page_number, skip }: PaginationParameters): Promise<object> => {
@@ -30,11 +31,8 @@ const citiesServices = {
 
   getOneCity: async (id: number) => {
     const city = await prisma.city.findUnique({ where: { id } });
-    if (city) {
-      return city;
-    } else {
-      throw { code: '_', message: 'Esta cidade não existe', statusCode: 400 };
-    }
+    if (city) return city;
+    throw CustomError('_', 'Esta cidade não existe!', 400);
   },
 
   createOneCity: async (attributes: City): Promise<City | Error> => {
@@ -61,11 +59,16 @@ const citiesServices = {
   },
 
   updateOneCity: async ({ id, attributes }: { id: number; attributes: City }): Promise<City> => {
-    const city = await prisma.city.update({
-      where: { id },
-      data: attributes
-    });
-    return city;
+    const cityExists = await prisma.city.findUnique({ where: { id } });
+    if (cityExists) {
+      const city = await prisma.city.update({
+        where: { id },
+        data: attributes
+      });
+      return city;
+    } else {
+      throw CustomError('_', 'Essa cidade não existe', 400);
+    }
   },
 
   uploadCoverImage: async (data: MultipartFile, id: number) => {
@@ -96,7 +99,7 @@ const citiesServices = {
           return { message: 'Cidade excluída com sucesso!' };
         });
     } else {
-      throw ERR_CITY_NOT_FOUND;
+      throw CustomError('_', 'Cidade não encontrada!', 400);
     }
   }
 };

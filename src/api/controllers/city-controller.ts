@@ -16,9 +16,7 @@ const cityController = {
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page) as PaginationParameters;
     try {
-      const cities = await redisService.getOrSetDataCache('cities', async () => {
-        return await citiesServices.getAllCities({ page_number, per_page_number, skip });
-      });
+      const cities = await citiesServices.getAllCities({ page_number, per_page_number, skip });
       return res.send(cities);
     } catch (error) {
       return res.send(error);
@@ -28,9 +26,7 @@ const cityController = {
   getOneCity: async (req: FastifyRequest, res: FastifyReply): Promise<City | FastifyError> => {
     const { id } = req.params as { id: string };
     try {
-      const city = await redisService.getOrSetDataCache(`city?id=${id}`, async () => {
-        return await citiesServices.getOneCity(Number(id));
-      });
+      const city = await citiesServices.getOneCity(Number(id));
       return res.send(city);
     } catch (error) {
       return res.send(error);
@@ -114,7 +110,6 @@ const cityController = {
     if (role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const params = req.params as { id: string };
     const id = Number(params.id);
-    if (!id) throw ERR_MISSING_ID('cidade', 'excluída');
     try {
       const city = await citiesServices.deleteOneCity({ id });
       return res.status(202).send(city);

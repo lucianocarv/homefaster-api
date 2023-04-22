@@ -45,7 +45,7 @@ const communityServices = {
       }
     })) as { name: string; province: { name: string } } | null;
 
-    if (!city) return new Error('Cannot find City');
+    if (!city) throw CustomError('_', 'Cidade não encontrada', 400);
     const validateAddres = (await ValidateAddressAPI.getDataForCommunity({
       province: city.province.name,
       city: city.name,
@@ -61,16 +61,22 @@ const communityServices = {
       });
       return community;
     } else {
-      return new Error('Invalid Community');
+      throw CustomError('_', 'A comundiade inserida é inválida!', 400);
     }
   },
 
   updateOneCommunity: async ({ id, attributes }: { id: number; attributes: Community }): Promise<Community> => {
-    const community = await prisma.community.update({
-      where: { id },
-      data: attributes
-    });
-    return community;
+    const communityExists = await prisma.community.findUnique({ where: { id } });
+
+    if (communityExists) {
+      const community = await prisma.community.update({
+        where: { id },
+        data: attributes
+      });
+      return community;
+    } else {
+      throw CustomError('_', 'Não foi possível encontrar essa comunidade!', 400);
+    }
   },
 
   uploadCoverImage: async (data: MultipartFile, id: number) => {
@@ -93,10 +99,15 @@ const communityServices = {
   },
 
   deleteOneCommunity: async ({ id }: { id: number }): Promise<Community> => {
-    const community = await prisma.community.delete({
-      where: { id }
-    });
-    return community;
+    const communityExists = await prisma.community.findUnique({ where: { id } });
+    if (communityExists) {
+      const community = await prisma.community.delete({
+        where: { id }
+      });
+      return community;
+    } else {
+      throw CustomError('_', 'Comunidade não encontrada', 400);
+    }
   }
 };
 

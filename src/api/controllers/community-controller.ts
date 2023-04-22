@@ -9,16 +9,13 @@ import { ICustomError } from '../interfaces/custom-error';
 import { communityServices } from '../services/community-services';
 import { CommunityModel } from '../../../prisma/models';
 import { getIssuesZod } from '../helpers/get-issues-zod';
-import { redisService } from '../services/redis-service';
 
 const communityController = {
   getAllCommunities: async (req: FastifyRequest, res: FastifyReply): Promise<Community[] | FastifyError> => {
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page);
     try {
-      const communities = await redisService.getOrSetDataCache('communities', async () => {
-        return await communityServices.getAllCommunities({ page_number, per_page_number, skip });
-      });
+      const communities = await communityServices.getAllCommunities({ page_number, per_page_number, skip });
       return res.send(communities);
     } catch (error) {
       return res.send(error);

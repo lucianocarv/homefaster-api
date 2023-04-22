@@ -9,10 +9,10 @@ const featureServices = {
         skip: skip,
         take: per_page_number,
         orderBy: {
-          name: 'asc',
-        },
+          name: 'asc'
+        }
       }),
-      prisma.feature.count(),
+      prisma.feature.count()
     ]);
 
     const pages = Math.ceil(count / per_page_number);
@@ -22,11 +22,11 @@ const featureServices = {
       page: page_number,
       per_page: per_page_number,
       pages,
-      features,
+      features
     };
   },
   createFeature: async (feature: Feature) => {
-    const newFeature = prisma.feature.create({ data: feature });
+    const newFeature = await prisma.feature.create({ data: feature });
     return newFeature;
   },
 
@@ -38,7 +38,7 @@ const featureServices = {
   updateOneFeature: async (id: number, feature: Feature) => {
     const featureUpdated = await prisma.feature.update({
       where: { id },
-      data: feature,
+      data: feature
     });
 
     return featureUpdated;
@@ -47,7 +47,7 @@ const featureServices = {
   deleteOneFeature: async (id: number) => {
     const featureDeleted = await prisma.feature.delete({ where: { id } });
     return featureDeleted;
-  },
+  }
 };
 
 export { featureServices };

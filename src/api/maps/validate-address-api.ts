@@ -2,6 +2,7 @@ import axios from 'axios';
 import { FastifyError } from 'fastify';
 import { IValidationAddressReply } from '../interfaces/validation-address-reply';
 import { env_gmapsApiKey, env_gmapsValidateAddressApiUrl } from '../../environment';
+import { CustomError } from '../helpers/custom-error';
 
 interface IProps {
   province: string;
@@ -15,15 +16,15 @@ export class ValidateAddressAPI {
     province,
     city,
     address,
-    community,
+    community
   }: IProps): Promise<IValidationAddressReply | FastifyError> {
     const body = {
       address: {
         administrativeArea: province,
         locality: city,
         sublocality: community,
-        addressLines: [`${address}`],
-      },
+        addressLines: [`${address}`]
+      }
     };
     try {
       const res = await axios.post(`${env_gmapsValidateAddressApiUrl}?key=${env_gmapsApiKey}`, body);
@@ -35,8 +36,8 @@ export class ValidateAddressAPI {
       const global_code = data.result.geocode.plusCode.globalCode;
       const place_id = data.result.geocode.placeId;
       const metadata = data.result.metadata;
-      const validateAddress = addressComponents.map((component) => component.confirmationLevel);
-      const confirmed = validateAddress.find((address) => address !== 'CONFIRMED') == undefined ? true : false;
+      const validateAddress = addressComponents.map(component => component.confirmationLevel);
+      const confirmed = validateAddress.find(address => address !== 'CONFIRMED') == undefined ? true : false;
 
       if (confirmed && metadata.residential && formatted_address && global_code && geocode && place_id) {
         return {
@@ -45,7 +46,7 @@ export class ValidateAddressAPI {
           longitude: geocode.longitude,
           global_code,
           place_id,
-          formatted_address,
+          formatted_address
         };
       } else {
         throw new Error();
@@ -57,25 +58,29 @@ export class ValidateAddressAPI {
 
   static async getDataForCommunity({ province, city, community }: IProps): Promise<IValidationAddressReply | string> {
     const body = {
-      address: { administrativeArea: province, locality: city, addressLines: [`${community}`] },
+      address: { administrativeArea: province, locality: city, addressLines: [`${community}`] }
     };
     const res = await axios.post(`${env_gmapsValidateAddressApiUrl}?key=${env_gmapsApiKey}`, body);
     const data = await res.data;
     const formatted_address = data.result.address.formattedAddress;
-    const addressComponents = data.result.address.addressComponents as Array<{ confirmationLevel: string }>;
+    const addressComponents = data.result.address.addressComponents as Array<{
+      confirmationLevel: string;
+      componentType: string;
+    }>;
     const geocode = data.result.geocode.location;
     const global_code = data.result.geocode.plusCode.globalCode;
-    const validateAddress = addressComponents.map((component) => component.confirmationLevel);
-    const confirmed = validateAddress.find((address) => address !== 'CONFIRMED') == undefined ? true : false;
+    const validateAddress = addressComponents.map(component => component.confirmationLevel);
+    const confirmed = validateAddress.find(address => address !== 'CONFIRMED') == undefined ? true : false;
 
-    if (confirmed) {
+    const isNeighborhood = addressComponents[0].componentType == 'neighborhood' ? true : false;
+    if (confirmed && isNeighborhood) {
       return {
         latitude: geocode.latitude,
         longitude: geocode.longitude,
         global_code,
-        formatted_address,
+        formatted_address
       };
     }
-    throw { code: '_', message: 'Comunidade inválida!', statusCode: 422 };
+    throw CustomError('_', 'Comunidade inválida!', 400);
   }
 }

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { env_gmapsApiKey, env_gmapsGeocodeApiUrl } from '../../environment';
 import { IGeocodingAPIReply } from '../interfaces/geocoding-reply';
+import { CustomError } from '../helpers/custom-error';
 
 export class GeocodingAPI {
   static async getDataForCity(province_short_name: string, city: string): Promise<IGeocodingAPIReply | string> {
@@ -16,6 +17,6 @@ export class GeocodingAPI {
       console.log(name);
       return { name, latitude, longitude, place_id };
     }
-    throw { code: '_', message: `Não existe uma cidade em ${province_short_name} com o nome de ${city}!`, statusCode: 422 };
+    throw CustomError('_', `Não existe uma cidade em ${province_short_name} com o nome de ${city}!`, 400);
   }
 }
