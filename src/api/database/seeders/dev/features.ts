@@ -1,4 +1,4 @@
-import { prisma } from '../../config/prisma-connect';
+import { prisma } from '../../../config/prisma-connect';
 
 const seed = async () => {
   await prisma.$transaction([
@@ -6,42 +6,42 @@ const seed = async () => {
       data: [
         {
           name: 'Air Conditioning',
-          type: 'Property',
+          type: 'Property'
         },
         {
           name: 'Fridge',
-          type: 'Property',
+          type: 'Property'
         },
         {
           name: 'Microwave',
-          type: 'Property',
+          type: 'Property'
         },
         {
           name: 'Elevator',
-          type: 'Building',
+          type: 'Building'
         },
         {
           name: 'Secure Entry',
-          type: 'Building',
+          type: 'Building'
         },
         {
           name: 'Fitness Area',
-          type: 'Building',
+          type: 'Building'
         },
         {
           name: 'Shopping Center',
-          type: 'Community',
+          type: 'Community'
         },
         {
           name: 'Bus',
-          type: 'Community',
+          type: 'Community'
         },
         {
           name: 'River',
-          type: 'Community',
-        },
-      ],
-    }),
+          type: 'Community'
+        }
+      ]
+    })
   ]);
 };
 

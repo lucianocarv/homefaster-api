@@ -1,26 +1,26 @@
-import { prisma } from '../../config/prisma-connect';
+import { prisma } from '../../../config/prisma-connect';
 
 const seed = async () => {
   await prisma.$transaction([
     prisma.utility.createMany({
       data: [
         {
-          name: 'Heat',
+          name: 'Heat'
         },
         {
-          name: 'Water',
+          name: 'Water'
         },
         {
-          name: 'Internet',
+          name: 'Internet'
         },
         {
-          name: 'Electricity',
+          name: 'Electricity'
         },
         {
-          name: 'Cable',
-        },
-      ],
-    }),
+          name: 'Cable'
+        }
+      ]
+    })
   ]);
 };
 

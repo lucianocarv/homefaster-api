@@ -1,5 +1,5 @@
-import { env_test_email, env_test_password } from '../../../environment';
-import { prisma } from '../../config/prisma-connect';
+import { env_test_email, env_test_password } from '../../../../environment';
+import { prisma } from '../../../config/prisma-connect';
 import bcrypt from 'bcrypt';
 
 const seed = async () => {
@@ -12,10 +12,10 @@ const seed = async () => {
           last_name: 'Carvalho',
           email: String(env_test_email),
           password: passwordHash,
-          role: 'Admin',
-        },
-      ],
-    }),
+          role: 'Admin'
+        }
+      ]
+    })
   ]);
 };
 

@@ -1,6 +1,7 @@
 import { fastify } from '../../app.js';
 import request from 'supertest';
 import { env_test_email, env_test_password } from '../../environment.js';
+import { prisma } from './prisma-connect.js';
 
 export async function setupTestsStart() {
   let token: string;
@@ -10,6 +11,7 @@ export async function setupTestsStart() {
     password: env_test_password
   });
   token = response.body.token;
+  await prisma.province.findMany();
   return { authorization: token };
 }
 

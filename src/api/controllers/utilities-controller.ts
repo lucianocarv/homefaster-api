@@ -31,7 +31,7 @@ const utilitiesController = {
       const utilityExists = await utilitiesServices.findOne(name);
       if (utilityExists) throw ERR_UTILITY_ALREADY_EXISTS;
       const utility = await utilitiesServices.createOne(name);
-      return res.send(utility);
+      return res.status(201).send(utility);
     } catch (error) {
       return error;
     }
@@ -68,7 +68,7 @@ const utilitiesController = {
     } catch (error) {
       return res.send(error);
     }
-  },
+  }
 };
 
 export { utilitiesController };
