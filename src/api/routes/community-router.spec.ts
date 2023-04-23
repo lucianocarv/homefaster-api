@@ -3,6 +3,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import request from 'supertest';
 import { setupTestsEnd, setupTestsStart } from '../config/setup-tests.js';
 import { City, Community, Province } from '@prisma/client';
+import { prisma } from '../config/prisma-connect.js';
 
 let token: string;
 
