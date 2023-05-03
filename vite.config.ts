@@ -8,7 +8,9 @@ export default defineConfig({
     reporters: ['verbose'],
     coverage: {
       enabled: true,
-      reporter: ['html'],
+      reporter: ['html']
     },
-  },
+    threads: false,
+    isolate: true
+  }
 });
