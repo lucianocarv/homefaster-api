@@ -71,4 +71,31 @@ describe('province-router tests', async () => {
       expect(request.body.per_page).toBe(10); // if value to be negative, the return must be default
     });
   });
+
+  describe('PUT /provinces', async () => {
+    it('province: should update a province (name and short_name)', async () => {
+      const _province = { name: 'Albert', short_name: 'BA' };
+      const request = await req.put(`/a/provinces/${province.id}`).set('Authorization', token).send(_province);
+      expect(request.status).toBe(202);
+      expect(request.body.name).toBe(_province.name);
+    });
+
+    it('province: should not be update a province', async () => {
+      const _province = { name: 'Albert', short_name: 'A' };
+      const request = await req.put(`/a/provinces/${province.id}`).set('Authorization', token).send(_province);
+      expect(request.status).toBe(400);
+    });
+  });
+
+  describe('DELETE /provinces', async () => {
+    it('province: should delete a province', async () => {
+      const request = await req.delete(`/a/provinces/${province.id}`).set('Authorization', token);
+      expect(request.status).toBe(202);
+    });
+
+    it('province: should not delete a province', async () => {
+      const request = await req.delete(`/a/provinces/${province.id + 100}`).set('Authorization', token);
+      expect(request.status).toBe(400);
+    });
+  });
 });

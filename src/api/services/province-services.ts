@@ -80,7 +80,7 @@ const provinceServices = {
         storageServices.deleteFileInStorage(filePath);
       }
       const response = await storageServices.thumbImageUpload({ to: 'provinces', file: data.file, filename, id });
-      const newImageUrl = `${env_storageBaseUrl}/provinces/${id}/${filename}`;
+      const newImageUrl = `/provinces/${id}/${filename}`;
       await prisma.province.update({ where: { id }, data: { img_cover: newImageUrl } });
       return response;
     } else {

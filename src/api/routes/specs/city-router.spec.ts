@@ -35,7 +35,9 @@ describe('city-router tests', async () => {
 
     it('city: should be create a city', async () => {
       const _city = { name: 'Calgary', province_id: province.id };
+      console.log(_city);
       const request = await req.post('/a/cities').set('Authorization', token).send(_city);
+      console.log(request.body);
       expect(request.status).toBe(201);
       expect(request.body.name).toBe(_city.name);
       city = request.body;
