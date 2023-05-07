@@ -13,10 +13,11 @@
     "dev:seed": "dotenv -e .env.test -- yarn seed:dev",
     "test": "yarn test:start",
     "test:start": "yarn test:reset && dotenv -e .env.test -- vitest",
-    "test:migrate": "dotenv -e .env.test -- yarn prisma migrate deploy",
+    "test:migrate": "dotenv -e .env.test -- yarn prisma migrate dev",
     "test:reset": "yarn test:migrate-reset && dotenv -e .env.test -- yarn test:seed && yarn test:migrate",
     "test:migrate-reset": "dotenv -e .env.test -- yarn prisma migrate reset -f",
-    "test:seed": "dotenv -e .env.test -- yarn seed:test"
+    "test:seed": "dotenv -e .env.test -- yarn seed:test",
+    "migrate": "prisma migrate dev && yarn test:migrate"
   },
   "dependencies": {
     "@fastify/env": "^4.2.0",

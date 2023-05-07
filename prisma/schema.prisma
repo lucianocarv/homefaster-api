@@ -19,77 +19,15 @@ generator zod {
   prismaJsonNullability = true // (default) uses prisma's scheme for JSON field nullability
 }
 
-model Province {
-  id         Int      @id @default(autoincrement())
-  /// @zod.max(32, {message: "O nome da província não pode ter mais de 32 caracteres!"})
-  /// @zod.min(3, {message: "O nome da província deve ter pelo menos 3 caracteres!"})
-  name       String   @unique @db.VarChar(32)
-  /// @zod.length(2, {message: "A abreviação deve ter apenas 2 caracteres!"}).toUpperCase()
-  short_name String   @unique @db.VarChar(2)
-  /// @zod.url({message: "A imagem de fundo precisa referenciar um endereço url!"})
-  img_cover  String?  @db.VarChar(255)
-  cities     City[]
-  created_at DateTime @default(now()) @db.Timestamp()
-  updated_at DateTime @updatedAt @db.Timestamp()
-
-  @@map("provinces")
-}
-
-model City {
-  id          Int         @id @default(autoincrement())
-  /// @zod.max(32, {message: "O nome da cidade não pode ter mais de 32 caracteres!"})
-  /// @zod.min(3, {message: "O nome da cidade deve ter pelo menos 3 caracteres!"})
-  name        String      @db.VarChar(32)
-  latitude    Float
-  longitude   Float
-  place_id    String      @unique @db.VarChar(255)
-  /// @zod.url({message: "A imagem de fundo precisa referenciar um endereço url!"})
-  img_cover   String?     @db.VarChar(255)
-  province    Province    @relation(fields: [province_id], references: [id], onUpdate: Cascade)
-  province_id Int
-  communities Community[]
-  properties  Property[]
-  created_at  DateTime    @default(now()) @db.Timestamp()
-  updated_at  DateTime    @updatedAt @db.Timestamp()
-
-  @@unique([province_id, place_id])
-  @@map("cities")
-}
-
-model Community {
-  id                Int        @id @default(autoincrement())
-  /// @zod.max(32, {message: "O nome da comunidade não pode ter mais de 32 caracteres!"})
-  /// @zod.min(3, {message: "O nome da comunidade deve ter pelo menos 3 caracteres!"})
-  name              String     @db.VarChar(32)
-  global_code       String     @unique @db.VarChar(255)
-  formatted_address String     @db.VarChar(255)
-  latitude          Float
-  longitude         Float
-  /// @zod.url({message: "A imagem de fundo precisa referenciar um endereço url!"})
-  img_cover         String?    @db.VarChar(255)
-  city              City       @relation(fields: [city_id], references: [id], onUpdate: Cascade)
-  city_id           Int
-  properties        Property[]
-  created_at        DateTime   @default(now()) @db.Timestamp()
-  updated_at        DateTime   @updatedAt @db.Timestamp()
-
-  @@unique([name, city_id])
-  @@map("communities")
-}
-
 model Property {
-  id           Int          @id @default(autoincrement())
-  community    Community    @relation(fields: [community_id], references: [id], onUpdate: Cascade)
-  community_id Int
-  description  Description?
-  address      Address?
-  city         City         @relation(fields: [city_id], references: [id], onUpdate: Cascade)
-  city_id      Int
-  favorites    Favorite[]
-  created_at   DateTime     @default(now()) @db.Timestamp()
-  updated_at   DateTime     @updatedAt @db.Timestamp()
-  listed_by    User         @relation(fields: [user_id], references: [id], onUpdate: Cascade)
-  user_id      Int
+  id          Int          @id @default(autoincrement())
+  description Description?
+  address     Address?
+  favorites   Favorite[]
+  created_at  DateTime     @default(now()) @db.Timestamp()
+  updated_at  DateTime     @updatedAt @db.Timestamp()
+  listed_by   User         @relation(fields: [user_id], references: [id], onUpdate: Cascade)
+  user_id     Int
 
   @@map("properties")
 }
@@ -100,8 +38,7 @@ model Address {
   number            Int
   street            String   @db.VarChar(255)
   /// @zod.max(16)
-  postal_code       String?  @db.VarChar(16)
-  global_code       String   @unique @db.VarChar(255)
+  postal_code       String   @db.VarChar(16)
   place_id          String   @unique @db.VarChar(255)
   formatted_address String
   latitude          Float
