@@ -1,18 +1,16 @@
 import { prisma } from '../config/prisma-connect.js';
-import { City, Community, Feature, Property, Province, Utility } from '@prisma/client';
 import { PaginationParameters } from '../interfaces/pagination-parameters.js';
-import { ValidateAddressAPI } from '../maps/validate-address-api.js';
 import { IPagination } from '../interfaces/pagination.js';
 import { IAddressFilter } from '../interfaces/search-address.js';
 import { IDescriptionFilter } from '../interfaces/search-filter.js';
 import { MultipartFile } from '@fastify/multipart';
 import { CustomError } from '../helpers/custom-error.js';
-import { IValidationAddressReply } from '../interfaces/validation-address-reply.js';
 import { FastifyError } from 'fastify';
 import { getFileName } from '../helpers/get-filename.js';
 import storageServices from './storage-services.js';
 import { env_storageBaseUrl } from '../../environment.js';
 import { ICompleteProperty } from '../interfaces/complete-property.js';
+import { GeocodeAPI } from './maps/geocode-api.js';
 
 const propertyServices = {
   getAllProperties: async ({ page_number, per_page_number, skip }: PaginationParameters) => {
@@ -56,81 +54,35 @@ const propertyServices = {
     return { ...property, features, utilities };
   },
 
-  createOneProperty: async (attributes: any, user_id: number): Promise<Property | FastifyError> => {
-    const { property, description, address } = attributes;
-    const { community_id } = attributes.property;
-    const { name: community, city_id } = (await prisma.community.findUnique({ where: { id: community_id } })) as Community;
-    const { name: city, province_id } = (await prisma.city.findUnique({ where: { id: city_id } })) as City;
-    const { name: province } = (await prisma.province.findUnique({ where: { id: province_id } })) as Province;
-    const validateAddress = (await ValidateAddressAPI.validatePropertyAddress({
-      province,
-      city,
-      community,
-      address: `${address.number} ${address.street}`
-    })) as IValidationAddressReply;
+  createOneProperty: async (data: any, user_id: number) => {
+    const _description = data.description;
+    const _address = data.address;
+    const _utilities = data;
+    const _features = data;
 
-    if (validateAddress?.formatted_address) {
-      const { postal_code, latitude, longitude, global_code, place_id, formatted_address } = validateAddress;
-      const propertyExists = await propertyServices.findPropertyByGlobalCode(global_code);
-      if (propertyExists) throw CustomError('_', 'A Propriedade já está cadastrada!', 400);
-      const { id } = await prisma.property.create({
-        data: {
-          ...property,
-          user_id,
-          city_id,
-          address: {
-            create: {
-              ...address,
-              formatted_address,
-              postal_code: postal_code,
-              global_code,
-              place_id: place_id,
-              latitude,
-              longitude,
-              community,
-              city,
-              province
-            }
-          },
-          description: {
-            create: {
-              ...description
-            }
-          }
-        }
-      });
-
-      if (id) {
-        const description = await prisma.description.findFirst({
-          where: { property_id: id }
-        });
-        if (description) {
-          await prisma.$transaction([
-            prisma.utilitiesOnDescriptions.createMany({
-              data: attributes.utilities.map((utility: Utility) => ({ description_id: description.id, utility_id: utility }))
-            }),
-            prisma.featuresOnDescriptions.createMany({
-              data: attributes.features.map((feature: Feature) => ({ description_id: description.id, feature_id: feature }))
-            })
-          ]);
-        }
+    const property = await prisma.property.create({ data: { user_id } });
+    await prisma.description.create({
+      data: {
+        property_id: property.id,
+        ..._description
       }
-      const newProperty = await prisma.property.findUnique({
-        where: { id: id },
-        include: {
-          address: true,
-          description: true
-        }
-      });
+    });
 
-      if (newProperty) return newProperty;
-    }
-    return CustomError('_', 'Endereço inválido! Por favor, verifique as informações fornecidas!', 400);
-  },
+    await prisma.address.create({
+      data: {
+        ..._address,
+        property_id: property.id
+      }
+    });
 
-  findPropertyByGlobalCode: async (global_code: string) => {
-    const property = await prisma.address.findUnique({ where: { global_code } });
-    return property;
+    const propertyCreated = await prisma.property.findUnique({
+      where: { id: property.id },
+      include: {
+        description: true,
+        address: true
+      }
+    });
+    return propertyCreated;
   },
 
   updateOneProperty: async (id: number, attributes: ICompleteProperty) => {
@@ -230,8 +182,6 @@ const propertyServices = {
           }
         },
         where: {
-          city_id: { equals: address.city_id },
-          community_id: { equals: address.community_id },
           address: {
             street: { contains: address.street }
           },
@@ -256,8 +206,6 @@ const propertyServices = {
       }),
       prisma.property.count({
         where: {
-          city_id: { equals: address.city_id },
-          community_id: { equals: address.community_id },
           address: {
             street: { contains: address.street }
           },

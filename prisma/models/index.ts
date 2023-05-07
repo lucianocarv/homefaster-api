@@ -1,6 +1,3 @@
-export * from "./province"
-export * from "./city"
-export * from "./community"
 export * from "./property"
 export * from "./address"
 export * from "./description"

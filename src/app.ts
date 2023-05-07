@@ -3,10 +3,7 @@ dotenv.config();
 import Fastify from 'fastify';
 import JWT from '@fastify/jwt';
 import fastifyMultipart from '@fastify/multipart';
-import { cityRoutes } from './api/routes/city-router.js';
-import { communityRoutes } from './api/routes/community-router.js';
 import { propertyRoutes } from './api/routes/property-router.js';
-import { provinceRoutes } from './api/routes/province-router.js';
 import { userRouter } from './api/routes/user-router.js';
 import { authenticatedSystem } from './api/subsystems/authenticated.js';
 import { env_jwtSecret } from './environment.js';
@@ -17,9 +14,6 @@ fastify.register(JWT, {
   secret: env_jwtSecret ? env_jwtSecret : Buffer.byteLength('20').toString()
 });
 fastify.register(fastifyMultipart);
-fastify.register(provinceRoutes);
-fastify.register(cityRoutes);
-fastify.register(communityRoutes);
 fastify.register(propertyRoutes);
 fastify.register(userRouter);
 

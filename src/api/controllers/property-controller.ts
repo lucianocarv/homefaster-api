@@ -4,13 +4,11 @@ import { getPagination } from '../helpers/get-pagination';
 import { IAddressFilter } from '../interfaces/search-address';
 import { IDescriptionFilter } from '../interfaces/search-filter';
 import { propertyServices } from '../services/property-services';
-import { Address, Description, Property } from '@prisma/client';
 import { ERR_MISSING_ATTRIBUTE } from '../errors';
 import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
 import { ERR_MISSING_FILE } from '../errors/upload-file-errors';
-import { AddressModel, DescriptionModel, PropertyModel } from '../../../prisma/models';
-import { getIssuesZod } from '../helpers/get-issues-zod';
 import { ICompleteProperty } from '../interfaces/complete-property';
+import { Property } from '@prisma/client';
 
 const propertyController = {
   getAllProperties: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
@@ -37,47 +35,18 @@ const propertyController = {
 
   createOneProperty: async (req: FastifyRequest, res: FastifyReply): Promise<Property | FastifyError> => {
     const user = req.user as { id: number; role: string };
-    const attributes = req.body as {
-      property: Property;
-      description: Description;
-      address: Address;
-      utilities: number[];
-      features: number[];
-    };
-    attributes.property.user_id = user.id;
-    const parseProperty = PropertyModel.partial({ city_id: true, id: true, created_at: true, updated_at: true }).safeParse(
-      attributes.property
-    );
-    const parseAddress = AddressModel.pick({ number: true, street: true }).safeParse(attributes.address);
-    const parseDescription = DescriptionModel.partial({
-      id: true,
-      property_id: true,
-      rented: true,
-      created_at: true,
-      updated_at: true,
-    }).safeParse(attributes.description);
-
-    if (!parseProperty.success) {
-      const messages = getIssuesZod(parseProperty.error.issues);
-      throw CustomError('_', messages.toString(), 400);
-    } else if (!parseAddress.success) {
-      const messages = getIssuesZod(parseAddress.error.issues);
-      throw CustomError('_', messages.toString(), 400);
-    } else if (!parseDescription.success) {
-      const messages = getIssuesZod(parseDescription.error.issues);
-      throw CustomError('_', messages.toString(), 400);
-    }
-
-    const property = {
-      property: parseProperty.data,
-      address: parseAddress.data,
-      description: parseDescription.data,
-      utilities: attributes.utilities,
-      features: attributes.features,
-    };
+    const data = req.body as Object;
+    if (
+      !Object.hasOwn(data, 'description') ||
+      !Object.hasOwn(data, 'address') ||
+      !Object.hasOwn(data, 'utilities') ||
+      !Object.hasOwn(data, 'features')
+    )
+      return CustomError('_', 'Entrada inválida!', 400);
 
     try {
-      const result = await propertyServices.createOneProperty(property, user.id);
+      const result = await propertyServices.createOneProperty(data, user.id);
+      console.log(result);
       return res.status(201).send(result);
     } catch (error) {
       return res.send(error);
@@ -105,7 +74,7 @@ const propertyController = {
       const properties = await propertyServices.filter({
         pagination: { page_number, per_page_number, skip },
         description,
-        address,
+        address
       });
       return res.send(properties);
     } catch (error) {
@@ -138,7 +107,7 @@ const propertyController = {
     } catch (error) {
       return res.send(error);
     }
-  },
+  }
 };
 
 export { propertyController };
