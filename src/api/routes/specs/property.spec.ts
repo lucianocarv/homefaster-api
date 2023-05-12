@@ -101,6 +101,7 @@ describe('province-router tests', async () => {
       };
       const response = await req.post('/a/properties').set('Authorization', token).send(property);
       expect(response.status).toBe(400);
+      expect(response.status).toBe(400);
     });
   });
 });

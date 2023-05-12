@@ -1,7 +1,7 @@
 FROM node:18
 
 WORKDIR /app
-COPY .env .
+# COPY .env .
 COPY package*.json ./
 RUN yarn
 RUN yarn build
