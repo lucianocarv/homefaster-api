@@ -8,7 +8,8 @@ import { ERR_MISSING_ATTRIBUTE } from '../errors';
 import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
 import { ERR_MISSING_FILE } from '../errors/upload-file-errors';
 import { ICompleteProperty } from '../interfaces/complete-property';
-import { Property } from '@prisma/client';
+import { Address, Description, Property } from '@prisma/client';
+import { AddressModel, DescriptionModel } from '../../../prisma/models';
 
 const propertyController = {
   getAllProperties: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
@@ -35,18 +36,32 @@ const propertyController = {
 
   createOneProperty: async (req: FastifyRequest, res: FastifyReply): Promise<Property | FastifyError> => {
     const user = req.user as { id: number; role: string };
-    const data = req.body as Object;
-    if (
-      !Object.hasOwn(data, 'description') ||
-      !Object.hasOwn(data, 'address') ||
-      !Object.hasOwn(data, 'utilities') ||
-      !Object.hasOwn(data, 'features')
-    )
-      return CustomError('_', 'Entrada inválida!', 400);
+    const data = req.body as { description: Description; address: Address };
+
+    const parseDescription = DescriptionModel.partial({
+      id: true,
+      rented: true,
+      property_id: true,
+      created_at: true,
+      updated_at: true
+    }).safeParse(data.description);
+
+    const parseAddress = AddressModel.partial({ id: true, created_at: true, property_id: true, updated_at: true }).safeParse(
+      data.address
+    );
+
+    if (!parseDescription.success) {
+      res.status(400);
+      throw parseDescription.error.issues;
+    }
+
+    if (!parseAddress.success) {
+      res.status(400);
+      throw parseAddress.error.issues;
+    }
 
     try {
       const result = await propertyServices.createOneProperty(data, user.id);
-      console.log(result);
       return res.status(201).send(result);
     } catch (error) {
       return res.send(error);

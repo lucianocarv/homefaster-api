@@ -11,6 +11,7 @@ import storageServices from './storage-services.js';
 import { env_storageBaseUrl } from '../../environment.js';
 import { ICompleteProperty } from '../interfaces/complete-property.js';
 import { GeocodeAPI } from './maps/geocode-api.js';
+import { Property } from '@prisma/client';
 
 const propertyServices = {
   getAllProperties: async ({ page_number, per_page_number, skip }: PaginationParameters) => {
@@ -57,32 +58,50 @@ const propertyServices = {
   createOneProperty: async (data: any, user_id: number) => {
     const _description = data.description;
     const _address = data.address;
-    const _utilities = data;
-    const _features = data;
+    // const _utilities = data;
+    // const _features = data;
+    let createdProperty: Property;
+    try {
+      const v = await propertyServices.findPropertyByPlaceId(_address.place_id);
+      if (v) throw CustomError('_', 'Esta propriedade já está cadastrada!', 400);
 
-    const property = await prisma.property.create({ data: { user_id } });
-    await prisma.description.create({
-      data: {
-        property_id: property.id,
-        ..._description
-      }
-    });
+      return await prisma.$transaction(async tx => {
+        const property = await tx.property.create({ data: { user_id } });
+        await tx.description.create({
+          data: {
+            property_id: property.id,
+            ..._description
+          }
+        });
 
-    await prisma.address.create({
-      data: {
-        ..._address,
-        property_id: property.id
-      }
-    });
+        await tx.address.create({
+          data: {
+            ..._address,
+            property_id: property.id
+          }
+        });
 
-    const propertyCreated = await prisma.property.findUnique({
-      where: { id: property.id },
-      include: {
-        description: true,
-        address: true
-      }
-    });
-    return propertyCreated;
+        return await tx.property.findUnique({
+          where: { id: property.id },
+          include: {
+            description: true,
+            address: true
+          }
+        });
+      });
+    } catch (error) {
+      return error;
+    }
+  },
+
+  findPropertyByPlaceId: async (place_id: string): Promise<Boolean | Error> => {
+    try {
+      const address = await prisma.address.findUnique({ where: { place_id } });
+      if (address) return true;
+      return false;
+    } catch (error) {
+      return error as Error;
+    }
   },
 
   updateOneProperty: async (id: number, attributes: ICompleteProperty) => {

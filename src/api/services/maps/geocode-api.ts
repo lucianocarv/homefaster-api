@@ -101,7 +101,7 @@ export class GeocodeAPI {
       city: components.city.long_name,
       community: components.community.long_name,
       formatted_address: components.formatted_address,
-      number: Number(components.number.long_name),
+      number: Number(components.number.long_name) ? Number(components.number.long_name) : 0,
       street: components.street.long_name,
       latitude: components.location.lat,
       longitude: components.location.lng,

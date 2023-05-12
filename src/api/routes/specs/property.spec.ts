@@ -64,9 +64,43 @@ describe('province-router tests', async () => {
         features: []
       };
       const response = await req.post('/a/properties').set('Authorization', token).send(property);
+      console.log(response.body);
       expect(response.body.id).toBeTypeOf('number');
       expect(response.body.address.city).toBe('Calgary');
       expect(response.body.description.title).toBe(property.description.title);
+    });
+
+    it('property: should not be create a property (missing number)', async () => {
+      const property = {
+        description: {
+          title: 'Uma ótima propriedade em Downtown - Bairro Agradável',
+          price: 2500,
+          bathrooms: 2,
+          badrooms: 3,
+          furnished: false,
+          property_area: 50,
+          pets_cats: 1,
+          pets_dogs: 1,
+          smoking: false,
+          type_id: _type.id
+        },
+        address: {
+          city: 'Calgary',
+          community: 'Quarry Park',
+          formatted_address: '228 200 Quarry Green SE, Calgary, AB T2Z 3T3, Canada',
+          number: 0,
+          street: '200 Quarry Green Southeast',
+          latitude: 50.95807,
+          longitude: -114.0116262,
+          place_id: 'ChIJWdAxsTd3cVMRv23SozyfPMM',
+          postal_code: 'T2Z 3T3',
+          province: 'Alberta'
+        },
+        utilities: [],
+        features: []
+      };
+      const response = await req.post('/a/properties').set('Authorization', token).send(property);
+      expect(response.status).toBe(400);
     });
   });
 });
