@@ -5,7 +5,7 @@ import { fastify } from './app.js';
 // Run Redis
 import './api/config/redis-connect.js';
 
-const port = Number(process.env.PORT!);
+const port = Number(process.env.PORT!) | 3000;
 const host = process.env.HOST!;
 
 const app = async () => {

@@ -3,6 +3,7 @@
   "scripts": {
     "server": "nodemon --trace-warnings build/src/src/server.js",
     "start": "node src/server.js",
+    "start:docker": "node ./build/src/server.js",
     "build": "tsc",
     "seed:dev": "node build/src/src/api/database/seeders/dev/index.js",
     "seed:test": "node build/src/src/api/database/seeders/test/index.js",
