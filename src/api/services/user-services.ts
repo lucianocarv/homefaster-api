@@ -6,7 +6,6 @@ import { jwtService } from './jwt-services';
 import { IUserPayload } from '../interfaces/jwt-payload';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { IUsersFilter } from '../interfaces/users-filter';
-import mailServices from './mail-services';
 
 import {
   ERR_COULD_NOT_FIND_USER,
@@ -16,7 +15,7 @@ import {
   ERR_INCORRECT_CURRENT_PASSWORD,
   ERR_NEED_REGISTER,
   ERR_NEW_PASS_DIFF_CURRENT,
-  ERR_VERIFY_ACCOUNT,
+  ERR_VERIFY_ACCOUNT
 } from '../errors/user-errors';
 import { ERR_LIMITED_PAGES } from '../errors/pagination-erros';
 
@@ -29,25 +28,11 @@ const userServices = {
         data: {
           ...data,
           role: 'User',
-          password,
-        },
+          password
+        }
       });
-      if (user) {
-        userServices.sendMailToConfirmAccount(user);
-      }
     } else {
       throw ERR_EMAIL_ALREADY_USED;
-    }
-  },
-
-  sendMailToConfirmAccount: async (user: User) => {
-    const payload = { id: user.id, email: user.email };
-    const token = await jwtService.createTokenToConfirmAccount(payload);
-    const res = await mailServices.sendMailVerifyAccount(user.first_name, user.email, token);
-    if (res.accepted) {
-      return {
-        message: 'Verifique sua conta através do email enviado por nós!',
-      };
     }
   },
 
@@ -58,8 +43,8 @@ const userServices = {
       const user = await prisma.user.create({
         data: {
           ...data,
-          password,
-        },
+          password
+        }
       });
       return user;
     } else {
@@ -89,15 +74,15 @@ const userServices = {
     if (decoded) {
       const user = await prisma.user.findUnique({
         where: {
-          email: decoded.email,
-        },
+          email: decoded.email
+        }
       });
       if (user?.email == email) {
         await prisma.user.update({
           where: { email: user.email },
           data: {
-            account_confirmed: true,
-          },
+            account_confirmed: true
+          }
         });
         return { message: 'Conta verificada com sucesso!' };
       } else {
@@ -122,8 +107,8 @@ const userServices = {
         first_name: true,
         last_name: true,
         phone: true,
-        role: true,
-      },
+        role: true
+      }
     });
     if (user) {
       return user;
@@ -140,7 +125,7 @@ const userServices = {
         where: {
           first_name: { contains: filter?.first_name },
           last_name: { contains: filter?.last_name },
-          email: { contains: filter?.email },
+          email: { contains: filter?.email }
         },
         select: {
           id: true,
@@ -149,16 +134,16 @@ const userServices = {
           email: true,
           phone: true,
           role: true,
-          account_confirmed: true,
-        },
+          account_confirmed: true
+        }
       }),
       prisma.user.count({
         where: {
           first_name: { contains: filter?.first_name },
           last_name: { contains: filter?.last_name },
-          email: { contains: filter?.email },
-        },
-      }),
+          email: { contains: filter?.email }
+        }
+      })
     ]);
     const pages = Math.ceil(count / pagination.per_page_number);
     if (pagination.page_number > pages) throw ERR_LIMITED_PAGES;
@@ -168,13 +153,13 @@ const userServices = {
   updateOneUser: async (id: number, attributes: User) => {
     const user = await prisma.user.update({
       where: {
-        id,
+        id
       },
       data: {
         first_name: attributes.first_name,
         last_name: attributes.last_name,
-        phone: attributes.phone,
-      },
+        phone: attributes.phone
+      }
     });
 
     return user;
@@ -184,7 +169,7 @@ const userServices = {
     const user = await prisma.user.update({
       where: { id },
       data: {
-        role: role,
+        role: role
       },
       select: {
         id: true,
@@ -192,8 +177,8 @@ const userServices = {
         last_name: true,
         email: true,
         phone: true,
-        role: true,
-      },
+        role: true
+      }
     });
     return user;
   },
@@ -209,9 +194,8 @@ const userServices = {
           if (newPasswordHash) {
             await prisma.user.update({
               where: { id },
-              data: { password: newPasswordHash },
+              data: { password: newPasswordHash }
             });
-            mailServices.sendMailInformePasswordChange(user.first_name, user.email);
             return true;
           } else {
             throw ERR_FAIL_SET_NEW_PASS;
@@ -234,7 +218,7 @@ const userServices = {
       if (newPasswordHash) {
         await prisma.user.update({
           where: { email: attributes.email },
-          data: { password: newPasswordHash },
+          data: { password: newPasswordHash }
         });
         return true;
       } else {
@@ -253,7 +237,7 @@ const userServices = {
     } else {
       throw ERR_COULD_NOT_FIND_USER;
     }
-  },
+  }
 };
 
 export { userServices };

@@ -161,19 +161,13 @@ const propertyServices = {
     }
   },
 
-  uploadThumbImage: async (data: MultipartFile, id: number) => {
+  uploadImage: async (data: MultipartFile, id: number) => {
     const filename = data.filename.replace(/\b(\s)\b/g, '-');
     const property = await prisma.property.findUnique({ where: { id } });
-    const description = await prisma.description.findUnique({ where: { property_id: property?.id } });
-    if (description) {
-      if (description.img_cover) {
-        const filePath = await getFileName(description.img_cover);
-        storageServices.deleteFileInStorage(filePath);
-      }
-      const response = await storageServices.thumbImageUpload({ to: 'properties', file: data.file, filename, id });
-      const newImageUrl = `${env_storageBaseUrl}/properties/${id}/${filename}`;
-      await prisma.description.update({ where: { id: description.id }, data: { img_cover: newImageUrl } });
-      return response;
+    if (property) {
+      const response = await storageServices.uploadFile({ to: 'properties', file: data.file, filename, id });
+      const newImageUrl = `/properties/${id}/${filename}`;
+      return { url: newImageUrl, response };
     } else {
       return CustomError('_', 'Insira uma propriedade válida!', 400);
     }

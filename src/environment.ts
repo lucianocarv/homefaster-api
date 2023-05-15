@@ -8,3 +8,4 @@ export const env_storageClientEmail = process.env.CLOUD_STORAGE_CLIENT_EMAIL;
 export const env_storagePrivateKeyAccess = process.env.CLOUD_STORAGE_CLIENT_PRIVATE_KEY;
 export const env_test_email = process.env.TEST_EMAIL;
 export const env_test_password = process.env.TEST_PASSWORD;
+export const env_sendgrid_apikey = process.env.TWILIO_SENDGRID;

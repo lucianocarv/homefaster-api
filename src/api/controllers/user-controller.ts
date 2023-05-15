@@ -68,21 +68,6 @@ const userController = {
     }
   },
 
-  sendMailToConfirm: async (req: FastifyRequest, res: FastifyReply) => {
-    const user = req.user as User;
-    try {
-      const response = await userServices.sendMailToConfirmAccount(user);
-      res.send(response);
-    } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
-    }
-  },
-
   confirmAccount: async (req: FastifyRequest, res: FastifyReply) => {
     const { token } = req.body as { token: string };
     const user = req.user as User;

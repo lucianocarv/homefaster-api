@@ -1,6 +1,7 @@
 export * from "./property"
 export * from "./address"
 export * from "./description"
+export * from "./images"
 export * from "./utility"
 export * from "./utilitiesondescriptions"
 export * from "./feature"

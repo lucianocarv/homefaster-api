@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { CompleteDescription, RelatedDescriptionModel, CompleteAddress, RelatedAddressModel, CompleteFavorite, RelatedFavoriteModel, CompleteUser, RelatedUserModel } from "./index"
+import { CompleteDescription, RelatedDescriptionModel, CompleteAddress, RelatedAddressModel, CompleteFavorite, RelatedFavoriteModel, CompleteImages, RelatedImagesModel, CompleteUser, RelatedUserModel } from "./index"
 
 export const PropertyModel = z.object({
   id: z.number().int(),
@@ -12,6 +12,7 @@ export interface CompleteProperty extends z.infer<typeof PropertyModel> {
   description?: CompleteDescription | null
   address?: CompleteAddress | null
   favorites: CompleteFavorite[]
+  images: CompleteImages[]
   listed_by: CompleteUser
 }
 
@@ -24,5 +25,6 @@ export const RelatedPropertyModel: z.ZodSchema<CompleteProperty> = z.lazy(() => 
   description: RelatedDescriptionModel.nullish(),
   address: RelatedAddressModel.nullish(),
   favorites: RelatedFavoriteModel.array(),
+  images: RelatedImagesModel.array(),
   listed_by: RelatedUserModel,
 }))

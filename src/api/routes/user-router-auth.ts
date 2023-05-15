@@ -11,7 +11,6 @@ async function userRouterAuth(fastify: FastifyInstance) {
   fastify.put('/users/p/update', userController.updatePassword);
   fastify.delete('/users/admin/:id', userController.deleteOneUser);
   fastify.post('/users/account/confirm', userController.confirmAccount);
-  fastify.post('/users/account/confirm/sendmail', userController.sendMailToConfirm);
 }
 
 export { userRouterAuth };

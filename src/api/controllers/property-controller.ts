@@ -97,15 +97,15 @@ const propertyController = {
     }
   },
 
-  uploadThumbImage: async (req: FastifyRequest, res: FastifyReply): Promise<{ message: string } | FastifyError> => {
+  uploadImage: async (req: FastifyRequest, res: FastifyReply): Promise<{ message: string } | FastifyError> => {
     const { role } = req.user as { role: string };
     if (role == 'User') throw ERR_PERMISSION_DENIED;
     const data = await req.file();
-    const { id } = req.params as { id: string };
+    const { property } = req.query as { property: string };
     if (!data?.file) throw ERR_MISSING_FILE;
-    if (!id) throw ERR_MISSING_ATTRIBUTE('property_id');
+    if (!property) throw ERR_MISSING_ATTRIBUTE('property_id');
     try {
-      const result = await propertyServices.uploadThumbImage(data, Number(id));
+      const result = await propertyServices.uploadImage(data, Number(property));
       return res.status(202).send(result);
     } catch (error) {
       return res.send(error);
