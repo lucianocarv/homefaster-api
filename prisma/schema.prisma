@@ -49,6 +49,8 @@ model Address {
   province          String   @db.VarChar(255)
   property          Property @relation(fields: [property_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   property_id       Int      @unique
+  created_by        User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id           Int
   created_at        DateTime @default(now()) @db.Timestamp()
   updated_at        DateTime @updatedAt @db.Timestamp()
 
@@ -77,6 +79,8 @@ model Description {
   type_id       Int
   utilities     UtilitiesOnDescriptions[]
   features      FeaturesOnDescriptions[]
+  created_by    User                      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id       Int
   created_at    DateTime                  @default(now()) @db.Timestamp()
   updated_at    DateTime                  @updatedAt @db.Timestamp()
   property      Property                  @relation(fields: [property_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -164,21 +168,23 @@ enum Role {
 }
 
 model User {
-  id                Int        @id @default(autoincrement())
+  id                Int           @id @default(autoincrement())
   /// @zod.min(2, {message: "O nome precisar ter 2 ou mais caracteres!"})
-  first_name        String     @db.VarChar(255)
+  first_name        String        @db.VarChar(255)
   /// @zod.min(2, {message: "O sobrenome precisa ter 2 ou mais caracteres!"})
-  last_name         String     @db.VarChar(255)
+  last_name         String        @db.VarChar(255)
   /// @zod.email({message: "O email precisa ser do tipo email@email.com"})
-  email             String     @unique
+  email             String        @unique
   /// @zod.min(6, {message: "A senha deve conter no mínimo 6 caracteres"})
   /// @zod.regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/gm, {message: "A senha deve ter no mínimo: 1 letra maiúscula, 1 letra minúscula e um número."})
   password          String
   phone             String?
   role              Role
-  account_confirmed Boolean    @default(false)
+  account_confirmed Boolean       @default(false)
   favorites         Favorite[]
   properties        Property[]
+  addresses         Address[]
+  descriptions      Description[]
 
   @@map("users")
 }
