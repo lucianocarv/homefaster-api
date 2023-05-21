@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { CompleteType, RelatedTypeModel, CompleteUtilitiesOnDescriptions, RelatedUtilitiesOnDescriptionsModel, CompleteFeaturesOnDescriptions, RelatedFeaturesOnDescriptionsModel, CompleteProperty, RelatedPropertyModel } from "./index"
+import { CompleteType, RelatedTypeModel, CompleteUtilitiesOnDescriptions, RelatedUtilitiesOnDescriptionsModel, CompleteFeaturesOnDescriptions, RelatedFeaturesOnDescriptionsModel, CompleteUser, RelatedUserModel, CompleteProperty, RelatedPropertyModel } from "./index"
 
 export const DescriptionModel = z.object({
   id: z.number().int(),
@@ -15,6 +15,7 @@ export const DescriptionModel = z.object({
   pets_dogs: z.number().int(),
   smoking: z.boolean(),
   type_id: z.number().int(),
+  user_id: z.number().int(),
   created_at: z.date(),
   updated_at: z.date(),
   property_id: z.number().int(),
@@ -24,6 +25,7 @@ export interface CompleteDescription extends z.infer<typeof DescriptionModel> {
   type: CompleteType
   utilities: CompleteUtilitiesOnDescriptions[]
   features: CompleteFeaturesOnDescriptions[]
+  created_by: CompleteUser
   property: CompleteProperty
 }
 
@@ -36,5 +38,6 @@ export const RelatedDescriptionModel: z.ZodSchema<CompleteDescription> = z.lazy(
   type: RelatedTypeModel,
   utilities: RelatedUtilitiesOnDescriptionsModel.array(),
   features: RelatedFeaturesOnDescriptionsModel.array(),
+  created_by: RelatedUserModel,
   property: RelatedPropertyModel,
 }))

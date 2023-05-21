@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { CompleteProperty, RelatedPropertyModel } from "./index"
+import { CompleteProperty, RelatedPropertyModel, CompleteUser, RelatedUserModel } from "./index"
 
 export const AddressModel = z.object({
   id: z.number().int(),
@@ -14,12 +14,14 @@ export const AddressModel = z.object({
   city: z.string(),
   province: z.string(),
   property_id: z.number().int(),
+  user_id: z.number().int(),
   created_at: z.date(),
   updated_at: z.date(),
 })
 
 export interface CompleteAddress extends z.infer<typeof AddressModel> {
   property: CompleteProperty
+  created_by: CompleteUser
 }
 
 /**
@@ -29,4 +31,5 @@ export interface CompleteAddress extends z.infer<typeof AddressModel> {
  */
 export const RelatedAddressModel: z.ZodSchema<CompleteAddress> = z.lazy(() => AddressModel.extend({
   property: RelatedPropertyModel,
+  created_by: RelatedUserModel,
 }))
