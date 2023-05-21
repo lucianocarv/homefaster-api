@@ -5,15 +5,11 @@ import { IAddressFilter } from '../interfaces/search-address.js';
 import { IDescriptionFilter } from '../interfaces/search-filter.js';
 import { MultipartFile } from '@fastify/multipart';
 import { CustomError } from '../helpers/custom-error.js';
-import { FastifyError } from 'fastify';
-import { getFileName } from '../helpers/get-filename.js';
 import storageServices from './storage-services.js';
-import { env_storageBaseUrl } from '../../environment.js';
 import { ICompleteProperty } from '../interfaces/complete-property.js';
-import { GeocodeAPI } from './maps/geocode-api.js';
-import { Property } from '@prisma/client';
 
 const propertyServices = {
+  // Funcionalidade básica criada (apenas refatorar)
   getAllProperties: async ({ page_number, per_page_number, skip }: PaginationParameters) => {
     const [properties, count] = await Promise.all([
       prisma.property.findMany({
@@ -21,7 +17,20 @@ const propertyServices = {
         skip,
         include: {
           address: true,
-          description: true
+          description: {
+            include: {
+              features: {
+                select: {
+                  feature: { select: { name: true } }
+                }
+              },
+              utilities: {
+                select: {
+                  utility: { select: { name: true } }
+                }
+              }
+            }
+          }
         }
       }),
       prisma.property.count()
@@ -30,63 +39,54 @@ const propertyServices = {
     return { count, page: page_number, per_page: per_page_number, pages, properties };
   },
 
+  // Funcionalidade básica criada (apenas refatorar)
   getOneProperty: async (id: number): Promise<object | Error> => {
     const property = await prisma.property.findUnique({
       where: { id },
       include: {
         address: true,
-        description: true
+        description: {
+          include: {
+            features: {
+              select: {
+                feature: { select: { name: true } }
+              }
+            },
+            utilities: {
+              select: {
+                utility: { select: { name: true } }
+              }
+            }
+          }
+        }
       }
     });
-
-    if (!property) return CustomError('_', `O ID ${id} não corresponde a nenhuma propriedade!`, 406);
-
-    const [f, u] = await Promise.all([
-      prisma.featuresOnDescriptions.findMany({
-        where: { description_id: property.description?.id },
-        include: { feature: true }
-      }),
-      prisma.utilitiesOnDescriptions.findMany({
-        where: { description_id: property.description?.id },
-        include: { utility: true }
-      })
-    ]);
-    const [features, utilities] = [f.map(feature => feature.feature), u.map(utility => utility.utility.name)];
-    return { ...property, features, utilities };
+    if (property) {
+      return property;
+    } else {
+      throw new Error('Error');
+    }
   },
 
+  // Funcionalidade básica criada (apenas refatorar)
   createOneProperty: async (data: any, user_id: number) => {
-    const _description = data.description;
-    const _address = data.address;
-    // const _utilities = data;
-    // const _features = data;
-    let createdProperty: Property;
-    try {
-      const v = await propertyServices.findPropertyByPlaceId(_address.place_id);
-      if (v) throw CustomError('_', 'Esta propriedade já está cadastrada!', 400);
+    const [description, address] = [data.description, data.address];
+    const [utilities, features] = [data.utilities as number[], data.features as number[]];
 
+    try {
       return await prisma.$transaction(async tx => {
         const property = await tx.property.create({ data: { user_id } });
-        await tx.description.create({
-          data: {
-            property_id: property.id,
-            ..._description
-          }
+        const { id: did } = await tx.description.create({
+          data: { property_id: property.id, ...description, user_id }
         });
 
-        await tx.address.create({
-          data: {
-            ..._address,
-            property_id: property.id
-          }
-        });
+        await tx.address.create({ data: { ...address, property_id: property.id, user_id } });
+        features.forEach(async f => await tx.featuresOnDescriptions.create({ data: { description_id: did, feature_id: f } }));
+        utilities.forEach(async u => await tx.utilitiesOnDescriptions.create({ data: { description_id: did, utility_id: u } }));
 
         return await tx.property.findUnique({
           where: { id: property.id },
-          include: {
-            description: true,
-            address: true
-          }
+          include: { description: true, address: true }
         });
       });
     } catch (error) {
@@ -94,6 +94,7 @@ const propertyServices = {
     }
   },
 
+  // Funcionalidade básica criada (apenas refatorar)
   findPropertyByPlaceId: async (place_id: string): Promise<Boolean | Error> => {
     try {
       const address = await prisma.address.findUnique({ where: { place_id } });
@@ -104,8 +105,9 @@ const propertyServices = {
     }
   },
 
-  updateOneProperty: async (id: number, attributes: ICompleteProperty) => {
-    const property = await prisma.property.findUnique({ where: { id } });
+  // Funcionalidade básica criada (apenas refatorar)
+  updatePropertyDescription: async (id: number, user_id: number, attributes: ICompleteProperty) => {
+    const property = await prisma.property.findFirst({ where: { id, user_id } });
     if (property && property.id) {
       const description = await prisma.description.findUnique({ where: { property_id: property.id } });
       if (description?.id) {
@@ -167,9 +169,24 @@ const propertyServices = {
     if (property) {
       const response = await storageServices.uploadFile({ to: 'properties', file: data.file, filename, id });
       const newImageUrl = `/properties/${id}/${filename}`;
+      await prisma.images.create({
+        data: {
+          url: newImageUrl,
+          property_id: id
+        }
+      });
       return { url: newImageUrl, response };
     } else {
       return CustomError('_', 'Insira uma propriedade válida!', 400);
+    }
+  },
+
+  getImages: async (property_id: number) => {
+    try {
+      const images = await prisma.images.findMany({ where: { property_id } });
+      return images;
+    } catch (error) {
+      return error;
     }
   },
 
