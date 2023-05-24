@@ -1,4 +1,4 @@
-import { redisClient } from '../config/redis-connect';
+import { redisClient } from '../config/redis/redis-connect';
 
 const redisService = {
   getOrSetDataCache: async (key: string, cb: CallableFunction) => {

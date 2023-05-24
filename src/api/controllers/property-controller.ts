@@ -10,6 +10,7 @@ import { ICompleteProperty } from '../interfaces/complete-property';
 import { Address, Description, Feature, Property } from '@prisma/client';
 import { AddressModel, DescriptionModel } from '../../../prisma/models';
 import { CustomError } from '../helpers/custom-error';
+import { mailServices } from '../services/mail-services';
 
 const propertyController = {
   getAllProperties: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
@@ -123,6 +124,7 @@ const propertyController = {
     const { id } = req.params as { id: string };
     try {
       const images = await propertyServices.getImages(Number(id));
+      await mailServices.sendTestMail();
       return res.send(images);
     } catch (error) {
       return res.send(error);

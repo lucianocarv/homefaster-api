@@ -1,5 +1,5 @@
 import { Utility } from '@prisma/client';
-import { prisma } from '../config/prisma-connect';
+import { prisma } from '../config/prisma/prisma-connect';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 
 const utilitiesServices = {
@@ -7,9 +7,9 @@ const utilitiesServices = {
     const [utilities, count] = await Promise.all([
       prisma.utility.findMany({
         skip,
-        take: per_page_number,
+        take: per_page_number
       }),
-      prisma.utility.count(),
+      prisma.utility.count()
     ]);
     const pages = Math.ceil(count / per_page_number);
 
@@ -29,7 +29,7 @@ const utilitiesServices = {
   updateOneUtility: async (id: number, utility: Utility) => {
     const utilityUpdated = await prisma.utility.update({
       where: { id },
-      data: utility,
+      data: utility
     });
 
     return utilityUpdated;
@@ -38,7 +38,7 @@ const utilitiesServices = {
   deleteOne: async (id: number) => {
     const deleted = await prisma.utility.delete({ where: { id } });
     return deleted;
-  },
+  }
 };
 
 export { utilitiesServices };

@@ -1,16 +1,16 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import middie from '@fastify/middie';
-import { jwtService } from '../../api/services/jwt-services';
-import { userServices } from '../../api/services/user-services';
-import { favoritesRouter } from '../../api/routes/favorites-router';
-import { CustomError } from '../../api/helpers/custom-error';
-import { propertyRoutesAuth } from '../../api/routes/property-router-auth';
-import { userRouterAuth } from '../../api/routes/user-router-auth';
-import { ERR_NEED_LOGIN } from '../../api/errors/permission-erros';
-import { featureRoutesAuth } from '../routes/feature-router-auth';
-import { utilitiesRoutesAuth } from '../routes/utilities-router-auth';
-import { typesRoutesAuth } from '../routes/types-router-auth';
-import { mapsRoutesAuth } from '../routes/maps-router-auth';
+import { jwtService } from '../../../api/services/jwt-services';
+import { userServices } from '../../../api/services/user-services';
+import { favoritesRouter } from '../../../api/routes/favorites-router';
+import { CustomError } from '../../../api/helpers/custom-error';
+import { propertyRoutesAuth } from '../../../api/routes/property-router-auth';
+import { userRouterAuth } from '../../../api/routes/user-router-auth';
+import { ERR_NEED_LOGIN } from '../../../api/errors/permission-erros';
+import { featureRoutesAuth } from '../../routes/feature-router-auth';
+import { utilitiesRoutesAuth } from '../../routes/utilities-router-auth';
+import { typesRoutesAuth } from '../../routes/types-router-auth';
+import { mapsRoutesAuth } from '../../routes/maps-router-auth';
 
 export async function authenticatedSystem(fastify: FastifyInstance) {
   fastify.register(middie, { hook: 'onRequest' });

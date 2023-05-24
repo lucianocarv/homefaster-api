@@ -5,7 +5,7 @@ import JWT from '@fastify/jwt';
 import fastifyMultipart from '@fastify/multipart';
 import { propertyRoutes } from './api/routes/property-router.js';
 import { userRouter } from './api/routes/user-router.js';
-import { authenticatedSystem } from './api/subsystems/authenticated.js';
+import { authenticatedSystem } from './api/config/subsystems/authenticated.js';
 import { env_jwtSecret } from './environment.js';
 
 export const fastify = Fastify({ logger: true, bodyLimit: 1024 * 1024 * 10, keepAliveTimeout: 20 });
