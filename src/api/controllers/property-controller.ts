@@ -124,7 +124,6 @@ const propertyController = {
     const { id } = req.params as { id: string };
     try {
       const images = await propertyServices.getImages(Number(id));
-      await mailServices.sendTestMail();
       return res.send(images);
     } catch (error) {
       return res.send(error);
