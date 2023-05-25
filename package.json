@@ -3,22 +3,11 @@
   "scripts": {
     "server": "nodemon --trace-warnings build/src/server.js",
     "start": "node src/server.js",
-    "start:docker": "node ./build/src/server.js",
     "build": "tsc",
+    "dev": "yarn server",
+    "test": "vitest",
     "seed:dev": "node build/src/api/database/seeders/dev/index.js",
-    "seed:test": "node build/src/api/database/seeders/test/index.js",
-    "dev": "yarn dev:start",
-    "dev:start": "yarn dev:check-schema && yarn dev:migrate && concurrently \"tsc -w\" \"yarn server\"",
-    "dev:migrate": "dotenv -e .env.dev -- yarn prisma migrate dev",
-    "dev:check-schema": "dotenv -e .env.dev -- yarn prisma validate",
-    "dev:seed": "dotenv -e .env.test -- yarn seed:dev",
-    "test": "yarn test:start",
-    "test:start": "yarn test:reset && dotenv -e .env.test -- vitest",
-    "test:migrate": "dotenv -e .env.test -- yarn prisma migrate dev",
-    "test:reset": "yarn test:migrate-reset && dotenv -e .env.test -- yarn test:seed && yarn test:migrate",
-    "test:migrate-reset": "dotenv -e .env.test -- yarn prisma migrate reset -f",
-    "test:seed": "dotenv -e .env.test -- yarn seed:test",
-    "migrate": "prisma migrate dev && yarn test:migrate"
+    "seed:test": "node build/src/api/database/seeders/test/index.js"
   },
   "dependencies": {
     "@fastify/env": "^4.2.0",
