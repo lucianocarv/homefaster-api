@@ -5,11 +5,11 @@ steps:
 
   # Prisma Migration Reset Test
   - name: node:19
-    args: ['yarn', 'test:reset']
+    args: ['yarn', 'cloudbuild:migrate']
 
-  # # Prisma Migration Test
-  # - name: 'ubuntu'
-  #   args: ['yarn', 'test:migrate']
+  # Prisma Migration Test
+  - name: node:19
+    args: ['yarn', 'cloudbuild:test']
 
   # # Prisma Client Generation Test
   # - name: 'ubuntu'
