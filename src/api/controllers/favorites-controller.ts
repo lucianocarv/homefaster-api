@@ -4,7 +4,7 @@ import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
 import { CustomError } from '../helpers/custom-error';
 import { ICustomError } from '../interfaces/custom-error';
 import { IUserPayload } from '../interfaces/jwt-payload';
-import { favoritesService } from '../services/favorites-services';
+import { favoritesService } from '../services/favorites.services';
 import { getPagination } from '../helpers/get-pagination';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 
@@ -59,7 +59,7 @@ const favoritesController = {
         return res.send(error);
       }
     }
-  },
+  }
 };
 
 export { favoritesController };

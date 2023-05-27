@@ -5,7 +5,7 @@ import { IAddressFilter } from '../interfaces/search-address.js';
 import { IDescriptionFilter } from '../interfaces/search-filter.js';
 import { MultipartFile } from '@fastify/multipart';
 import { CustomError } from '../helpers/custom-error.js';
-import storageServices from './storage-services.js';
+import storageServices from './storage.services.js';
 import { IPropertyUpdateAttributes } from '../interfaces/complete-property.js';
 import { PrismaClient, Property } from '@prisma/client';
 

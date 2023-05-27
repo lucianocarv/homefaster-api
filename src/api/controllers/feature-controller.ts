@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { featureServices } from '../services/features-services';
+import { featureServices } from '../services/features.services';
 import { Feature, User } from '@prisma/client';
 import { ERR_FEATURE_ALREADY_EXISTS, ERR_FEATURE_TYPE_ERROR } from '../errors/feature-errors';
 import { getPagination } from '../helpers/get-pagination';
@@ -71,7 +71,7 @@ const featureController = {
     } catch (error) {
       return res.send(error);
     }
-  },
+  }
 };
 
 export { featureController };

@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { getPagination } from '../helpers/get-pagination';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
-import { utilitiesServices } from '../services/utilities-services';
+import { utilitiesServices } from '../services/utilities.services';
 import { User, Utility } from '@prisma/client';
 import { ERR_UTILITY_ALREADY_EXISTS } from '../errors/utility-errors';
 import { UtilityModel } from '../../../prisma/models';

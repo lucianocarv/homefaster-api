@@ -3,7 +3,7 @@ import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
 import { getPagination } from '../helpers/get-pagination';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { Type, User } from '@prisma/client';
-import { typeServices } from '../services/type-services';
+import { typeServices } from '../services/type.services';
 
 const typesController = {
   getAllTypes: async (req: FastifyRequest, res: FastifyReply) => {
