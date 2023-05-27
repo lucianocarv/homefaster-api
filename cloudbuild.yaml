@@ -1,14 +1,14 @@
 steps:
   # Intall dependencies
-  - name: 'Install-dependencies'
+  - name: 'ubuntu'
     args: ['yarn']
 
   # Prisma Migration Reset Test
-  - name: 'Prisma-Migration-Test'
+  - name: 'ubuntu'
     args: ['yarn', 'test:reset']
 
   # Prisma Migration Test
-  - name: 'Prisma-Migration-Test'
+  - name: 'ubuntu'
     args: ['yarn', 'test:migrate']
 
   # Prisma Client Generation Test
