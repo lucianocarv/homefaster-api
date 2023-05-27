@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { propertyController } from '../controllers/property-controller';
+import { propertyController } from '../controllers/property.controller';
 
 async function propertyRoutesAuth(fastify: FastifyInstance) {
   fastify.post('/properties', propertyController.createOneProperty);
