@@ -8,10 +8,9 @@
     "test": "dotenv -e .env.test -- vitest",
     "test:migrate": "dotenv -e .env.test -- yarn prisma migrate dev",
     "test:reset": "dotenv -e .env.test -- yarn prisma migrate reset",
-    "seed:dev": "node build/src/api/database/seeders/dev/index.js",
-    "seed:test": "dotenv -e .env.test -- node build/src/api/database/seeders/test/index.js",
-    "cloudbuild:migrate": "yarn prisma migrate dev",
-    "cloudbuild:test": "yarn vitest"
+    "seed": "node build/src/api/database/seeders/dev/index.js",
+    "seed:dev": "node src/api/database/seeders/dev/index.js",
+    "seed:test": "dotenv -e .env.test -- node build/src/api/database/seeders/test/index.js"
   },
   "dependencies": {
     "@fastify/env": "^4.2.0",
@@ -27,7 +26,6 @@
     "dotenv-cli": "^7.2.1",
     "fastify": "^4.12.0",
     "ps": "^1.0.0",
-    "redis": "^4.6.5",
     "zod": "^3.21.4"
   },
   "devDependencies": {
