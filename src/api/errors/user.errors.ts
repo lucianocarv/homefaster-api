@@ -1,6 +1,6 @@
 import { CustomError } from '../helpers/custom-error';
 
-const MESSAGE_EMAIL_ALREADY_USED = 'Este email já está em uso!';
+const MESSAGE_EMAIL_ALREADY_USED = 'Este email já está cadastrado!';
 const MESSAGE_EMAIL_OR_PASSWORD_INCORRECT = 'Email ou senha incorretos!';
 const MESSAGE_NEED_REGISTER = 'Cadastre-se para fazer login!';
 const MESSAGE_ERR_VERIFY_ACCOUNT = 'Não foi possível verificar a conta, tente novamente!';
