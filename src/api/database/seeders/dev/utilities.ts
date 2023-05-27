@@ -1,4 +1,4 @@
-import { prisma } from '../../../config/prisma/prisma-connect';
+import { prisma } from '../../../config/prisma/prisma.config';
 
 const seed = async () => {
   await prisma.$transaction([

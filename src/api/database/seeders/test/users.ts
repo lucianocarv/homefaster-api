@@ -1,5 +1,5 @@
 import { env_test_email, env_test_password } from '../../../../environment';
-import { prisma } from '../../../config/prisma/prisma-connect';
+import { prisma } from '../../../config/prisma/prisma.config';
 import bcrypt from 'bcrypt';
 
 const seed = async () => {

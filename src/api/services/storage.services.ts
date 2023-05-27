@@ -1,7 +1,7 @@
 import { Readable } from 'stream';
 import { streamToBuffer } from '../helpers/stream-to-buffer';
 import { IUploadImage } from '../interfaces/image-upload';
-import { storage } from '../config/storage/google-cloud-storage';
+import { storage } from '../config/storage/google-cloud-storage.config';
 import { env_bucketName } from '../../environment';
 
 const storageServices = {

@@ -1,4 +1,4 @@
-import { prisma } from '../config/prisma/prisma-connect.js';
+import { prisma } from '../config/prisma/prisma.config.js';
 import { PaginationParameters } from '../interfaces/pagination-parameters.js';
 import { IPagination } from '../interfaces/pagination.js';
 import { IAddressFilter } from '../interfaces/search-address.js';

@@ -3,8 +3,8 @@ dotenv.config();
 import Fastify from 'fastify';
 import JWT from '@fastify/jwt';
 import fastifyMultipart from '@fastify/multipart';
-import { propertyRoutes } from './api/routes/property-router.js';
-import { userRouter } from './api/routes/user-router.js';
+import { propertyRoutes } from './api/routes/property.routes.js';
+import { userRouter } from './api/routes/user.routes.js';
 import { authenticatedSystem } from './api/config/subsystems/authenticated.js';
 import { env_jwtSecret } from './environment.js';
 

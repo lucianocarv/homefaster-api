@@ -1,5 +1,5 @@
 import { Utility } from '@prisma/client';
-import { prisma } from '../config/prisma/prisma-connect';
+import { prisma } from '../config/prisma/prisma.config';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 
 const utilitiesServices = {
