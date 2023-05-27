@@ -6,7 +6,7 @@ import { favoritesRouter } from '../../routes/favorites.routes';
 import { CustomError } from '../../../api/helpers/custom-error';
 import { propertyRoutesAuth } from '../../routes/property.auth.routes';
 import { userRouterAuth } from '../../routes/user.auth.routes';
-import { ERR_NEED_LOGIN } from '../../../api/errors/permission-erros';
+import { ERR_NEED_LOGIN } from '../../errors/permission.errors';
 import { featureRoutesAuth } from '../../routes/feature.auth.routes';
 import { utilitiesRoutesAuth } from '../../routes/utilities.auth.routes';
 import { typesRoutesAuth } from '../../routes/types.auth.routes';

@@ -1,6 +1,5 @@
 import { prisma } from '../config/prisma/prisma.config';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
-import { propertyServices } from './property.services';
 
 const favoritesService = {
   getAllFavorites: async (user_id: number, { page_number, per_page_number, skip }: PaginationParameters) => {
@@ -9,16 +8,9 @@ const favoritesService = {
       prisma.favorite.count()
     ]);
 
-    const properties = await Promise.all(
-      favorites.map(async favorite => {
-        const property = await propertyServices.getOneProperty(favorite.property_id);
-        return { favorite_id: favorite.id, property };
-      })
-    );
-
     const pages = Math.ceil(count / per_page_number);
 
-    return { count, page: page_number, per_page: per_page_number, pages, favorites: properties };
+    return { count, page: page_number, per_page: per_page_number, pages, favorites };
   },
 
   addOneFavorite: async (property_id: number, user_id: number) => {
@@ -26,6 +18,35 @@ const favoritesService = {
       data: { property_id, user_id }
     });
     return favorite;
+  },
+
+  getFavoriteByUserAndProperty: async (property_id: number, user_id: number) => {
+    const favorite = await prisma.favorite.findUnique({
+      where: {
+        user_id_property_id: {
+          property_id,
+          user_id
+        }
+      }
+    });
+    if (favorite) {
+      return favorite;
+    } else {
+      return false;
+    }
+  },
+
+  getFavoriteById: async (id: number) => {
+    const favorite = await prisma.favorite.findUnique({
+      where: {
+        id
+      }
+    });
+    if (favorite) {
+      return favorite;
+    } else {
+      return false;
+    }
   },
 
   removeOneFavorite: async (id: number) => {

@@ -3,7 +3,7 @@ import { prisma } from '../config/prisma/prisma.config';
 import bcrypt from 'bcrypt';
 import { ILoginUser } from '../interfaces/login-user';
 import { jwtService } from './jwt.services';
-import { IUserPayload } from '../interfaces/jwt-payload';
+import { JWTUserPayload } from '../interfaces/jwt-payload';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { IUsersFilter } from '../interfaces/users-filter';
 
@@ -16,8 +16,8 @@ import {
   ERR_NEED_REGISTER,
   ERR_NEW_PASS_DIFF_CURRENT,
   ERR_VERIFY_ACCOUNT
-} from '../errors/user-errors';
-import { ERR_LIMITED_PAGES } from '../errors/pagination-erros';
+} from '../errors/user.errors';
+import { ERR_LIMITED_PAGES } from '../errors/pagination.errors';
 
 const userServices = {
   registerOneUser: async (data: User) => {
@@ -58,7 +58,7 @@ const userServices = {
       const validatePassword = await bcrypt.compare(data.password, user.password);
       if (validatePassword) {
         const { id, first_name, last_name, email, role } = user;
-        const payload = { id, first_name, last_name, email, role } as IUserPayload;
+        const payload = { id, first_name, last_name, email, role } as JWTUserPayload;
         const token = await jwtService.createToken(payload);
         return { payload, token };
       } else {
