@@ -1,22 +1,22 @@
 steps:
   # Intall dependencies
-  - name: 'Install dependencies'
+  - name: 'Install-dependencies'
     args: ['yarn']
 
   # Prisma Migration Reset Test
-  - name: 'Prisma Migration Test'
+  - name: 'Prisma-Migration-Test'
     args: ['yarn', 'test:reset']
 
   # Prisma Migration Test
-  - name: 'Prisma Migration Test'
+  - name: 'Prisma-Migration-Test'
     args: ['yarn', 'test:migrate']
 
   # Prisma Client Generation Test
-  - name: 'Prisma Client Generation Test'
+  - name: 'Prisma-Client-Generation-Test'
     args: ['yarn', 'test']
 
   # Test Database Seed
-  - name: 'Prisma Client Generation Test'
+  - name: 'Prisma-Client-Generation-Test'
     args: ['yarn', 'seed:test']
 
   # Run test
