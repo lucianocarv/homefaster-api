@@ -12,13 +12,13 @@ steps:
     args: ['yarn', 'test:migrate']
 
   # Prisma Client Generation Test
-  - name: 'Prisma-Client-Generation-Test'
+  - name: 'ubuntu'
     args: ['yarn', 'test']
 
   # Test Database Seed
-  - name: 'Prisma-Client-Generation-Test'
+  - name: 'ubuntu'
     args: ['yarn', 'seed:test']
 
   # Run test
-  - name: 'Test'
+  - name: 'ubuntu'
     args: ['yarn', 'test']
