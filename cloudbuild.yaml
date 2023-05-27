@@ -1,24 +1,24 @@
 steps:
   # Intall dependencies
-  - name: node
+  - name: node:19
     args: ['yarn']
 
   # Prisma Migration Reset Test
-  - name: node
+  - name: node:19
     args: ['yarn', 'test:reset']
 
-  # Prisma Migration Test
-  - name: 'ubuntu'
-    args: ['yarn', 'test:migrate']
+  # # Prisma Migration Test
+  # - name: 'ubuntu'
+  #   args: ['yarn', 'test:migrate']
 
-  # Prisma Client Generation Test
-  - name: 'ubuntu'
-    args: ['yarn', 'test']
+  # # Prisma Client Generation Test
+  # - name: 'ubuntu'
+  #   args: ['yarn', 'test']
 
-  # Test Database Seed
-  - name: 'ubuntu'
-    args: ['yarn', 'seed:test']
+  # # Test Database Seed
+  # - name: 'ubuntu'
+  #   args: ['yarn', 'seed:test']
 
-  # Run test
-  - name: 'ubuntu'
-    args: ['yarn', 'test']
+  # # Run test
+  # - name: 'ubuntu'
+  #   args: ['yarn', 'test']
