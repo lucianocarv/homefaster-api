@@ -1,12 +1,12 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { featureServices } from '../services/features.services';
 import { Feature, User } from '@prisma/client';
-import { ERR_FEATURE_ALREADY_EXISTS, ERR_FEATURE_TYPE_ERROR } from '../errors/feature-errors';
+import { ERR_FEATURE_ALREADY_EXISTS, ERR_FEATURE_TYPE_ERROR } from '../errors/feature.errors';
 import { getPagination } from '../helpers/get-pagination';
 import { FeatureModel } from '../../../prisma/models';
 import { getIssuesZod } from '../helpers/get-issues-zod';
 import { CustomError } from '../helpers/custom-error';
-import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
+import { ERR_PERMISSION_DENIED } from '../errors/permission.errors';
 
 const featureController = {
   createOneFeature: async (req: FastifyRequest, res: FastifyReply) => {

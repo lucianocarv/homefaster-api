@@ -3,11 +3,11 @@ import { getPagination } from '../helpers/get-pagination';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { utilitiesServices } from '../services/utilities.services';
 import { User, Utility } from '@prisma/client';
-import { ERR_UTILITY_ALREADY_EXISTS } from '../errors/utility-errors';
+import { ERR_UTILITY_ALREADY_EXISTS } from '../errors/utility.errors';
 import { UtilityModel } from '../../../prisma/models';
 import { getIssuesZod } from '../helpers/get-issues-zod';
 import { CustomError } from '../helpers/custom-error';
-import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
+import { ERR_PERMISSION_DENIED } from '../errors/permission.errors';
 
 const utilitiesController = {
   getAllUtilities: async (req: FastifyRequest, res: FastifyReply) => {

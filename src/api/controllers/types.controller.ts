@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
+import { ERR_PERMISSION_DENIED } from '../errors/permission.errors';
 import { getPagination } from '../helpers/get-pagination';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { Type, User } from '@prisma/client';

@@ -4,8 +4,8 @@ import { IAddressFilter } from '../interfaces/search-address';
 import { IDescriptionFilter } from '../interfaces/search-filter';
 import { propertyServices } from '../services/property.services';
 import { ERR_MISSING_ATTRIBUTE } from '../errors';
-import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
-import { ERR_MISSING_FILE } from '../errors/upload-file-errors';
+import { ERR_PERMISSION_DENIED } from '../errors/permission.errors';
+import { ERR_MISSING_FILE } from '../errors/upload.errors';
 import { IPropertyUpdateAttributes } from '../interfaces/complete-property';
 import { Address, Description, Feature, Property } from '@prisma/client';
 import { AddressModel, DescriptionModel } from '../../../prisma/models';
@@ -109,11 +109,11 @@ const propertyController = {
   uploadImage: async (req: FastifyRequest, res: FastifyReply): Promise<{ message: string } | FastifyError> => {
     const data = await req.file();
     const { id: user_id } = req.user as { id: string };
-    const { property } = req.query as { property: string };
+    const { id: property_id } = req.params as { id: string };
     if (!data?.file) throw ERR_MISSING_FILE;
-    if (!property) throw ERR_MISSING_ATTRIBUTE('property_id');
+    if (!property_id) throw ERR_MISSING_ATTRIBUTE('property_id');
     try {
-      const result = await propertyServices.uploadImage(data, Number(property), Number(user_id));
+      const result = await propertyServices.uploadImage(data, Number(property_id), Number(user_id));
       return res.status(202).send(result);
     } catch (error) {
       return res.send(error);
