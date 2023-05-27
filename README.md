@@ -46,11 +46,47 @@ Homefaster API é um projeto pessoal baseado no site canadense Rentfaster e dese
 
 ## Instalação
 
-<p>Clone o repositório na sua máquina:
+Selecione uma pasta local e clone repositório:
+```sh
+  git clone https://github.com/lucianocarv/homefaster-api.git
 ```
-  git clone
-
+Adicione o arquivo <code>.env</code> na raiz do projeto:
+```sh
+  touch .env
 ```
+Instale as dependências do projeto:<br/>
+```sh
+  yarn ou npm install
+```
+Dentro do arquivo <code>.env</code> defina a variável <code>DATABASE_URL</code> que será utilizada pelo Prisma:<br/>
 
+Para este projetos estamos usando o PostgreSQL, então definimos o valor dessa variável da seguinte maneira
+```properties
+ DATABASE_URL="postgresql://user:password@host:5432/database?schema=public"
+```
+Definimos as demais variáveis:
 
+Variáveis para a execução do servidor
+```properties
+PORT=                               # Porta local onde o servidor ficará escutando (ex: 3000)
+HOST=                               # É o host onde será executado (ex: localhost, 127.0.0.1 ou 0.0.0.0)
+```
+Variáveis para a comunicação com o Google Maps<br/>
+
+O projeto depende de duas APIs do Google Maps, a Geocode e a Validate Address<br/>
+URL da API Validate Address: https://addressvalidation.googleapis.com/v1:validateAddress<br/>
+URL da API Geocode: https://maps.googleapis.com/maps/api/geocode/json<br/>
+```properties
+GMAPS_API_KEY=                      # É a chave da API do Google Maps
+GMAPS_VALIDATE_ADDRESS_API_URL=     # É o edereço para chamar a API do Validate Address
+GMAPS_GEOCODE_API_URL=              # É o edereço para chamar a API do Geocode
+```
+Variáveis do Google Cloud
+```properties
+CLOUD_PROJECT_ID=
+CLOUD_STORAGE_CLIENT_EMAIL=
+CLOUD_STORAGE_CLIENT_PRIVATE_KEY=
+CLOUD_STORAGE_BUCKET_BASE_URL=
+CLOUD_BUCKET_NAME=
+```
 ##### Building...
