@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { GeocodeAPI } from '../services/maps/geocode-api';
-import { VMAPSAddress, ValidateAddressAPI } from '../services/maps/validate-address-api';
+import { GeocodeAPI } from '../services/maps/geocode.services';
+import { VMAPSAddress, ValidateAddressAPI } from '../services/maps/validate-address.services';
 
 const gmaps = new GeocodeAPI();
 const vmaps = new ValidateAddressAPI();
