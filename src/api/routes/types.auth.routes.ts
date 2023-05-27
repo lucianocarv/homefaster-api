@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { typesController } from '../controllers/types-controller';
+import { typesController } from '../controllers/types.controller';
 
 async function typesRoutesAuth(fastify: FastifyInstance) {
   fastify.get('/types', typesController.getAllTypes);

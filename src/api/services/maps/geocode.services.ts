@@ -55,6 +55,18 @@ interface GeocodeAddress {
 }
 
 export class GeocodeAPI {
+  async getAddress(lat: number, lng: number) {
+    const response = await this.getDataByLocation(Number(lat), Number(lng));
+    const address_components = this.getFirstResultAndValidate(response);
+    if (address_components !== undefined) {
+      const validate = this.validateAddressComponents(address_components);
+      if (validate !== undefined) {
+        const address = this.makeAddressForProperty(validate);
+        return address;
+      }
+    }
+  }
+
   async getDataByLocation(lat: number, lng: number): Promise<GeocodeResponse> {
     const URL = `${env_gmapsGeocodeApiUrl}?latlng=${lat},${lng}&location_type=ROOFTOP&key=${env_gmapsApiKey}`;
     const response = await axios.get(URL);

@@ -27,7 +27,7 @@ model Property {
   images      Images[]
   created_at  DateTime     @default(now()) @db.Timestamp()
   updated_at  DateTime     @updatedAt @db.Timestamp()
-  listed_by   User         @relation(fields: [user_id], references: [id], onUpdate: Cascade)
+  listed_by   User         @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   user_id     Int
 
   @@map("properties")
@@ -37,16 +37,16 @@ model Address {
   id                Int      @id @default(autoincrement())
   /// @zod.positive({message: "O número da propriedade precisar ser positivo!"})
   number            Int
-  street            String   @db.VarChar(255)
+  street            String   @db.VarChar(64)
   /// @zod.max(16)
   postal_code       String   @db.VarChar(16)
   place_id          String   @unique @db.VarChar(255)
   formatted_address String
   latitude          Float
   longitude         Float
-  community         String   @db.VarChar(255)
-  city              String   @db.VarChar(255)
-  province          String   @db.VarChar(255)
+  community         String   @db.VarChar(64)
+  city              String   @db.VarChar(64)
+  province          String   @db.VarChar(64)
   property          Property @relation(fields: [property_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   property_id       Int      @unique
   created_by        User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -72,7 +72,9 @@ model Description {
   rented        Boolean                   @default(false)
   /// @zod.min(1, {message:"A área da propriedade precisar ser igual ou maior que 1"})
   property_area Float                     @db.Real
+  /// @zod.min(0, {message:"A quantidade de gatos precisar ser igual ou maior que 0"})
   pets_cats     Int
+  /// @zod.min(0, {message:"A quantidade de cães precisar ser igual ou maior que 0"})
   pets_dogs     Int
   smoking       Boolean
   type          Type                      @relation(fields: [type_id], references: [id])
@@ -92,7 +94,7 @@ model Description {
 
 model Images {
   id          Int      @id @default(autoincrement())
-  url         String
+  url         String   @db.VarChar(100)
   property    Property @relation(fields: [property_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   property_id Int
 }
@@ -100,7 +102,7 @@ model Images {
 model Utility {
   id                        Int                       @id @default(autoincrement())
   /// @zod.min(3, {message:"O nome da utilidade precisar ter pelo menos 3 caracteres!"})
-  name                      String                    @unique @db.VarChar(255)
+  name                      String                    @unique @db.VarChar(64)
   utilities_on_descriptions UtilitiesOnDescriptions[]
   created_at                DateTime                  @default(now()) @db.Timestamp()
   updated_at                DateTime                  @updatedAt @db.Timestamp()
@@ -129,7 +131,7 @@ enum FeatureType {
 model Feature {
   id                       Int                      @id @default(autoincrement())
   /// @zod.min(2, {message: "O nome da feature precisa ter pelo menos 2 caracteres!"})
-  name                     String                   @db.VarChar(255)
+  name                     String                   @db.VarChar(100)
   type                     FeatureType
   features_on_descriptions FeaturesOnDescriptions[]
   created_at               DateTime                 @default(now()) @db.Timestamp()
