@@ -23,6 +23,15 @@ const typeServices = {
     };
   },
 
+  getOneTypeById: async (id: number) => {
+    const type = await prisma.type.findUnique({ where: { id } });
+    return type;
+  },
+
+  getOneTypeByName: async (name: string) => {
+    const type = await prisma.type.findUnique({ where: { name } });
+    return type;
+  },
   addType: async (data: Type) => {
     const type = await prisma.type.create({ data });
     return type;

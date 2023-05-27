@@ -8,6 +8,9 @@ import { CustomError } from '../helpers/custom-error.js';
 import storageServices from './storage.services.js';
 import { IPropertyUpdateAttributes } from '../interfaces/complete-property.js';
 import { PrismaClient, Property } from '@prisma/client';
+import { ERR_PROPERTY_CANNOT_BE_EXCLUDE, ERR_PROPERTY_NOT_FOUND } from '../errors/property.erros.js';
+import { ERR_FEATURE_UPDATE_FAILED } from '../errors/feature.errors.js';
+import { ERR_UTILITY_UPDATE_FAILED } from '../errors/utility.errors.js';
 
 const propertyServices = {
   // Funcionalidade básica criada (apenas refatorar)
@@ -152,7 +155,7 @@ const propertyServices = {
           data: features.map(feature => ({ feature_id: feature, description_id: description_id }))
         })
         .catch(() => {
-          throw CustomError('_', 'As features não foram atualizadas, tente novamente!', 400);
+          throw ERR_FEATURE_UPDATE_FAILED;
         });
     });
   },
@@ -165,7 +168,7 @@ const propertyServices = {
           data: utilities.map(feature => ({ utility_id: feature, description_id: description_id }))
         })
         .catch(() => {
-          throw CustomError('_', 'As utilidades não foram atualizadas, tente novamente!', 400);
+          throw ERR_UTILITY_UPDATE_FAILED;
         });
     });
   },
@@ -173,19 +176,16 @@ const propertyServices = {
   uploadImage: async (data: MultipartFile, id: number, user_id: number) => {
     const filename = data.filename.replace(/\b(\s)\b/g, '-');
     const property = await prisma.property.findFirst({ where: { id, user_id } });
-    if (property) {
-      const response = await storageServices.uploadFile({ to: 'properties', file: data.file, filename, id });
-      const newImageUrl = `/properties/${id}/${filename}`;
-      await prisma.images.create({
-        data: {
-          url: newImageUrl,
-          property_id: id
-        }
-      });
-      return { url: newImageUrl, response };
-    } else {
-      return CustomError('_', 'Insira uma propriedade válida!', 400);
-    }
+    if (property) throw ERR_PROPERTY_NOT_FOUND;
+    const response = await storageServices.uploadFile({ to: 'properties', file: data.file, filename, id });
+    const newImageUrl = `/properties/${id}/${filename}`;
+    await prisma.images.create({
+      data: {
+        url: newImageUrl,
+        property_id: id
+      }
+    });
+    return { url: newImageUrl, response };
   },
 
   getImages: async (property_id: number) => {
@@ -265,14 +265,11 @@ const propertyServices = {
     return { count, page: pagination.page_number, per_page: pagination.per_page_number, pages, properties };
   },
 
-  deleteOneProperty: async (id: number) => {
-    const property = await prisma.property.findUnique({ where: { id } });
-    if (property) {
-      await prisma.property.delete({ where: { id } });
-      return { message: 'Propriedade excluída com sucesso!' };
-    } else {
-      throw { code: '_', message: 'Não foi possível excluir a propriedade!', statusCode: 400 };
-    }
+  deleteOneProperty: async (id: number, user_id: number) => {
+    const userProperty = await prisma.property.findFirst({ where: { id, user_id } });
+    if (!userProperty) throw ERR_PROPERTY_CANNOT_BE_EXCLUDE;
+    await prisma.property.delete({ where: { id } });
+    return { message: 'Propriedade excluída com sucesso!' };
   }
 };
 
