@@ -1,6 +1,6 @@
 import { Address, Description, Property } from '@prisma/client';
 
-export interface ICompleteProperty {
+export interface IPropertyUpdateAttributes {
   property: Property;
   address: Address;
   description: Description;

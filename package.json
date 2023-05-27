@@ -4,7 +4,7 @@
     "server": "nodemon --trace-warnings build/src/server.js",
     "start": "node src/server.js",
     "build": "tsc",
-    "dev": "yarn server",
+    "dev": "concurrently \"tsc --watch\" \" yarn server \"",
     "test": "vitest",
     "seed:dev": "node build/src/api/database/seeders/dev/index.js",
     "seed:test": "node build/src/api/database/seeders/test/index.js"
@@ -35,6 +35,7 @@
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "@vitest/coverage-c8": "^0.29.3",
+    "@vitest/coverage-istanbul": "^0.31.1",
     "concurrently": "^7.6.0",
     "eslint": "^8.0.1",
     "eslint-config-standard-with-typescript": "^34.0.1",
@@ -47,6 +48,7 @@
     "supertest": "^6.3.3",
     "typescript": "*",
     "vitest": "^0.29.2",
+    "vitest-mock-extended": "^1.1.3",
     "zod-prisma": "^0.5.4"
   }
 }

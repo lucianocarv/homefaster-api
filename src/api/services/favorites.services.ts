@@ -1,6 +1,6 @@
 import { prisma } from '../config/prisma/prisma-connect';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
-import { propertyServices } from './property-services';
+import { propertyServices } from './property.services';
 
 const favoritesService = {
   getAllFavorites: async (user_id: number, { page_number, per_page_number, skip }: PaginationParameters) => {

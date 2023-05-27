@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import middie from '@fastify/middie';
-import { jwtService } from '../../../api/services/jwt-services';
-import { userServices } from '../../../api/services/user-services';
+import { jwtService } from '../../services/jwt.services';
+import { userServices } from '../../services/user.services';
 import { favoritesRouter } from '../../../api/routes/favorites-router';
 import { CustomError } from '../../../api/helpers/custom-error';
 import { propertyRoutesAuth } from '../../../api/routes/property-router-auth';

@@ -6,7 +6,7 @@ import { ICustomError } from '../interfaces/custom-error';
 import { ILoginUser } from '../interfaces/login-user';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { IUsersFilter } from '../interfaces/users-filter';
-import { userServices } from '../services/user-services';
+import { userServices } from '../services/user.services';
 import { ERR_USERS_INVALID_ROLE, ERR_USERS_USER_CREATE_PERMISSION_DENIED } from '../errors/user-errors';
 import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
 import { UserModel } from '../../../prisma/models';

@@ -6,7 +6,8 @@ import { IDescriptionFilter } from '../interfaces/search-filter.js';
 import { MultipartFile } from '@fastify/multipart';
 import { CustomError } from '../helpers/custom-error.js';
 import storageServices from './storage-services.js';
-import { ICompleteProperty } from '../interfaces/complete-property.js';
+import { IPropertyUpdateAttributes } from '../interfaces/complete-property.js';
+import { PrismaClient, Property } from '@prisma/client';
 
 const propertyServices = {
   // Funcionalidade básica criada (apenas refatorar)
@@ -40,31 +41,32 @@ const propertyServices = {
   },
 
   // Funcionalidade básica criada (apenas refatorar)
-  getOneProperty: async (id: number): Promise<object | Error> => {
-    const property = await prisma.property.findUnique({
-      where: { id },
-      include: {
-        address: true,
-        description: {
-          include: {
-            features: {
-              select: {
-                feature: { select: { name: true } }
-              }
-            },
-            utilities: {
-              select: {
-                utility: { select: { name: true } }
+  getOneProperty: async (id: number): Promise<Property | boolean> => {
+    try {
+      const property = await prisma.property.findUnique({
+        where: { id },
+        include: {
+          address: true,
+          description: {
+            include: {
+              features: {
+                select: {
+                  feature: { select: { name: true } }
+                }
+              },
+              utilities: {
+                select: {
+                  utility: { select: { name: true } }
+                }
               }
             }
           }
         }
-      }
-    });
-    if (property) {
-      return property;
-    } else {
-      throw new Error('Error');
+      });
+      if (property) return property;
+      return false;
+    } catch (error) {
+      throw error;
     }
   },
 
@@ -106,7 +108,7 @@ const propertyServices = {
   },
 
   // Funcionalidade básica criada (apenas refatorar)
-  updatePropertyDescription: async (id: number, user_id: number, attributes: ICompleteProperty) => {
+  updatePropertyDescription: async (id: number, user_id: number, attributes: IPropertyUpdateAttributes) => {
     const property = await prisma.property.findFirst({ where: { id, user_id } });
     if (property && property.id) {
       const description = await prisma.description.findUnique({ where: { property_id: property.id } });
@@ -130,32 +132,11 @@ const propertyServices = {
             }
           }
         });
-        if (attributes.features || attributes.utilities) {
-          if (attributes.features && attributes.features.length >= 1) {
-            await prisma.featuresOnDescriptions.deleteMany({ where: { description_id: description?.id } });
-            await prisma
-              .$transaction([
-                prisma.featuresOnDescriptions.createMany({
-                  data: attributes.features.map(feature => ({ feature_id: feature, description_id: description?.id }))
-                })
-              ])
-              .catch(() => {
-                throw CustomError('_', 'Feature incorreta não pode ser atualizada!', 400);
-              });
-          }
-
-          if (attributes.utilities && attributes.utilities.length >= 1) {
-            await prisma.utilitiesOnDescriptions.deleteMany({ where: { description_id: description?.id } });
-            await prisma
-              .$transaction([
-                prisma.utilitiesOnDescriptions.createMany({
-                  data: attributes.utilities.map(utility => ({ utility_id: utility, description_id: description?.id }))
-                })
-              ])
-              .catch(() => {
-                throw CustomError('_', 'Utilidade incorreta não pode ser atualizada', 400);
-              });
-          }
+        if (attributes.features && attributes.features.length >= 1) {
+          propertyServices.updatePropertyFeatures(attributes.features, description.id);
+        }
+        if (attributes.utilities && attributes.utilities.length >= 1) {
+          propertyServices.updatePropertyUtilities(attributes.utilities, description.id);
         }
         const property = await propertyServices.getOneProperty(id);
         return property;
@@ -163,9 +144,35 @@ const propertyServices = {
     }
   },
 
-  uploadImage: async (data: MultipartFile, id: number) => {
+  updatePropertyFeatures: async (features: number[], description_id: number) => {
+    await prisma.$transaction(async tx => {
+      await tx.featuresOnDescriptions.deleteMany({ where: { description_id: description_id } });
+      await tx.featuresOnDescriptions
+        .createMany({
+          data: features.map(feature => ({ feature_id: feature, description_id: description_id }))
+        })
+        .catch(() => {
+          throw CustomError('_', 'As features não foram atualizadas, tente novamente!', 400);
+        });
+    });
+  },
+
+  updatePropertyUtilities: async (utilities: number[], description_id: number, tx = prisma) => {
+    await prisma.$transaction(async tx => {
+      await tx.utilitiesOnDescriptions.deleteMany({ where: { description_id: description_id } });
+      await tx.utilitiesOnDescriptions
+        .createMany({
+          data: utilities.map(feature => ({ utility_id: feature, description_id: description_id }))
+        })
+        .catch(() => {
+          throw CustomError('_', 'As utilidades não foram atualizadas, tente novamente!', 400);
+        });
+    });
+  },
+
+  uploadImage: async (data: MultipartFile, id: number, user_id: number) => {
     const filename = data.filename.replace(/\b(\s)\b/g, '-');
-    const property = await prisma.property.findUnique({ where: { id } });
+    const property = await prisma.property.findFirst({ where: { id, user_id } });
     if (property) {
       const response = await storageServices.uploadFile({ to: 'properties', file: data.file, filename, id });
       const newImageUrl = `/properties/${id}/${filename}`;

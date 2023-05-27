@@ -2,7 +2,7 @@ import { Role, User } from '@prisma/client';
 import { prisma } from '../config/prisma/prisma-connect';
 import bcrypt from 'bcrypt';
 import { ILoginUser } from '../interfaces/login-user';
-import { jwtService } from './jwt-services';
+import { jwtService } from './jwt.services';
 import { IUserPayload } from '../interfaces/jwt-payload';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { IUsersFilter } from '../interfaces/users-filter';

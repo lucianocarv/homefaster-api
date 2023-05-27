@@ -2,18 +2,17 @@ import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import { getPagination } from '../helpers/get-pagination';
 import { IAddressFilter } from '../interfaces/search-address';
 import { IDescriptionFilter } from '../interfaces/search-filter';
-import { propertyServices } from '../services/property-services';
+import { propertyServices } from '../services/property.services';
 import { ERR_MISSING_ATTRIBUTE } from '../errors';
 import { ERR_PERMISSION_DENIED } from '../errors/permission-erros';
 import { ERR_MISSING_FILE } from '../errors/upload-file-errors';
-import { ICompleteProperty } from '../interfaces/complete-property';
+import { IPropertyUpdateAttributes } from '../interfaces/complete-property';
 import { Address, Description, Feature, Property } from '@prisma/client';
 import { AddressModel, DescriptionModel } from '../../../prisma/models';
 import { CustomError } from '../helpers/custom-error';
-import { mailServices } from '../services/mail-services';
 
 const propertyController = {
-  getAllProperties: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
+  getAllProperties: async (req: FastifyRequest, res: FastifyReply): Promise<Property[] | FastifyError> => {
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page);
     try {
@@ -25,13 +24,16 @@ const propertyController = {
   },
 
   getOneProperty: async (req: FastifyRequest, res: FastifyReply): Promise<Property | FastifyError> => {
-    const params = req.params as { id: string };
-    const id = Number(params.id);
+    const { id } = req.params as { id: string };
     try {
-      const property = await propertyServices.getOneProperty(id);
-      return res.send(property);
+      const property = await propertyServices.getOneProperty(Number(id));
+      if (property) {
+        return res.send(property);
+      } else {
+        return res.send(CustomError('_', 'Esta propriedade não existe', 400));
+      }
     } catch (error) {
-      return res.send(error);
+      return res.send(CustomError('_', 'Não foi possível realizar a requisição, verifique se os parêmetros estão corretos', 500));
     }
   },
 
@@ -67,8 +69,8 @@ const propertyController = {
     }
 
     try {
-      const v = await propertyServices.findPropertyByPlaceId(data.address.place_id);
-      if (v) throw CustomError('_', 'Esta propriedade já está cadastrada!', 400);
+      const propertyExists = await propertyServices.findPropertyByPlaceId(data.address.place_id);
+      if (propertyExists) throw CustomError('_', 'Esta propriedade já está cadastrada!', 400);
       const result = await propertyServices.createOneProperty(data, user.id);
       return res.status(201).send(result);
     } catch (error) {
@@ -77,10 +79,9 @@ const propertyController = {
   },
 
   updateOneProperty: async (req: FastifyRequest, res: FastifyReply): Promise<Property | FastifyError> => {
-    const { role, id: user_id } = req.user as { role: string; id: number };
-    if (role == 'User') throw ERR_PERMISSION_DENIED;
+    const { id: user_id } = req.user as { role: string; id: number };
     const { id } = req.params as { id: string };
-    const attributes = req.body as ICompleteProperty;
+    const attributes = req.body as IPropertyUpdateAttributes;
     try {
       const property = await propertyServices.updatePropertyDescription(Number(id), user_id, attributes);
       return res.status(202).send(property);
@@ -106,14 +107,13 @@ const propertyController = {
   },
 
   uploadImage: async (req: FastifyRequest, res: FastifyReply): Promise<{ message: string } | FastifyError> => {
-    const { role } = req.user as { role: string };
-    if (role == 'User') throw ERR_PERMISSION_DENIED;
     const data = await req.file();
+    const { id: user_id } = req.user as { id: string };
     const { property } = req.query as { property: string };
     if (!data?.file) throw ERR_MISSING_FILE;
     if (!property) throw ERR_MISSING_ATTRIBUTE('property_id');
     try {
-      const result = await propertyServices.uploadImage(data, Number(property));
+      const result = await propertyServices.uploadImage(data, Number(property), Number(user_id));
       return res.status(202).send(result);
     } catch (error) {
       return res.send(error);
