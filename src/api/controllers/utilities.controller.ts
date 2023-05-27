@@ -11,15 +11,13 @@ import { ERR_PERMISSION_DENIED } from '../errors/permission.errors';
 
 const utilitiesController = {
   getAllUtilities: async (req: FastifyRequest, res: FastifyReply) => {
-    const user = req.user as User;
-    if (user.role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page) as PaginationParameters;
     try {
       const utilities = await utilitiesServices.getAllUtilities({ page_number, per_page_number, skip });
       return res.send(utilities);
     } catch (error) {
-      return error;
+      return res.send(error);
     }
   },
 
@@ -33,7 +31,7 @@ const utilitiesController = {
       const utility = await utilitiesServices.createOne(name);
       return res.status(201).send(utility);
     } catch (error) {
-      return error;
+      return res.send(error);
     }
   },
 

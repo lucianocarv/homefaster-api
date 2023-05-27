@@ -3,13 +3,11 @@ import { getPagination } from '../helpers/get-pagination';
 import { IAddressFilter } from '../interfaces/search-address';
 import { IDescriptionFilter } from '../interfaces/search-filter';
 import { propertyServices } from '../services/property.services';
-import { ERR_MISSING_ATTRIBUTE } from '../errors';
-import { ERR_PERMISSION_DENIED } from '../errors/permission.errors';
-import { ERR_MISSING_FILE } from '../errors/upload.errors';
+import { ERR_UPLOAD_MISSING_FILE, ERR_UPLOAD_MISSING_PROPERTY } from '../errors/upload.errors';
 import { IPropertyUpdateAttributes } from '../interfaces/complete-property';
-import { Address, Description, Feature, Property } from '@prisma/client';
+import { Address, Description, Property } from '@prisma/client';
 import { AddressModel, DescriptionModel } from '../../../prisma/models';
-import { CustomError } from '../helpers/custom-error';
+import { ERR_PROPERTY_ALREADY_EXISTS, ERR_PROPERTY_NOT_FOUND } from '../errors/property.erros';
 
 const propertyController = {
   getAllProperties: async (req: FastifyRequest, res: FastifyReply): Promise<Property[] | FastifyError> => {
@@ -27,13 +25,10 @@ const propertyController = {
     const { id } = req.params as { id: string };
     try {
       const property = await propertyServices.getOneProperty(Number(id));
-      if (property) {
-        return res.send(property);
-      } else {
-        return res.send(CustomError('_', 'Esta propriedade não existe', 400));
-      }
+      if (!property) throw ERR_PROPERTY_NOT_FOUND;
+      return res.send(property);
     } catch (error) {
-      return res.send(CustomError('_', 'Não foi possível realizar a requisição, verifique se os parêmetros estão corretos', 500));
+      return res.send(error);
     }
   },
 
@@ -70,12 +65,44 @@ const propertyController = {
 
     try {
       const propertyExists = await propertyServices.findPropertyByPlaceId(data.address.place_id);
-      if (propertyExists) throw CustomError('_', 'Esta propriedade já está cadastrada!', 400);
+      if (propertyExists) throw ERR_PROPERTY_ALREADY_EXISTS;
       const result = await propertyServices.createOneProperty(data, user.id);
       return res.status(201).send(result);
     } catch (error) {
       return res.send(error);
     }
+  },
+
+  validateEntriesToCreateAProperty: async (req: FastifyRequest, res: FastifyReply) => {
+    const data = req.body as { description: Description; address: Address; features: number[]; utilities: number[] };
+    const parseDescription = DescriptionModel.partial({
+      id: true,
+      rented: true,
+      property_id: true,
+      user_id: true,
+      created_at: true,
+      updated_at: true
+    }).safeParse(data.description);
+
+    const parseAddress = AddressModel.partial({
+      id: true,
+      created_at: true,
+      property_id: true,
+      user_id: true,
+      updated_at: true
+    }).safeParse(data.address);
+
+    if (!parseDescription.success) {
+      res.status(400);
+      throw parseDescription.error.issues;
+    }
+
+    if (!parseAddress.success) {
+      res.status(400);
+      throw parseAddress.error.issues;
+    }
+
+    return true;
   },
 
   updateOneProperty: async (req: FastifyRequest, res: FastifyReply): Promise<Property | FastifyError> => {
@@ -110,8 +137,8 @@ const propertyController = {
     const data = await req.file();
     const { id: user_id } = req.user as { id: string };
     const { id: property_id } = req.params as { id: string };
-    if (!data?.file) throw ERR_MISSING_FILE;
-    if (!property_id) throw ERR_MISSING_ATTRIBUTE('property_id');
+    if (!data?.file) throw ERR_UPLOAD_MISSING_FILE;
+    if (!property_id) throw ERR_UPLOAD_MISSING_PROPERTY;
     try {
       const result = await propertyServices.uploadImage(data, Number(property_id), Number(user_id));
       return res.status(202).send(result);
@@ -123,6 +150,8 @@ const propertyController = {
   getImages: async (req: FastifyRequest, res: FastifyReply) => {
     const { id } = req.params as { id: string };
     try {
+      const propertyExists = await propertyServices.getOneProperty(Number(id));
+      if (!propertyExists) throw ERR_PROPERTY_NOT_FOUND;
       const images = await propertyServices.getImages(Number(id));
       return res.send(images);
     } catch (error) {
@@ -131,11 +160,12 @@ const propertyController = {
   },
 
   deleteOneProperty: async (req: FastifyRequest, res: FastifyReply) => {
-    const { role } = req.user as { role: string };
-    if (role == 'User') throw ERR_PERMISSION_DENIED;
+    const { id: user_id } = req.user as { id: string };
     const { id } = req.params as { id: string };
     try {
-      const property = await propertyServices.deleteOneProperty(Number(id));
+      const propertyExists = await propertyServices.getOneProperty(Number(id));
+      if (!propertyExists) throw ERR_PROPERTY_NOT_FOUND;
+      const property = await propertyServices.deleteOneProperty(Number(id), Number(user_id));
       return res.status(202).send(property);
     } catch (error) {
       return res.send(error);

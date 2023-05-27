@@ -2,12 +2,11 @@ import { Role, User } from '@prisma/client';
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import { CustomError } from '../helpers/custom-error';
 import { getPagination } from '../helpers/get-pagination';
-import { ICustomError } from '../interfaces/custom-error';
 import { ILoginUser } from '../interfaces/login-user';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 import { IUsersFilter } from '../interfaces/users-filter';
 import { userServices } from '../services/user.services';
-import { ERR_USERS_INVALID_ROLE, ERR_USERS_USER_CREATE_PERMISSION_DENIED } from '../errors/user.errors';
+import { ERR_EMAIL_ALREADY_USED, ERR_USERS_INVALID_ROLE, ERR_USERS_USER_CREATE_PERMISSION_DENIED } from '../errors/user.errors';
 import { ERR_PERMISSION_DENIED } from '../errors/permission.errors';
 import { UserModel } from '../../../prisma/models';
 import { getIssuesZod } from '../helpers/get-issues-zod';
@@ -25,31 +24,22 @@ const userController = {
       const user = await userServices.registerOneUser(data);
       return res.status(201).send(user);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
   registerAuth: async (req: FastifyRequest, res: FastifyReply): Promise<User | FastifyError> => {
     const user = req.user as User;
-    if (!user) throw ERR_PERMISSION_DENIED;
+    if (user.role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const data = req.body as User;
-    if (!['User', 'Admin', 'Manager'].includes(data.role)) throw ERR_USERS_INVALID_ROLE;
-    if (data.role == 'Admin' && user.role == 'User') throw ERR_USERS_USER_CREATE_PERMISSION_DENIED;
+    if (!['User', 'Admin'].includes(data.role)) throw ERR_USERS_INVALID_ROLE;
     try {
+      const userExists = await userServices.findOneUser(data.email);
+      if (userExists) throw ERR_EMAIL_ALREADY_USED;
       const user = await userServices.registerOneUserAuth(data);
       return res.status(201).send(user);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -59,12 +49,7 @@ const userController = {
       const user = await userServices.login(data);
       return res.status(202).send(user);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -75,12 +60,7 @@ const userController = {
       const response = await userServices.verifyAccount(token, user.email);
       res.send(response);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -92,12 +72,7 @@ const userController = {
       const userUpdated = await userServices.updateOneUser(user.id, attributes);
       return res.status(202).send(userUpdated);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -111,12 +86,7 @@ const userController = {
       const user = await userServices.updateUserAsAdmin(Number(id), role);
       return res.status(202).send(user);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -128,12 +98,7 @@ const userController = {
       const result = await userServices.updatePassword(user.id, attributes);
       return res.status(202).send(result);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -145,12 +110,7 @@ const userController = {
       const result = await userServices.updatePasswordAsAdmin(attributes);
       return res.status(202).send(result);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -160,12 +120,7 @@ const userController = {
       const user = await userServices.findUserById(Number(id));
       return res.send(user);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
   getAllUsers: async (req: FastifyRequest, res: FastifyReply) => {
@@ -177,12 +132,7 @@ const userController = {
       const users = await userServices.findAllUsers({ page_number, per_page_number, skip }, filter);
       return res.send(users);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   },
 
@@ -194,12 +144,7 @@ const userController = {
       const result = await userServices.deleteOneUser(Number(id));
       return res.status(202).send(result);
     } catch (error) {
-      const err = error as ICustomError;
-      if (err.code) {
-        return res.send(CustomError(err.code, err.message, err.statusCode));
-      } else {
-        return res.send(error);
-      }
+      return res.send(error);
     }
   }
 };

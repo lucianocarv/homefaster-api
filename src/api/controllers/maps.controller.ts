@@ -9,16 +9,8 @@ const mapsController = {
   async getAddress(req: FastifyRequest, res: FastifyReply) {
     const { lat, lng } = req.query as { lat: string; lng: string };
     try {
-      console.log(lat, lng);
-      const response = await gmaps.getDataByLocation(Number(lat), Number(lng));
-      const address_components = gmaps.getFirstResultAndValidate(response);
-      if (address_components !== undefined) {
-        const validate = gmaps.validateAddressComponents(address_components);
-        if (validate !== undefined) {
-          const address = gmaps.makeAddressForProperty(validate);
-          return res.send(address);
-        }
-      }
+      const address = await gmaps.getAddress(Number(lat), Number(lng));
+      return res.send(address);
     } catch (error) {
       return res.send(error);
     }
