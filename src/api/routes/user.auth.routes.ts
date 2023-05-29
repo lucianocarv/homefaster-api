@@ -2,7 +2,22 @@ import { FastifyInstance } from 'fastify';
 import { userController } from '../controllers/user.controller';
 
 async function userRouterAuth(fastify: FastifyInstance) {
-  fastify.get('/users/:id', userController.getOneUser);
+  fastify.get(
+    '/users/:id',
+    {
+      schema: {
+        summary: 'Get user by ID',
+        description: 'This route returns a user finded by ID',
+        params: {
+          id: {
+            type: 'string',
+            description: 'user id'
+          }
+        }
+      }
+    },
+    userController.getOneUser
+  );
   fastify.post('/users', userController.getAllUsers);
   fastify.post('/users/register', userController.registerAuth);
   fastify.put('/users/update', userController.updateOneUser);
