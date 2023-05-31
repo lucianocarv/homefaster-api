@@ -1,20 +1,38 @@
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import { getPagination } from '../helpers/get-pagination';
-import { IAddressFilter } from '../interfaces/search-address';
-import { IDescriptionFilter } from '../interfaces/search-filter';
+import { PropertyFilterPropertiesController } from '../interfaces/search-filter';
 import { propertyServices } from '../services/property.services';
 import { ERR_UPLOAD_MISSING_FILE, ERR_UPLOAD_MISSING_PROPERTY } from '../errors/upload.errors';
 import { IPropertyUpdateAttributes } from '../interfaces/complete-property';
 import { Address, Description, Property } from '@prisma/client';
 import { AddressModel, DescriptionModel } from '../../../prisma/models';
 import { ERR_PROPERTY_ALREADY_EXISTS, ERR_PROPERTY_NOT_FOUND } from '../errors/property.erros';
+import { checkThatTheReceivedValueIsNotAnEmptyString, checkIfReceivedValueIsNumberOrBoolean } from '../helpers/type-checks';
 
 const propertyController = {
-  getAllProperties: async (req: FastifyRequest, res: FastifyReply): Promise<Property[] | FastifyError> => {
+  properties: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page);
+    const propertiesParams = req.body as PropertyFilterPropertiesController;
+
+    propertiesParams.province = checkThatTheReceivedValueIsNotAnEmptyString(propertiesParams.province);
+    propertiesParams.city = checkThatTheReceivedValueIsNotAnEmptyString(propertiesParams.city);
+    propertiesParams.community = checkThatTheReceivedValueIsNotAnEmptyString(propertiesParams.community);
+    propertiesParams.bathrooms = checkIfReceivedValueIsNumberOrBoolean(propertiesParams.bathrooms);
+    propertiesParams.badrooms = checkIfReceivedValueIsNumberOrBoolean(propertiesParams.badrooms);
+    propertiesParams.price_max = checkIfReceivedValueIsNumberOrBoolean(propertiesParams.price_max);
+    propertiesParams.price_min = checkIfReceivedValueIsNumberOrBoolean(propertiesParams.price_min);
+    propertiesParams.pets_cats = checkIfReceivedValueIsNumberOrBoolean(propertiesParams.pets_cats);
+    propertiesParams.pets_dogs = checkIfReceivedValueIsNumberOrBoolean(propertiesParams.pets_dogs);
+    propertiesParams.furnished = checkIfReceivedValueIsNumberOrBoolean(propertiesParams.furnished);
+    propertiesParams.smoking = checkIfReceivedValueIsNumberOrBoolean(propertiesParams.smoking);
+    propertiesParams.type_id = checkIfReceivedValueIsNumberOrBoolean(propertiesParams.type_id);
+
     try {
-      const properties = await propertyServices.getAllProperties({ page_number, per_page_number, skip });
+      const properties = await propertyServices.properties({
+        pagination: { page_number, per_page_number, skip },
+        propertiesParams
+      });
       return res.send(properties);
     } catch (error) {
       return res.send(error);
@@ -112,22 +130,6 @@ const propertyController = {
     try {
       const property = await propertyServices.updatePropertyDescription(Number(id), user_id, attributes);
       return res.status(202).send(property);
-    } catch (error) {
-      return res.send(error);
-    }
-  },
-
-  propertyFilter: async (req: FastifyRequest, res: FastifyReply): Promise<Object | FastifyError> => {
-    const { page, per_page } = req.query as { page: string; per_page: string };
-    const { page_number, per_page_number, skip } = getPagination(page, per_page);
-    const { description, address } = req.body as { description: IDescriptionFilter; address: IAddressFilter };
-    try {
-      const properties = await propertyServices.filter({
-        pagination: { page_number, per_page_number, skip },
-        description,
-        address
-      });
-      return res.send(properties);
     } catch (error) {
       return res.send(error);
     }
