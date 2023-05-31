@@ -17,7 +17,7 @@ const storageServices = {
       readableStream.push(null);
       readableStream.pipe(writableStream);
 
-      return { message: 'Upload realizado com sucesso!!!!!!!' };
+      return { message: 'Upload realizado com sucesso!' };
     } catch (error) {
       return error;
     }
