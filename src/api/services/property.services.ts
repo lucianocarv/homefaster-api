@@ -2,47 +2,80 @@ import { prisma } from '../config/prisma/prisma.config.js';
 import { PaginationParameters } from '../interfaces/pagination-parameters.js';
 import { IPagination } from '../interfaces/pagination.js';
 import { IAddressFilter } from '../interfaces/search-address.js';
-import { IDescriptionFilter } from '../interfaces/search-filter.js';
+import { PropertyFilterProperties } from '../interfaces/search-filter.js';
 import { MultipartFile } from '@fastify/multipart';
-import { CustomError } from '../helpers/custom-error.js';
 import storageServices from './storage.services.js';
 import { IPropertyUpdateAttributes } from '../interfaces/complete-property.js';
-import { PrismaClient, Property } from '@prisma/client';
+import { Property } from '@prisma/client';
 import { ERR_PROPERTY_CANNOT_BE_EXCLUDE, ERR_PROPERTY_NOT_FOUND } from '../errors/property.erros.js';
 import { ERR_FEATURE_UPDATE_FAILED } from '../errors/feature.errors.js';
 import { ERR_UTILITY_UPDATE_FAILED } from '../errors/utility.errors.js';
 
 const propertyServices = {
-  // Funcionalidade básica criada (apenas refatorar)
-  getAllProperties: async ({ page_number, per_page_number, skip }: PaginationParameters) => {
+  properties: async ({
+    pagination,
+    propertiesParams
+  }: {
+    pagination: IPagination;
+    propertiesParams: PropertyFilterProperties;
+  }) => {
     const [properties, count] = await Promise.all([
       prisma.property.findMany({
-        take: per_page_number,
-        skip,
+        skip: pagination.skip,
+        take: pagination.per_page_number,
         include: {
           address: true,
           description: {
             include: {
-              features: {
-                select: {
-                  feature: { select: { name: true } }
-                }
-              },
-              utilities: {
-                select: {
-                  utility: { select: { name: true } }
-                }
-              }
+              type: true
+            }
+          }
+        },
+        where: {
+          address: {
+            province: propertiesParams.province,
+            city: propertiesParams.city,
+            community: propertiesParams.community
+          },
+          description: {
+            price: { lte: propertiesParams.price_max, gte: propertiesParams.price_min },
+            badrooms: { equals: propertiesParams.badrooms },
+            bathrooms: { equals: propertiesParams.bathrooms },
+            furnished: { equals: propertiesParams.furnished },
+            pets_cats: { equals: propertiesParams.pets_cats },
+            pets_dogs: { equals: propertiesParams.pets_dogs },
+            smoking: { equals: propertiesParams.smoking },
+            type: {
+              id: { equals: propertiesParams.type_id }
             }
           }
         }
       }),
-      prisma.property.count()
+      prisma.property.count({
+        where: {
+          address: {
+            province: propertiesParams.province,
+            city: propertiesParams.city,
+            community: propertiesParams.community
+          },
+          description: {
+            price: { lte: Number(propertiesParams.price_max), gte: Number(propertiesParams.price_min) },
+            badrooms: { equals: propertiesParams.badrooms },
+            bathrooms: { equals: propertiesParams.bathrooms },
+            furnished: { equals: propertiesParams.furnished },
+            pets_cats: { equals: propertiesParams.pets_cats },
+            pets_dogs: { equals: propertiesParams.pets_dogs },
+            smoking: { equals: propertiesParams.smoking },
+            type: {
+              id: { equals: propertiesParams.type_id }
+            }
+          }
+        }
+      })
     ]);
-    const pages = Math.ceil(count / per_page_number);
-    return { count, page: page_number, per_page: per_page_number, pages, properties };
+    const pages = Math.ceil(count / pagination.per_page_number);
+    return { count, page: pagination.page_number, per_page: pagination.per_page_number, pages, properties };
   },
-
   // Funcionalidade básica criada (apenas refatorar)
   getOneProperty: async (id: number): Promise<Property | boolean> => {
     try {
@@ -195,74 +228,6 @@ const propertyServices = {
     } catch (error) {
       return error;
     }
-  },
-
-  filter: async ({
-    pagination,
-    description,
-    address
-  }: {
-    pagination: IPagination;
-    description: IDescriptionFilter;
-    address: IAddressFilter;
-  }) => {
-    const [properties, count] = await Promise.all([
-      prisma.property.findMany({
-        skip: pagination.skip,
-        take: pagination.per_page_number,
-        include: {
-          address: true,
-          description: {
-            include: {
-              type: true
-            }
-          }
-        },
-        where: {
-          address: {
-            street: { contains: address.street }
-          },
-          description: {
-            price: { lte: description.price_max, gte: description.price_min },
-            badrooms: { equals: description.badrooms },
-            bathrooms: { equals: description.bathrooms },
-            furnished: { equals: description.furnished },
-            pets_cats: { equals: description.pets_cats },
-            pets_dogs: { equals: description.pets_dogs },
-            smoking: { equals: description.smoking },
-            type: {
-              id: { equals: description.type }
-            }
-          }
-        },
-        orderBy: {
-          description: {
-            price: description.order == 'price_max' ? 'desc' : 'asc'
-          }
-        }
-      }),
-      prisma.property.count({
-        where: {
-          address: {
-            street: { contains: address.street }
-          },
-          description: {
-            price: { lte: description.price_max, gte: description.price_min },
-            badrooms: { equals: description.badrooms },
-            bathrooms: { equals: description.bathrooms },
-            furnished: { equals: description.furnished },
-            pets_cats: { equals: description.pets_cats },
-            pets_dogs: { equals: description.pets_dogs },
-            smoking: { equals: description.smoking },
-            type: {
-              id: { equals: description.type }
-            }
-          }
-        }
-      })
-    ]);
-    const pages = Math.ceil(count / pagination.per_page_number);
-    return { count, page: pagination.page_number, per_page: pagination.per_page_number, pages, properties };
   },
 
   deleteOneProperty: async (id: number, user_id: number) => {
