@@ -59,7 +59,7 @@ const propertyServices = {
             community: propertiesParams.community
           },
           description: {
-            price: { lte: Number(propertiesParams.price_max), gte: Number(propertiesParams.price_min) },
+            price: { lte: propertiesParams.price_max, gte: propertiesParams.price_min },
             badrooms: { equals: propertiesParams.badrooms },
             bathrooms: { equals: propertiesParams.bathrooms },
             furnished: { equals: propertiesParams.furnished },
