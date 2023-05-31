@@ -209,7 +209,7 @@ const propertyServices = {
   uploadImage: async (data: MultipartFile, id: number, user_id: number) => {
     const filename = data.filename.replace(/\b(\s)\b/g, '-');
     const property = await prisma.property.findFirst({ where: { id, user_id } });
-    if (property) throw ERR_PROPERTY_NOT_FOUND;
+    if (!property) throw ERR_PROPERTY_NOT_FOUND;
     const response = await storageServices.uploadFile({ to: 'properties', file: data.file, filename, id });
     const newImageUrl = `/properties/${id}/${filename}`;
     await prisma.images.create({
