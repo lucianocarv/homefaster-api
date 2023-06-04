@@ -53,7 +53,7 @@ const userServices = {
   },
 
   login: async (data: ILoginUser) => {
-    const user = await userServices.findOneUser(data.email);
+    const user = await prisma.user.findUnique({ where: { email: data.email } });
     if (user) {
       const validatePassword = await bcrypt.compare(data.password, user.password);
       if (validatePassword) {
@@ -150,7 +150,7 @@ const userServices = {
     return { count, page: pagination.page_number, per_page: pagination.per_page_number, pages, users };
   },
 
-  updateOneUser: async (id: number, attributes: User) => {
+  updateUser: async (id: number, attributes: User) => {
     const user = await prisma.user.update({
       where: {
         id
@@ -159,6 +159,13 @@ const userServices = {
         first_name: attributes.first_name,
         last_name: attributes.last_name,
         phone: attributes.phone
+      },
+      select: {
+        id: true,
+        first_name: true,
+        last_name: true,
+        email: true,
+        phone: true
       }
     });
 

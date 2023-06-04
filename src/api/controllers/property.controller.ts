@@ -4,7 +4,7 @@ import { PropertyFilterPropertiesController } from '../interfaces/search-filter'
 import { propertyServices } from '../services/property.services';
 import { ERR_UPLOAD_MISSING_FILE, ERR_UPLOAD_MISSING_PROPERTY } from '../errors/upload.errors';
 import { IPropertyUpdateAttributes } from '../interfaces/complete-property';
-import { Address, Description, Property } from '@prisma/client';
+import { Address, Description, Image, Property } from '@prisma/client';
 import { AddressModel, DescriptionModel } from '../../../prisma/models';
 import { ERR_PROPERTY_ALREADY_EXISTS, ERR_PROPERTY_NOT_FOUND } from '../errors/property.erros';
 import { checkThatTheReceivedValueIsNotAnEmptyString, checkIfReceivedValueIsNumberOrBoolean } from '../helpers/type-checks';
@@ -135,10 +135,11 @@ const propertyController = {
     }
   },
 
-  uploadImage: async (req: FastifyRequest, res: FastifyReply): Promise<{ message: string } | FastifyError> => {
+  uploadImage: async (req: FastifyRequest, res: FastifyReply): Promise<Image | FastifyError> => {
     const data = await req.file();
     const { id: user_id } = req.user as { id: string };
-    const { id: property_id } = req.params as { id: string };
+    const { property_id } = req.query as { property_id: string };
+    console.log(property_id);
     if (!data?.file) throw ERR_UPLOAD_MISSING_FILE;
     if (!property_id) throw ERR_UPLOAD_MISSING_PROPERTY;
     try {
@@ -153,18 +154,19 @@ const propertyController = {
     const { id: image_id } = req.query as { id: string };
     try {
       const response = await propertyServices.deleteImage(Number(image_id), user_id);
-      return res.send(response);
+      return res.status(202).send(response);
     } catch (error) {
       return res.send(error);
     }
   },
 
   getImages: async (req: FastifyRequest, res: FastifyReply) => {
-    const { id } = req.params as { id: string };
+    const { property_id } = req.query as { property_id: string };
     try {
-      const propertyExists = await propertyServices.getOneProperty(Number(id));
+      console.log(property_id);
+      const propertyExists = await propertyServices.getOneProperty(Number(property_id));
       if (!propertyExists) throw ERR_PROPERTY_NOT_FOUND;
-      const images = await propertyServices.getImages(Number(id));
+      const images = await propertyServices.getImages(Number(property_id));
       return res.send(images);
     } catch (error) {
       return res.send(error);

@@ -23,7 +23,7 @@ async function propertyRoutesAuth(fastify: FastifyInstance) {
     propertyController.validateEntriesToCreateAProperty
   );
   fastify.post(
-    '/properties/:id/images/upload',
+    '/properties/images',
     {
       schema: {
         description: 'Property',

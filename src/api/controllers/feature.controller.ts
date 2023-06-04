@@ -28,8 +28,6 @@ const featureController = {
   },
 
   findAll: async (req: FastifyRequest, res: FastifyReply) => {
-    const user = req.user as User;
-    if (user.role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page);
     try {

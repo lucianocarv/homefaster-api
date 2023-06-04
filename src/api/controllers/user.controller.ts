@@ -64,12 +64,12 @@ const userController = {
     }
   },
 
-  updateOneUser: async (req: FastifyRequest, res: FastifyReply): Promise<object | FastifyError> => {
+  updateUser: async (req: FastifyRequest, res: FastifyReply): Promise<object | FastifyError> => {
     const attributes = req.body as User;
     const user = req.user as User;
     if (!user) throw ERR_PERMISSION_DENIED;
     try {
-      const userUpdated = await userServices.updateOneUser(user.id, attributes);
+      const userUpdated = await userServices.updateUser(user.id, attributes);
       return res.status(202).send(userUpdated);
     } catch (error) {
       return res.send(error);
@@ -124,6 +124,8 @@ const userController = {
     }
   },
   getAllUsers: async (req: FastifyRequest, res: FastifyReply) => {
+    const admin = req.user as User;
+    if (admin.role !== 'Admin') throw ERR_PERMISSION_DENIED;
     const { page, per_page } = req.query as { page: string; per_page: string };
     const { page_number, per_page_number, skip } = getPagination(page, per_page) as PaginationParameters;
     const body = req.body as { filter: IUsersFilter };

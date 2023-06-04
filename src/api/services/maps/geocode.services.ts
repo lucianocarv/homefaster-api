@@ -92,7 +92,8 @@ export class GeocodeAPI {
     const country = address.address_components.find(component => component.types.includes('country')) as GeocodeComponent;
     const postal_code = address.address_components.find(component => component.types.includes('postal_code')) as GeocodeComponent;
 
-    if (number && street && community && city && province && country && postal_code) {
+    console.log(community);
+    if (number && street && city && province && country && postal_code) {
       return {
         number,
         street,
@@ -110,11 +111,11 @@ export class GeocodeAPI {
 
   makeAddressForProperty(components: GeocodeAddressComponents) {
     const address = {
-      city: components.city.long_name,
-      community: components.community.long_name,
+      city: components.city !== undefined ? components.city.long_name : '',
+      community: components.community !== undefined ? components.community.long_name : '',
       formatted_address: components.formatted_address,
       number: Number(components.number.long_name) ? Number(components.number.long_name) : 0,
-      street: components.street.long_name,
+      street: components.street !== undefined ? components.street.long_name : '',
       latitude: components.location.lat,
       longitude: components.location.lng,
       place_id: components.place_id,

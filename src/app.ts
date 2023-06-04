@@ -10,6 +10,7 @@ import { JWT_SECRET } from './config/environment.js';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import cors from '@fastify/cors';
+import { cityRoutes } from './api/routes/city.routes.js';
 
 export const fastify = Fastify({ logger: true, bodyLimit: 1024 * 1024 * 10, keepAliveTimeout: 20 });
 
@@ -67,6 +68,7 @@ fastify.register(JWT, {
 fastify.register(fastifyMultipart);
 fastify.register(propertyRoutes);
 fastify.register(userRouter);
+fastify.register(cityRoutes);
 
 // Subsystems
 fastify.register(authenticatedSystem, { prefix: '/a' });

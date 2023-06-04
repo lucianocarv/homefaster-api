@@ -5,6 +5,7 @@ import { storage } from '../../config/storage/google-cloud-storage.config';
 import { CLOUD_BUCKET_NAME } from '../../config/environment';
 import { CustomError } from '../helpers/custom-error';
 import { FastifyError } from 'fastify';
+import { DeleteBucketCallback } from '@google-cloud/storage';
 
 const storageServices = {
   uploadFile: async ({ file, path }: FileUpload): Promise<{ filePath: string } | undefined> => {
@@ -31,8 +32,18 @@ const storageServices = {
 
   deleteFile: async (path: string) => {
     try {
-      const res = await storage.bucket(CLOUD_BUCKET_NAME).file(path).delete();
-      return res;
+      return new Promise((resolve, reject) => {
+        storage
+          .bucket(CLOUD_BUCKET_NAME)
+          .file(path)
+          .delete((err, res) => {
+            if (err) return reject(err);
+            else if (res?.statusCode == 204) resolve('Arquivo excluído com sucesso!');
+            else {
+              reject('Não foi possível excluir o arquivo!');
+            }
+          });
+      });
     } catch (error) {
       return error;
     }

@@ -20,7 +20,7 @@ async function userRouterAuth(fastify: FastifyInstance) {
   );
   fastify.post('/users', userController.getAllUsers);
   fastify.post('/users/register', userController.registerAuth);
-  fastify.put('/users/update', userController.updateOneUser);
+  fastify.put('/users/update', userController.updateUser);
   fastify.put('/users/admin/update/:id', userController.updateUserAsAdmin);
   fastify.put('/users/admin/p/update', userController.updatePasswordAsAdmin);
   fastify.put('/users/p/update', userController.updatePassword);

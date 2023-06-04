@@ -9,6 +9,7 @@ import { ERR_PROPERTY_CANNOT_BE_EXCLUDE, ERR_PROPERTY_NOT_FOUND } from '../error
 import { ERR_FEATURE_UPDATE_FAILED } from '../errors/feature.errors.js';
 import { ERR_UTILITY_UPDATE_FAILED } from '../errors/utility.errors.js';
 import { randomUUID } from 'crypto';
+import { CustomError } from '../helpers/custom-error';
 
 const propertyServices = {
   properties: async ({
@@ -44,6 +45,7 @@ const propertyServices = {
             pets_cats: { equals: propertiesParams.pets_cats },
             pets_dogs: { equals: propertiesParams.pets_dogs },
             smoking: { equals: propertiesParams.smoking },
+            rented: false,
             type: {
               id: { equals: propertiesParams.type_id }
             }
@@ -65,6 +67,7 @@ const propertyServices = {
             pets_cats: { equals: propertiesParams.pets_cats },
             pets_dogs: { equals: propertiesParams.pets_dogs },
             smoking: { equals: propertiesParams.smoking },
+            rented: false,
             type: {
               id: { equals: propertiesParams.type_id }
             }
@@ -158,6 +161,7 @@ const propertyServices = {
                 badrooms: attributes.description.badrooms,
                 bathrooms: attributes.description.bathrooms,
                 price: attributes.description.price,
+                rented: attributes.description.rented,
                 furnished: attributes.description.furnished,
                 pets_cats: attributes.description.pets_cats,
                 pets_dogs: attributes.description.pets_dogs,
@@ -205,20 +209,20 @@ const propertyServices = {
     });
   },
 
-  uploadImage: async (data: MultipartFile, id: number, user_id: number) => {
+  uploadImage: async (data: MultipartFile, property_id: number, user_id: number) => {
     try {
-      const filename = data.filename.replace(/\b(\s)\b/g, '-');
-      const property = await prisma.property.findFirst({ where: { id, user_id } });
+      const property = await prisma.property.findFirst({ where: { id: property_id, user_id } });
       if (!property) throw ERR_PROPERTY_NOT_FOUND;
 
-      const imageUuid = randomUUID();
-      const path = `properties/images/${property.id}/${imageUuid + '_' + filename}`;
+      const filename = randomUUID() + '_' + user_id + '_' + property_id;
+      const path = `properties/images/${property.id}/${filename}`;
       const response = await storageServices.uploadFile({ file: data.file, path });
       if (response !== undefined) {
-        const image = await prisma.images.create({
+        const image = await prisma.image.create({
           data: {
             url: response.filePath,
-            property_id: id
+            property_id: property_id,
+            user_id
           }
         });
         return image;
@@ -230,7 +234,7 @@ const propertyServices = {
 
   getImages: async (property_id: number) => {
     try {
-      const images = await prisma.images.findMany({ where: { property_id } });
+      const images = await prisma.image.findMany({ where: { property_id } });
       return images;
     } catch (error) {
       return error;
@@ -238,14 +242,15 @@ const propertyServices = {
   },
 
   deleteImage: async (image_id: number, user_id: number) => {
-    const imageExists = await prisma.images.findUnique({ where: { id: image_id } });
+    const imageExists = await prisma.image.findUnique({
+      where: { id_user_id: { id: image_id, user_id } }
+    });
     if (imageExists) {
       const deleteImage = await storageServices.deleteFile(imageExists.url);
-      console.log(deleteImage);
-      await prisma.images.delete({ where: { id: image_id } });
+      await prisma.image.delete({ where: { id: image_id } });
       return { deleteImage };
     } else {
-      return 'UE';
+      return CustomError('_', 'Não foi possível encontrar a imagem selecionada!', 400);
     }
   },
 
