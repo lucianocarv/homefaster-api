@@ -1,8 +1,6 @@
 import { Readable } from 'stream';
 
-export interface IUploadImage {
-  to: 'properties' | 'communities' | 'cities' | 'provinces';
+export interface FileUpload {
   file: Readable;
-  filename: string;
-  id: number;
+  path: string;
 }

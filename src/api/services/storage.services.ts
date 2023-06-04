@@ -1,32 +1,41 @@
 import { Readable } from 'stream';
 import { streamToBuffer } from '../helpers/stream-to-buffer';
-import { IUploadImage } from '../interfaces/image-upload';
-import { storage } from '../config/storage/google-cloud-storage.config';
-import { env_bucketName } from '../../environment';
+import { FileUpload } from '../interfaces/image-upload';
+import { storage } from '../../config/storage/google-cloud-storage.config';
+import { CLOUD_BUCKET_NAME } from '../../config/environment';
+import { CustomError } from '../helpers/custom-error';
+import { FastifyError } from 'fastify';
 
 const storageServices = {
-  uploadFile: async ({ to, file, filename, id }: IUploadImage) => {
-    if (!env_bucketName) throw new Error('É necessário informar um bucket!');
+  uploadFile: async ({ file, path }: FileUpload): Promise<{ filePath: string } | undefined> => {
     try {
       const buffer = await streamToBuffer(file);
-      const bucket = storage.bucket(env_bucketName);
-      const bucketFile = bucket.file(`zqq/${to}/${id}/${filename}`);
-      const writableStream = bucketFile.createWriteStream();
-      const readableStream = new Readable();
-      readableStream.push(buffer);
-      readableStream.push(null);
-      readableStream.pipe(writableStream);
-
-      return { message: 'Upload realizado com sucesso!' };
+      const bucket = storage.bucket(CLOUD_BUCKET_NAME);
+      const bucketExists = await bucket.exists();
+      if (bucketExists[0]) {
+        const bucketFile = bucket.file(path);
+        const writableStream = bucketFile.createWriteStream();
+        const readableStream = new Readable();
+        readableStream.push(buffer);
+        readableStream.push(null);
+        readableStream.pipe(writableStream);
+        return { filePath: bucketFile.name } as { filePath: string };
+      }
+      throw CustomError('_', 'O bucket informado não existe!', 500);
     } catch (error) {
-      return error;
+      const err = error as FastifyError;
+      if (err.code) throw error;
+      throw CustomError('_', 'Não foi possível fazer o upload do arquivo!', 500);
     }
   },
 
-  deleteFileInStorage: async (path: string) => {
-    if (!env_bucketName) throw new Error('É necessário informar um bucket!');
-    const res = await storage.bucket(env_bucketName).file(path).delete({ ignoreNotFound: true });
-    return res;
+  deleteFile: async (path: string) => {
+    try {
+      const res = await storage.bucket(CLOUD_BUCKET_NAME).file(path).delete();
+      return res;
+    } catch (error) {
+      return error;
+    }
   }
 };
 

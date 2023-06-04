@@ -32,6 +32,16 @@ async function propertyRoutesAuth(fastify: FastifyInstance) {
     },
     propertyController.uploadImage
   );
+  fastify.delete(
+    '/properties/images',
+    {
+      schema: {
+        description: 'Delete image of property',
+        tags: ['properties']
+      }
+    },
+    propertyController.deleteImage
+  );
   fastify.put(
     '/properties/:id',
     {

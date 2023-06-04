@@ -1,7 +1,5 @@
-import { prisma } from '../config/prisma/prisma.config.js';
-import { PaginationParameters } from '../interfaces/pagination-parameters.js';
+import { prisma } from '../../config/prisma/prisma.config';
 import { IPagination } from '../interfaces/pagination.js';
-import { IAddressFilter } from '../interfaces/search-address.js';
 import { PropertyFilterProperties } from '../interfaces/search-filter.js';
 import { MultipartFile } from '@fastify/multipart';
 import storageServices from './storage.services.js';
@@ -10,6 +8,7 @@ import { Property } from '@prisma/client';
 import { ERR_PROPERTY_CANNOT_BE_EXCLUDE, ERR_PROPERTY_NOT_FOUND } from '../errors/property.erros.js';
 import { ERR_FEATURE_UPDATE_FAILED } from '../errors/feature.errors.js';
 import { ERR_UTILITY_UPDATE_FAILED } from '../errors/utility.errors.js';
+import { randomUUID } from 'crypto';
 
 const propertyServices = {
   properties: async ({
@@ -207,18 +206,26 @@ const propertyServices = {
   },
 
   uploadImage: async (data: MultipartFile, id: number, user_id: number) => {
-    const filename = data.filename.replace(/\b(\s)\b/g, '-');
-    const property = await prisma.property.findFirst({ where: { id, user_id } });
-    if (!property) throw ERR_PROPERTY_NOT_FOUND;
-    const response = await storageServices.uploadFile({ to: 'properties', file: data.file, filename, id });
-    const newImageUrl = `/properties/${id}/${filename}`;
-    await prisma.images.create({
-      data: {
-        url: newImageUrl,
-        property_id: id
+    try {
+      const filename = data.filename.replace(/\b(\s)\b/g, '-');
+      const property = await prisma.property.findFirst({ where: { id, user_id } });
+      if (!property) throw ERR_PROPERTY_NOT_FOUND;
+
+      const imageUuid = randomUUID();
+      const path = `properties/images/${property.id}/${imageUuid + '_' + filename}`;
+      const response = await storageServices.uploadFile({ file: data.file, path });
+      if (response !== undefined) {
+        const image = await prisma.images.create({
+          data: {
+            url: response.filePath,
+            property_id: id
+          }
+        });
+        return image;
       }
-    });
-    return { url: newImageUrl, response };
+    } catch (error) {
+      return error;
+    }
   },
 
   getImages: async (property_id: number) => {
@@ -227,6 +234,18 @@ const propertyServices = {
       return images;
     } catch (error) {
       return error;
+    }
+  },
+
+  deleteImage: async (image_id: number, user_id: number) => {
+    const imageExists = await prisma.images.findUnique({ where: { id: image_id } });
+    if (imageExists) {
+      const deleteImage = await storageServices.deleteFile(imageExists.url);
+      console.log(deleteImage);
+      await prisma.images.delete({ where: { id: image_id } });
+      return { deleteImage };
+    } else {
+      return 'UE';
     }
   },
 

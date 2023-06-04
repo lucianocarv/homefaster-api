@@ -148,6 +148,16 @@ const propertyController = {
       return res.send(error);
     }
   },
+  deleteImage: async (req: FastifyRequest, res: FastifyReply) => {
+    const { id: user_id } = req.user as { id: number };
+    const { id: image_id } = req.query as { id: string };
+    try {
+      const response = await propertyServices.deleteImage(Number(image_id), user_id);
+      return res.send(response);
+    } catch (error) {
+      return res.send(error);
+    }
+  },
 
   getImages: async (req: FastifyRequest, res: FastifyReply) => {
     const { id } = req.params as { id: string };
