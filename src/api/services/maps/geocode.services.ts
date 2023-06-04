@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { env_gmapsGeocodeApiUrl } from '../../../environment';
-import { env_gmapsApiKey } from '../../../environment';
+import { GMAPS_GEOCODE_API_URL } from '../../../config/environment';
+import { GMAPS_API_KEY } from '../../../config/environment';
 import { Address } from '@prisma/client';
 
 type GeocodeComponent = {
@@ -68,7 +68,7 @@ export class GeocodeAPI {
   }
 
   async getDataByLocation(lat: number, lng: number): Promise<GeocodeResponse> {
-    const URL = `${env_gmapsGeocodeApiUrl}?latlng=${lat},${lng}&location_type=ROOFTOP&key=${env_gmapsApiKey}`;
+    const URL = `${GMAPS_GEOCODE_API_URL}?latlng=${lat},${lng}&location_type=ROOFTOP&key=${GMAPS_API_KEY}`;
     const response = await axios.get(URL);
     return response.data as GeocodeResponse;
   }

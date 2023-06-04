@@ -1,5 +1,5 @@
 import { Feature } from '@prisma/client';
-import { prisma } from '../config/prisma/prisma.config';
+import { prisma } from '../../config/prisma/prisma.config';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 
 const featureServices = {

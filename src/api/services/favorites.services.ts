@@ -1,4 +1,4 @@
-import { prisma } from '../config/prisma/prisma.config';
+import { prisma } from '../../config/prisma/prisma.config';
 import { PaginationParameters } from '../interfaces/pagination-parameters';
 
 const favoritesService = {

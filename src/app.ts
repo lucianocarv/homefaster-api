@@ -5,8 +5,8 @@ import JWT from '@fastify/jwt';
 import fastifyMultipart from '@fastify/multipart';
 import { propertyRoutes } from './api/routes/property.routes.js';
 import { userRouter } from './api/routes/user.routes.js';
-import { authenticatedSystem } from './api/config/subsystems/authenticated.js';
-import { env_jwtSecret } from './environment.js';
+import { authenticatedSystem } from './config/subsystems/authenticated.js';
+import { JWT_SECRET } from './config/environment.js';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import cors from '@fastify/cors';
@@ -62,7 +62,7 @@ fastify.register(swaggerUi, {
 });
 
 fastify.register(JWT, {
-  secret: env_jwtSecret ? env_jwtSecret : Buffer.byteLength('20').toString()
+  secret: JWT_SECRET
 });
 fastify.register(fastifyMultipart);
 fastify.register(propertyRoutes);

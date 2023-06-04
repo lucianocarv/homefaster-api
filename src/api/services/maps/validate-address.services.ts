@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { env_gmapsApiKey, env_gmapsValidateAddressApiUrl } from '../../../environment';
+import { GMAPS_API_KEY, GMAPS_VALIDATE_ADDRESS_API_URL } from '../../../config/environment';
 
 export interface VMAPSAddress {
   province: string;
@@ -27,7 +27,7 @@ interface ValidateAddressResponse {
 export class ValidateAddressAPI {
   async validateAddress(data: VMAPSAddress) {
     try {
-      const URL = `${env_gmapsValidateAddressApiUrl}?key=${env_gmapsApiKey}`;
+      const URL = `${GMAPS_VALIDATE_ADDRESS_API_URL}?key=${GMAPS_API_KEY}`;
       const response: ValidateAddressResponse = await axios
         .post(URL, {
           address: {

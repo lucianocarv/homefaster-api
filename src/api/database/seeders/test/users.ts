@@ -1,16 +1,16 @@
-import { env_test_email, env_test_password } from '../../../../environment';
-import { prisma } from '../../../config/prisma/prisma.config';
+import { TEST_EMAIL, TEST_PASSWORD } from '../../../../config/environment';
+import { prisma } from '../../../../config/prisma/prisma.config';
 import bcrypt from 'bcrypt';
 
 const seed = async () => {
-  const passwordHash = await bcrypt.hash(String(env_test_password), 10);
+  const passwordHash = await bcrypt.hash(String(TEST_PASSWORD), 10);
   await prisma.$transaction([
     prisma.user.createMany({
       data: [
         {
           first_name: 'Luciano',
           last_name: 'Carvalho',
-          email: String(env_test_email),
+          email: String(TEST_EMAIL),
           password: passwordHash,
           role: 'Admin'
         }

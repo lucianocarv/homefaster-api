@@ -2,7 +2,7 @@ import { expect, it, describe, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
 
 import { fastify } from '../app';
-import { prisma } from '../api/config/prisma/prisma.config';
+import { prisma } from '../config/prisma/prisma.config';
 import { propertyServices } from '../api/services/property.services';
 import { GeocodeAPI } from '../api/services/maps/geocode.services';
 import { Property, Type } from '@prisma/client';

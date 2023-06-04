@@ -1,8 +1,6 @@
-import { env_sendgrid_apikey } from '../../environment';
 import twlsendgrid from '@sendgrid/mail';
 
-const apiKey = env_sendgrid_apikey;
-twlsendgrid.setApiKey(apiKey);
+// twlsendgrid.setApiKey();
 
 const mailServices = {
   sendTestMail: async () => {

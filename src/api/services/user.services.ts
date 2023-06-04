@@ -1,5 +1,5 @@
 import { Role, User } from '@prisma/client';
-import { prisma } from '../config/prisma/prisma.config';
+import { prisma } from '../../config/prisma/prisma.config';
 import bcrypt from 'bcrypt';
 import { ILoginUser } from '../interfaces/login-user';
 import { jwtService } from './jwt.services';
