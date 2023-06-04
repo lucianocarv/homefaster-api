@@ -24,7 +24,7 @@ model Property {
   description Description?
   address     Address?
   favorites   Favorite[]
-  images      Images[]
+  images      Image[]
   created_at  DateTime     @default(now()) @db.Timestamp()
   updated_at  DateTime     @updatedAt @db.Timestamp()
   listed_by   User         @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -92,11 +92,19 @@ model Description {
   @@map("p_descriptions")
 }
 
-model Images {
+model Image {
   id          Int      @id @default(autoincrement())
   url         String   @db.VarChar(100)
   property    Property @relation(fields: [property_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   property_id Int
+  uploaded_by User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id     Int
+  created_at  DateTime @default(now()) @db.Timestamp()
+  updated_at  DateTime @updatedAt @db.Timestamp()
+
+  @@unique([id, user_id])
+  @@index([property_id, user_id])
+  @@map("p_images")
 }
 
 model Utility {
@@ -187,6 +195,7 @@ model User {
   properties        Property[]
   addresses         Address[]
   descriptions      Description[]
+  images            Image[]
 
   @@map("users")
 }
