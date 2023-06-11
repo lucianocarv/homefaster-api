@@ -33,9 +33,18 @@ const propertyServices = {
         },
         where: {
           address: {
-            province: propertiesParams.province,
-            city: propertiesParams.city,
-            community: propertiesParams.community
+            province: {
+              equals: propertiesParams.province,
+              mode: 'insensitive'
+            },
+            city: {
+              equals: propertiesParams.city,
+              mode: 'insensitive'
+            },
+            community: {
+              equals: propertiesParams.community,
+              mode: 'insensitive'
+            }
           },
           description: {
             price: { lte: propertiesParams.price_max, gte: propertiesParams.price_min },
@@ -55,9 +64,18 @@ const propertyServices = {
       prisma.property.count({
         where: {
           address: {
-            province: propertiesParams.province,
-            city: propertiesParams.city,
-            community: propertiesParams.community
+            province: {
+              equals: propertiesParams.province,
+              mode: 'insensitive'
+            },
+            city: {
+              equals: propertiesParams.city,
+              mode: 'insensitive'
+            },
+            community: {
+              equals: propertiesParams.community,
+              mode: 'insensitive'
+            }
           },
           description: {
             price: { lte: propertiesParams.price_max, gte: propertiesParams.price_min },

@@ -124,4 +124,15 @@ export class GeocodeAPI {
     } as Address;
     return address;
   }
+
+  async getCityCenter(province: string, city: string) {
+    try {
+      const URL = `${GMAPS_GEOCODE_API_URL}?components=locality:${province}+${city}|country:ca&key=${GMAPS_API_KEY}`;
+      const request = await axios.get(URL);
+      const location = request.data.results[0].geometry.location;
+      return location;
+    } catch (error) {
+      return error;
+    }
+  }
 }
