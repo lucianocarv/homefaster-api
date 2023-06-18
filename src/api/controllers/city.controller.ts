@@ -1,6 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { cityServices } from '../services/city.services';
-import { mapsController } from './maps.controller';
 import { GeocodeAPI } from '../services/maps/geocode.services';
 
 const maps = new GeocodeAPI();

@@ -5,7 +5,6 @@ import { storage } from '../../config/storage/google-cloud-storage.config';
 import { CLOUD_BUCKET_NAME } from '../../config/environment';
 import { CustomError } from '../helpers/custom-error';
 import { FastifyError } from 'fastify';
-import { DeleteBucketCallback } from '@google-cloud/storage';
 
 const storageServices = {
   uploadFile: async ({ file, path }: FileUpload): Promise<{ filePath: string } | undefined> => {

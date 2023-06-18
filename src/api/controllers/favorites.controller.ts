@@ -1,8 +1,6 @@
 import { Favorite } from '@prisma/client';
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import { ERR_PERMISSION_DENIED } from '../errors/permission.errors';
-import { CustomError } from '../helpers/custom-error';
-import { ICustomError } from '../interfaces/custom-error';
 import { JWTUserPayload } from '../interfaces/jwt-payload';
 import { favoritesService } from '../services/favorites.services';
 import { getPagination } from '../helpers/get-pagination';
