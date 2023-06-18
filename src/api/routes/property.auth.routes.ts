@@ -1,67 +1,13 @@
 import { FastifyInstance } from 'fastify';
 import { propertyController } from '../controllers/property.controller';
+import schema from './swagger/property.swagger';
 
 async function propertyRoutesAuth(fastify: FastifyInstance) {
-  fastify.post(
-    '/properties',
-    {
-      schema: {
-        description: 'Property',
-        tags: ['properties']
-      }
-    },
-    propertyController.createOneProperty
-  );
-  fastify.post(
-    '/properties/input-validate',
-    {
-      schema: {
-        description: 'Property',
-        tags: ['properties']
-      }
-    },
-    propertyController.validateEntriesToCreateAProperty
-  );
-  fastify.post(
-    '/properties/images',
-    {
-      schema: {
-        description: 'Property',
-        tags: ['properties']
-      }
-    },
-    propertyController.uploadImage
-  );
-  fastify.delete(
-    '/properties/images',
-    {
-      schema: {
-        description: 'Delete image of property',
-        tags: ['properties']
-      }
-    },
-    propertyController.deleteImage
-  );
-  fastify.put(
-    '/properties/:id',
-    {
-      schema: {
-        description: 'Property',
-        tags: ['properties']
-      }
-    },
-    propertyController.updateOneProperty
-  );
-  fastify.delete(
-    '/properties/:id',
-    {
-      schema: {
-        description: 'Property',
-        tags: ['properties']
-      }
-    },
-    propertyController.deleteOneProperty
-  );
+  fastify.post('/properties', { schema: schema.properties_create }, propertyController.createOneProperty);
+  fastify.post('/properties/:id/images', { schema: schema.property_image_upload }, propertyController.uploadImage);
+  fastify.delete('/properties/:id/images', { schema: schema.property_image_delete }, propertyController.deleteImage);
+  fastify.put('/properties/:id', { schema: schema.property_update }, propertyController.updateOneProperty);
+  fastify.delete('/properties/:id', { schema: schema.property_delete }, propertyController.deleteOneProperty);
 }
 
 export { propertyRoutesAuth };
