@@ -20,8 +20,8 @@ fastify.register(cors, {
 fastify.register(swagger, {
   swagger: {
     info: {
-      title: 'Test swagger',
-      description: 'Testing the Fastify swagger API',
+      title: 'Homefaster API Swagger Documentation',
+      description: 'Documentação da API',
       version: '0.1.0'
     },
     externalDocs: {
@@ -33,8 +33,8 @@ fastify.register(swagger, {
     consumes: ['application/json'],
     produces: ['application/json'],
     tags: [
-      { name: 'properties', description: 'Properties related end-points' },
-      { name: 'users', description: 'Users related end-points' }
+      { name: 'Properties', description: 'Endpoints para a administração e visualização das propriedades' },
+      { name: 'Users', description: 'Endpoints para a administração, visualização e acessos dos usuários no sistema' }
     ]
   }
 });
@@ -45,14 +45,6 @@ fastify.register(swaggerUi, {
   },
   uiConfig: {
     deepLinking: true
-  },
-  uiHooks: {
-    onRequest: function (request, reply, next) {
-      next();
-    },
-    preHandler: function (request, reply, next) {
-      next();
-    }
   },
   staticCSP: true,
   transformStaticCSP: header => header,

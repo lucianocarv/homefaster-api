@@ -138,8 +138,7 @@ const propertyController = {
   uploadImage: async (req: FastifyRequest, res: FastifyReply): Promise<Image | FastifyError> => {
     const data = await req.file();
     const { id: user_id } = req.user as { id: string };
-    const { property_id } = req.query as { property_id: string };
-    console.log(property_id);
+    const { id: property_id } = req.params as { id: string };
     if (!data?.file) throw ERR_UPLOAD_MISSING_FILE;
     if (!property_id) throw ERR_UPLOAD_MISSING_PROPERTY;
     try {
@@ -161,7 +160,7 @@ const propertyController = {
   },
 
   getImages: async (req: FastifyRequest, res: FastifyReply) => {
-    const { property_id } = req.query as { property_id: string };
+    const { id: property_id } = req.params as { id: string };
     try {
       console.log(property_id);
       const propertyExists = await propertyServices.getOneProperty(Number(property_id));
